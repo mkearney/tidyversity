@@ -15,11 +15,9 @@ knitr::opts_chunk$set(
 ```
 # tidyacademic <img src="man/figures/logo.png" width="160px" align="right" /> 
 
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+
 🏫 Tidy tools for academics
-
-## Description
-
-Tidy tools designed for use in academic research. Use functions to wrangle (e.g., wide-to-long or long-to-wide) and statistically analyze (e.g., Cronbach's alpha) data using conventions/techniques commonly observed in academic research. This package uses tidy evaluation (a form of non-standard evaluation) for ease of use and helps researchers keep their data and analysis tidy.
 
 ## Installation
 
