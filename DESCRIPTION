@@ -1,0 +1,16 @@
+Package: tidyacademic
+Version: 0.0.1
+Title: Tidy Tools for Academics
+Description: Tidy tools designed for use in academic research. Use functions 
+  to wrangle (e.g., wide-to-long or long-to-wide) and statistically analyze 
+  (e.g., Cronbach's alpha) data using conventions/techniques commonly 
+  observed in academic research. This package uses tidy evaluation (a form 
+  of non-standard evaluation) for ease of use and helps researchers keep their
+  data and analysis tidy.
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
+author: person("Michael Wayne", "Kearney", ,
+  "kearneymw@missouri.edu", role = c("aut", "cre"),
+  comment = c(ORCID = "0000-0002-0730-4694"))
+license: MIT
