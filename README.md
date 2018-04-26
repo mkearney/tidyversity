@@ -34,15 +34,15 @@ Comes with two data sets.
 
 1.  `polcom_survey` consists of survey responses to demographic, background, and likert-type attitudinal items about political communication.
 
-``` r
-polcom_survey
-```
+    ``` r
+    polcom_survey
+    ```
 
-1.  `twitter_data` consists of tweet-level observations.
+2.  `twitter_data` consists of tweet-level observations.
 
-``` r
-twitter_data
-```
+    ``` r
+    twitter_data
+    ```
 
 Descriptive statistics
 ----------------------

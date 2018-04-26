@@ -40,3 +40,4 @@ ggplot(h1, aes(x, y)) +
     bg = "transparent")
 
 usethis::use_build_ignore("logo.R")
+
