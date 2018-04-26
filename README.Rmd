@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-🏫 Tidy tools for academics
+🎓 Tidy tools for academics
 
 ## Installation
 
