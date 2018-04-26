@@ -5,7 +5,7 @@ tidyacademic <img src="man/figures/logo.png" width="160px" align="right" />
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-🏫 Tidy tools for academics
+🎓 Tidy tools for academics
 
 Installation
 ------------
@@ -32,17 +32,22 @@ Data sets
 
 Comes with two data sets.
 
-1.  `polcom_survey` consists of survey responses to demographic, background, and likert-type attitudinal items about political communication.
+### polcom\_survey
 
-    ``` r
-    polcom_survey
-    ```
+Consists of survey responses to demographic, background, and likert-type attitudinal items about political communication.
 
-2.  `twitter_data` consists of tweet-level observations.
+``` r
+polcom_survey
+```
 
-    ``` r
-    twitter_data
-    ```
+twitter\_data
+-------------
+
+Consists of tweet-level observations.
+
+``` r
+twitter_data
+```
 
 Descriptive statistics
 ----------------------

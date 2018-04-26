@@ -43,17 +43,21 @@ devtools::install_github("mkearney/tidyacademic")
 
 Comes with two data sets. 
 
-1. `polcom_survey` consists of survey responses to demographic, background, and likert-type attitudinal items about political communication.
+### polcom_survey 
 
-    ```{r polcom_survey}
-    polcom_survey
-    ```
+Consists of survey responses to demographic, background, and likert-type attitudinal items about political communication.
 
-1. `twitter_data` consists of tweet-level observations.
+```{r polcom_survey}
+polcom_survey
+```
 
-    ```{r twitter_data}
-    twitter_data
-    ```
+## twitter_data 
+
+Consists of tweet-level observations.
+
+```{r twitter_data}
+twitter_data
+```
 
 ## Descriptive statistics
 
