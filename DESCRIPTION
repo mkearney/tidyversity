@@ -15,3 +15,6 @@ Author: person("Michael Wayne", "Kearney", ,
   comment = c(ORCID = "0000-0002-0730-4694"))
 License: MIT + file LICENSE
 RoxygenNote: 6.0.1.9000
+Imports: 
+    psych,
+    tidyselect
