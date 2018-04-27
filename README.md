@@ -1,14 +1,16 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-tidyacademic <img src="man/figures/logo.png" width="160px" align="right" />
-===========================================================================
+
+# tidyacademic <img src="man/figures/logo.png" width="160px" align="right" />
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-🎓 Tidy tools for academics
+🎓 Tidy tools for
+academics
 
-Installation
-------------
+## \*\*\* This package is in very early development. Feedback is encouraged\!\!\! \*\*\*
+
+## Installation
 
 <!-- You can install the released version of tidyacademic from [CRAN](https://CRAN.R-project.org) with:
 
@@ -16,7 +18,9 @@ Installation
 install.packages("tidyacademic")
 ```
 -->
-Install the development version from [Github](https://github.com/mkearney/tidyacademic) with:
+
+Install the development version from
+[Github](https://github.com/mkearney/tidyacademic) with:
 
 ``` r
 ## install devtools if not already
@@ -27,21 +31,20 @@ if (!requireNamespace("devtools", quietly = TRUE)) {
 devtools::install_github("mkearney/tidyacademic")
 ```
 
-Data sets
----------
+## Data sets
 
 Comes with two data sets.
 
 ### polcom\_survey
 
-Consists of survey responses to demographic, background, and likert-type attitudinal items about political communication.
+Consists of survey responses to demographic, background, and likert-type
+attitudinal items about political communication.
 
 ``` r
 polcom_survey
 ```
 
-twitter\_data
--------------
+## twitter\_data
 
 Consists of tweet-level observations.
 
@@ -49,8 +52,7 @@ Consists of tweet-level observations.
 twitter_data
 ```
 
-Descriptive statistics
-----------------------
+## Descriptive statistics
 
 Return summary statistics in the form of a data frame.
 
@@ -62,7 +64,7 @@ summarize_numeric(polcom_survey, smuse1:smuse3)
 summarize_categorical(polcom_survey, sex, race)
 ```
 
-Estimate Cronbach's alpha for a set of variables.
+Estimate Cronbach’s alpha for a set of variables.
 
 ``` r
 ## reliability of social media use items
