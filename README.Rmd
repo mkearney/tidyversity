@@ -92,3 +92,11 @@ Conduct a logistic regression analysis.
 ```{r logistic_regression}
 logistic_regression(polcom, follow_trump ~ pp_ideology + age + sex + edu + hhinc)
 ```
+
+### ANOVA
+
+Conduct an analysis of variance.
+
+```{r ANOVA}
+ANOVA(polcom, pp_ideology ~ as.factor(sex) + age + pie_1)
+```

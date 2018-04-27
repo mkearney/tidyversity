@@ -145,3 +145,27 @@ logistic_regression(polcom, follow_trump ~ pp_ideology + age + sex + edu + hhinc
 #> 5         edu -0.0803047 0.1747529 -0.459533 0.645851703      
 #> 6       hhinc -0.0231718 0.0565281 -0.409917 0.681866718
 ```
+
+### ANOVA
+
+Conduct an analysis of variance.
+
+``` r
+ANOVA(polcom, pp_ideology ~ as.factor(sex) + age + pie_1)
+#> $fit
+#>                 Df Sum Sq Mean Sq F value Pr(>F)  
+#> as.factor(sex)   1     10    9.71    2.84  0.093 .
+#> age              1      2    1.77    0.52  0.473  
+#> pie_1            1     12   12.42    3.63  0.058 .
+#> Residuals      238    814    3.42                 
+#> ---
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> 2 observations deleted due to missingness
+#> 
+#> $coef
+#>              term   estimate  std.error statistic     p.value
+#> 1     (Intercept)  5.0044419 0.77659775   6.44406 6.39530e-10
+#> 2 as.factor(sex)2 -0.4825089 0.24175589  -1.99585 4.70898e-02
+#> 3             age -0.0101564 0.00956098  -1.06228 2.89187e-01
+#> 4           pie_1 -0.1968180 0.10329591  -1.90538 5.79359e-02
+```
