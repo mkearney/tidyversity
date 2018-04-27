@@ -41,5 +41,18 @@ psych::fa(select(d, ambiv_sexism_1:ambiv_sexism_22), nfactors = 3)
 
 
 
-cronbachs_alpha(ambses)
+cronbachs_alpha(polcom, news_1:news_6)
 
+
+polcom
+
+screeplot()
+help(package = "tidyacademic")
+
+p <- ggplot(e, aes(x = p, y = eigenvalue)) +
+  geom_point(size = 2) + geom_line() +
+  geom_hline(yintercept = 1.0, colour = "red", linetype = "dashed") +
+  theme(legend.position = "none") +
+  theme_bw() +
+  scale_x_continuous(breaks = seq(0, nrow(e))) +
+  scale_y_continuous(breaks = seq(0, max(e$eigenvalue)))
