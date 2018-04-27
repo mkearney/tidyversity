@@ -6,7 +6,8 @@
 \alias{parallel_analysis}
 \title{Conduct factor analysis to estimate item loadings on each factor}
 \usage{
-factor_analysis(data, ..., n = NULL)
+factor_analysis(data, ..., nfactors = "parallel", rotation = "oblique",
+  method = NULL)
 
 eigenvalues(data, ...)
 
@@ -18,8 +19,20 @@ parallel_analysis(data, ...)
 \item{...}{Variables (unquoted) of interest. If not provided, all variables
 in data will be used}
 
-\item{n}{Number of retained factors, defaulting to number of factors
-suggested via parallel analysis.}
+\item{nfactors}{Method used to estimate the number of factors. The default,
+uses a "parallel" analysis to estimate the number of retained factors.
+Also available is the "kaiser" method, which retains all eigenvalues
+greater than 1.0. Users may also manually specify the number of factors
+by entering a numeric [or integer] value here.}
+
+\item{rotation}{Method used to estimate rotated solution. The default
+"oblique" rotation method (geominQ from GPArotation pkg) assumes the
+factors are related (a fairly typical or desirable assumption of social
+science constructs). Also available is the "orthogonal" rotation method
+(geominT from the GPArotation pkg), which assumes the factors are
+independent. Users may override these options, providing their own
+rotation method by specifying [presumably a method offered in the psych
+or GPArotation packages] here as well.}
 }
 \value{
 Output of factor analysis.

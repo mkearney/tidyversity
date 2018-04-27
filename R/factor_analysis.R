@@ -6,8 +6,19 @@
 #' @param data Data frame of interest
 #' @param ... Variables (unquoted) of interest. If not provided, all variables
 #'   in data will be used
-#' @param n Number of retained factors, defaulting to number of factors
-#'   suggested via parallel analysis.
+#' @param nfactors Method used to estimate the number of factors. The default,
+#'   uses a "parallel" analysis to estimate the number of retained factors.
+#'   Also available is the "kaiser" method, which retains all eigenvalues
+#'   greater than 1.0. Users may also manually specify the number of factors
+#'   by entering a numeric [or integer] value here.
+#' @param rotation Method used to estimate rotated solution. The default
+#'   "oblique" rotation method (geominQ from GPArotation pkg) assumes the
+#'   factors are related (a fairly typical or desirable assumption of social
+#'   science constructs). Also available is the "orthogonal" rotation method
+#'   (geominT from the GPArotation pkg), which assumes the factors are
+#'   independent. Users may override these options, providing their own
+#'   rotation method by specifying [presumably a method offered in the psych
+#'   or GPArotation packages] here as well.
 #' @return Output of factor analysis.
 #' @examples
 #'
@@ -16,13 +27,61 @@
 #'
 #' @export
 #' @rdname factor_analysis
-factor_analysis <- function(data, ..., n = NULL) {
+factor_analysis <- function(data, ...,
+                            nfactors = "parallel",
+                            rotation = "oblique",
+                            method = NULL) {
+  UseMethod("factor_analysis")
+}
+
+unlist_data_frame <- function(x) {
+  unlist(x, use.names = FALSE)
+}
+
+#' @export
+factor_analysis.data.frame <- function(data, ...,
+                                       nfactors = "parallel",
+                                       rotation = "oblique",
+                                       method = NULL) {
   data <- tidyselector(data, ...)
-  if (is.null(n)) {
+  ## detect nfactors method and set number of factors
+  if (nfactors == "parallel") {
     n <- parallel_analysis(data)
     n <- n$nfact
+  } else if (nfactors == "kaiser") {
+    n <- eigenvalues(data)
+    n <- sum(n[[3]])
+  } else {
+    n <- nfactors
   }
-  psych::fa(cor(data), nfactors = n, fm = "ml", rotate = "geominQ")
+  if (rotation == "oblique") {
+    rotation <- "geominQ"
+  } else if (rotation == "orthogonal") {
+    rotation <- "geominT"
+  }
+  if (is.null(method)) {
+    ## check normality of data
+    s <- shapiro.test(unlist_data_frame(data))
+    if (s$p.value > .05) {
+      method <- "ml"
+    } else {
+      method <- "gls"
+    }
+  }
+  ## validate n
+  stopifnot(is.numeric(n))
+  ## factor analysis
+  psych::fa(cor(data), nfactors = n, fm = method, rotate = rotation)
+}
+
+
+## validate class of data (make sure it's a data frame or list of data frames)
+#' @export
+factor_analysis.default <- function(data, ...,
+                                    nfactors = "parallel",
+                                    rotation = "oblique",
+                                    method = NULL) {
+  stop("data is not a data frame!", call. = FALSE)
 }
 
 

@@ -17,17 +17,18 @@
 cronbachs_alpha <- function(data, ...) UseMethod("cronbachs_alpha")
 
 ## method for when x is a data frame
+#' @export
 cronbachs_alpha.data.frame <- function(data, ...) {
-  vars <- tidyselect::vars_select(names(data), ...)
-  if (length(vars) > 0) {
-    data <- data[vars]
-  }
+  data <- tidyselector(data, ...)
+  ## convert columns to numeric
   data <- all_numeric(data)
   a <- psych::alpha(data)
-  a$total$raw_alpha
+  #a$total$raw_alpha
+  a
 }
 
 ## validate class of data (make sure it's a data frame or list of data frames)
+#' @export
 cronbachs_alpha.default <- function(data, ...) {
   stop("data is not a data frame!", call. = FALSE)
 }
