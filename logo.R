@@ -18,6 +18,7 @@ btn <- data.frame(
   x = c(-.045, 0, .045, 0),
   y = c(.50, .53, .50, .47) - .225
 )
+
 ## background/border
 h1 <- hexagon::hexdf(1)
 h2 <- hexagon::hexdf(.975)

@@ -4,3 +4,4 @@
 ^LICENSE\.md$
 ^README\.Rmd$
 ^logo\.R$
+^make\.R$
