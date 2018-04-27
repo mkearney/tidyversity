@@ -45,3 +45,6 @@ usethis::use_build_ignore("make.R")
 factor_analysis(polcom, news_1:news_6)
 
 news <- cronbachs_alpha(polcom, news_1:news_6)
+
+
+ols_regression(polcom, pp_ideology ~ news_1 + hhinc + sex)

@@ -3,12 +3,15 @@ all_numeric <- function(x) {
   x
 }
 
+#' @export
 coerce_numeric <- function(x) UseMethod("coerce_numeric")
 
+#' @export
 coerce_numeric.default <- function(x) {
   as.numeric(x)
 }
 
+#' @export
 coerce_numeric.character <- function(x) {
   x <- suppressWarnings(as.numeric(x))
   if (all(is.na(x))) {

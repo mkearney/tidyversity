@@ -23,8 +23,13 @@ cronbachs_alpha.data.frame <- function(data, ...) {
   ## convert columns to numeric
   data <- all_numeric(data)
   a <- psych::alpha(data)
-  #a$total$raw_alpha
-  a
+  item <- row.names(a$alpha.drop)
+  #sprintf("all_%d_items", length(item))
+  data.frame(
+    items = c(paste(item[c(1, length(item))], collapse = ":"), paste0("-", item)),
+    alpha = c(a$total$raw_alpha, a$alpha.drop[[1]]),
+    alpha.std = c(a$total$std.alpha, a$alpha.drop[[2]]),
+    check.rows = FALSE, row.names = NULL, check.names = FALSE)
 }
 
 ## validate class of data (make sure it's a data frame or list of data frames)

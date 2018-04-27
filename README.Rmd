@@ -10,8 +10,9 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%",
-  eval = FALSE
+  eval = TRUE
 )
+library(tidyacademic)
 ```
 # tidyacademic <img src="man/figures/logo.png" width="160px" align="right" /> 
 
@@ -33,7 +34,7 @@ install.packages("tidyacademic")
 
 Install the development version from [Github](https://github.com/mkearney/tidyacademic) with:
 
-```{r install}
+```{r install, eval=FALSE}
 ## install devtools if not already
 if (!requireNamespace("devtools", quietly = TRUE)) {
   install.packages("devtools")
@@ -44,29 +45,21 @@ devtools::install_github("mkearney/tidyacademic")
 
 ## Data sets
 
-Comes with two data sets. 
+Comes with one data set. 
 
-### polcom_survey 
+### `polcom` 
 
 Consists of survey responses to demographic, background, and likert-type attitudinal items about political communication.
 
-```{r polcom_survey}
-polcom_survey
-```
-
-## twitter_data 
-
-Consists of tweet-level observations.
-
-```{r twitter_data}
-twitter_data
+```{r polcom}
+tibble::as_tibble(polcom)
 ```
 
 ## Descriptive statistics
 
 Return summary statistics in the form of a data frame.
 
-```{r cars}
+```{r summarize, eval=FALSE}
 ## summary stats for social media use (numeric) variables
 summarize_numeric(polcom_survey, smuse1:smuse3)
 
@@ -78,5 +71,24 @@ Estimate Cronbach's alpha for a set of variables.
 
 ```{r reliability}
 ## reliability of social media use items
-cronbachs_alpha(polcom_survey, smuse1:smuse3)
+cronbachs_alpha(polcom, ambiv_sexism_1:ambiv_sexism_6)
+```
+
+
+## Modeling
+
+### OLS regression
+
+Conduct an Ordinary Least Squares (OLS) regression analysis.
+
+```{r ols_regression}
+ols_regression(polcom, pp_ideology ~ age + sex + edu + hhinc)
+```
+
+### Logistic regression
+
+Conduct a logistic regression analysis.
+
+```{r logistic_regression}
+logistic_regression(polcom, follow_trump ~ pp_ideology + age + sex + edu + hhinc)
 ```
