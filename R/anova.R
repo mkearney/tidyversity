@@ -13,7 +13,10 @@
 #'
 #' @export
 ANOVA <- function(data, model, ...) {
-  s <- aov(model, data = data, ...)
-  m <- lm(model, data = data, ...)
-  list(fit = summary(s), coef = broom::tidy(m))
+  m <- aov(model, data = data, ...)
+  f <- lm(model, data = data, ...)
+  f <- ols_fit(f)
+  coef <- broom::tidy(m)
+  coef <- add_stars(coef)
+  list(fit = f, coef = coef)
 }

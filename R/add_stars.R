@@ -7,5 +7,7 @@ add_stars <- function(x) {
     x$p.value < .001                   ~ "***",
     TRUE                               ~ ""
   )
+  ## round p.value
+  x$p.value <- round(x$p.value, 5)
   x
 }
