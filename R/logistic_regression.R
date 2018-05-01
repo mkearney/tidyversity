@@ -21,9 +21,9 @@ logistic_regression <- function(data, model, ...) {
   p.value <- pchisq(chisq, df)
   csq <- paste0("χ2(", df, ")")
   fit_statistics <- data.frame(
-    statistic = c(csq, "AIC"),
-    estimate = c(chisq, s$aic),
-    p.value = c(p.value, NA_real_),
+    statistic = c(csq, "AIC", "BIC", "Nagelkerke R^2"),
+    estimate = c(chisq, s$aic, BIC(m), nagelkerke(m)),
+    p.value = c(p.value, NA_real_, NA_real_, NA_real_),
     stringsAsFactors = FALSE,
     check.rows = FALSE,
     row.names = NULL,
