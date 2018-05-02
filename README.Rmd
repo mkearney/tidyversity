@@ -12,9 +12,9 @@ knitr::opts_chunk$set(
   out.width = "100%",
   eval = TRUE
 )
-library(tidyacademic)
+library(tidyversity)
 ```
-# tidyacademic <img src="man/figures/logo.png" width="160px" align="right" /> 
+# tidyversity <img src="man/figures/logo.png" width="160px" align="right" /> 
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
@@ -25,22 +25,22 @@ library(tidyacademic)
 
 ## Installation
 
-<!-- You can install the released version of tidyacademic from [CRAN](https://CRAN.R-project.org) with:
+<!-- You can install the released version of tidyversity from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-install.packages("tidyacademic")
+install.packages("tidyversity")
 ```
 -->
 
-Install the development version from [Github](https://github.com/mkearney/tidyacademic) with:
+Install the development version from [Github](https://github.com/mkearney/tidyversity) with:
 
 ```{r install, eval=FALSE}
 ## install devtools if not already
 if (!requireNamespace("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
-## install tidyacademic from Github
-devtools::install_github("mkearney/tidyacademic")
+## install tidyversity from Github
+devtools::install_github("mkearney/tidyversity")
 ```
 
 ## Data sets

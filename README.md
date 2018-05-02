@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# tidyacademic <img src="man/figures/logo.png" width="160px" align="right" />
+# tidyversity <img src="man/figures/logo.png" width="160px" align="right" />
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
@@ -12,23 +12,23 @@ academics
 
 ## Installation
 
-<!-- You can install the released version of tidyacademic from [CRAN](https://CRAN.R-project.org) with:
+<!-- You can install the released version of tidyversity from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-install.packages("tidyacademic")
+install.packages("tidyversity")
 ```
 -->
 
 Install the development version from
-[Github](https://github.com/mkearney/tidyacademic) with:
+[Github](https://github.com/mkearney/tidyversity) with:
 
 ``` r
 ## install devtools if not already
 if (!requireNamespace("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
-## install tidyacademic from Github
-devtools::install_github("mkearney/tidyacademic")
+## install tidyversity from Github
+devtools::install_github("mkearney/tidyversity")
 ```
 
 ## Data sets
@@ -109,19 +109,36 @@ Conduct an Ordinary Least Squares (OLS) regression analysis.
 
 ``` r
 ols_regression(polcom, pp_ideology ~ age + sex + edu + hhinc)
+#> $data
+#> # A tibble: 241 x 13
+#>   .rownames pp_ideology   age   sex   edu hhinc .fitted .se.fit .resid
+#>   <chr>           <int> <int> <int> <int> <int>   <dbl>   <dbl>  <dbl>
+#> 1 1                   1    69     1     5     2    3.30   0.284  -2.30
+#> 2 2                   5    76     1     3     1    3.70   0.253   1.30
+#> # ... with 239 more rows, and 4 more variables: .hat <dbl>, .sigma <dbl>,
+#> #   .cooksd <dbl>, .std.resid <dbl>
+#> 
 #> $fit
-#>   statistic  estimate  p.value
-#> 1 F(4, 236) 1.8185711 0.125953
-#> 2       R^2 0.0299016       NA
-#> 3   Adj R^2 0.0134592       NA
+#> # A tibble: 7 x 6
+#>   fit_statistic     n    df  estimate p.value stars
+#>   <chr>         <int> <int>     <dbl>   <dbl> <chr>
+#> 1 F               241     4    1.82     0.126 ""   
+#> 2 R^2             241    NA    0.0299  NA     ""   
+#> 3 Adj R^2         241    NA    0.0135  NA     ""   
+#> 4 RMSE            241    NA    1.85    NA     ""   
+#> 5 -2*LL           241     6  975.      NA     ""   
+#> 6 AIC             241    NA  987.      NA     ""   
+#> 7 BIC             241    NA 1008.      NA     ""   
 #> 
 #> $coef
-#>          term    estimate  std.error statistic     p.value stars
-#> 1 (Intercept)  5.51358306 0.87758587  6.282671 1.58892e-09   ***
-#> 2         age -0.00876768 0.00948465 -0.924407 3.56219e-01      
-#> 3         sex -0.44631307 0.24012913 -1.858638 6.43235e-02     +
-#> 4         edu -0.24076929 0.12740870 -1.889740 6.00184e-02     +
-#> 5       hhinc  0.01828919 0.04285920  0.426727 6.69967e-01
+#> # A tibble: 5 x 5
+#>   term        estimate std.error statistic       p.value
+#>   <chr>          <dbl>     <dbl>     <dbl>         <dbl>
+#> 1 (Intercept)  5.51      0.878       6.28  0.00000000159
+#> 2 age         -0.00877   0.00948    -0.924 0.356        
+#> 3 sex         -0.446     0.240      -1.86  0.0643       
+#> 4 edu         -0.241     0.127      -1.89  0.0600       
+#> 5 hhinc        0.0183    0.0429      0.427 0.670
 ```
 
 ### Logistic regression
@@ -131,19 +148,39 @@ analysis.
 
 ``` r
 logistic_regression(polcom, follow_trump ~ pp_ideology + age + sex + edu + hhinc)
+#> $data
+#> # A tibble: 241 x 14
+#>   .rownames follow_trump pp_ideology   age   sex   edu hhinc .fitted
+#>   <chr>     <lgl>              <int> <int> <int> <int> <int>   <dbl>
+#> 1 1         TRUE                   1    69     1     5     2   2.04 
+#> 2 2         TRUE                   5    76     1     3     1   0.953
+#> # ... with 239 more rows, and 6 more variables: .se.fit <dbl>,
+#> #   .resid <dbl>, .hat <dbl>, .sigma <dbl>, .cooksd <dbl>,
+#> #   .std.resid <dbl>
+#> 
 #> $fit
-#>   statistic estimate  p.value
-#> 1     χ2(5)   13.261 0.978948
-#> 2       AIC  255.166       NA
+#> # A tibble: 8 x 6
+#>   fit_statistic       n    df    estimate p.value stars
+#>   <chr>           <int> <int>       <dbl>   <dbl> <chr>
+#> 1 χ2.full           241   235  243.        0.343  ""   
+#> 2 χ2.null           241   240  256.        0.223  ""   
+#> 3 Δχ2               241     5   13.3       0.0211 *    
+#> 4 Nagelkerke R^2    241    NA    0.0535   NA      ""   
+#> 5 Cox & Snell R^2   241    NA   -0.000441 NA      ""   
+#> 6 McFadden R^2      241    NA    0.0517   NA      ""   
+#> 7 AIC               241    NA  255.       NA      ""   
+#> 8 BIC               241    NA  276.       NA      ""   
 #> 
 #> $coef
-#>          term   estimate std.error statistic     p.value stars
-#> 1 (Intercept)  4.2634703 1.3383725  3.185563 0.001444725    **
-#> 2 pp_ideology -0.2879746 0.0867717 -3.318761 0.000904179   ***
-#> 3         age -0.0169813 0.0132603 -1.280607 0.200331744      
-#> 4         sex -0.3158309 0.3240300 -0.974697 0.329710732      
-#> 5         edu -0.0803047 0.1747529 -0.459533 0.645851703      
-#> 6       hhinc -0.0231718 0.0565281 -0.409917 0.681866718
+#> # A tibble: 6 x 5
+#>   term        estimate std.error statistic  p.value
+#>   <chr>          <dbl>     <dbl>     <dbl>    <dbl>
+#> 1 (Intercept)   4.26      1.34       3.19  0.00144 
+#> 2 pp_ideology  -0.288     0.0868    -3.32  0.000904
+#> 3 age          -0.0170    0.0133    -1.28  0.200   
+#> 4 sex          -0.316     0.324     -0.975 0.330   
+#> 5 edu          -0.0803    0.175     -0.460 0.646   
+#> 6 hhinc        -0.0232    0.0565    -0.410 0.682
 ```
 
 ### ANOVA
@@ -153,19 +190,21 @@ Conduct an analysis of variance.
 ``` r
 ANOVA(polcom, pp_ideology ~ as.factor(sex) + age + pie_1)
 #> $fit
-#>                 Df Sum Sq Mean Sq F value Pr(>F)  
-#> as.factor(sex)   1     10    9.71    2.84  0.093 .
-#> age              1      2    1.77    0.52  0.473  
-#> pie_1            1     12   12.42    3.63  0.058 .
-#> Residuals      238    814    3.42                 
-#> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-#> 2 observations deleted due to missingness
+#> # A tibble: 7 x 6
+#>   fit_statistic     n    df  estimate p.value stars
+#>   <chr>         <int> <int>     <dbl>   <dbl> <chr>
+#> 1 F               242     3    2.33    0.0752 +    
+#> 2 R^2             242    NA    0.0285 NA      ""   
+#> 3 Adj R^2         242    NA    0.0163 NA      ""   
+#> 4 RMSE            242    NA    1.85   NA      ""   
+#> 5 -2*LL           242     5  980.     NA      ""   
+#> 6 AIC             242    NA  990.     NA      ""   
+#> 7 BIC             242    NA 1008.     NA      ""   
 #> 
 #> $coef
-#>              term   estimate  std.error statistic     p.value
-#> 1     (Intercept)  5.0044419 0.77659775   6.44406 6.39530e-10
-#> 2 as.factor(sex)2 -0.4825089 0.24175589  -1.99585 4.70898e-02
-#> 3             age -0.0101564 0.00956098  -1.06228 2.89187e-01
-#> 4           pie_1 -0.1968180 0.10329591  -1.90538 5.79359e-02
+#>             term  df     sumsq   meansq statistic   p.value stars
+#> 1 as.factor(sex)   1   9.70595  9.70595  2.836923 0.0934314     +
+#> 2            age   1   1.77035  1.77035  0.517451 0.4726369      
+#> 3          pie_1   1  12.42092 12.42092  3.630473 0.0579359     +
+#> 4      Residuals 238 814.26807  3.42129        NA        NA
 ```
