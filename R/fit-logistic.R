@@ -1,23 +1,3 @@
-#' Logistic regression for dichotomous outcomes
-#'
-#' Conducts logistic regression analysis to model binary outcome variable using
-#'   a generalized (binomial with logit link) linear model
-#'
-#' @param data Data frame containing variables of interest.
-#' @param model Model formula to be estimated.
-#' @param ... Other arguments passed to lm() function.
-#' @return A list object containing a "fit" and "ceof" data frames.
-#' @examples
-#'
-#' ## predict mpg using weight and cylinders
-#' logistic_regression(datasets::mtcars, am ~ disp + carb + mpg)
-#'
-#' @export
-logistic_regression <- function(data, model, ...) {
-  m <- glm(model, data = data, family = binomial)
-  sweep(m)
-}
-
 #' @export
 glm_fit <- function(m) {
   s <- summary(m)
@@ -32,7 +12,7 @@ glm_fit <- function(m) {
   bic <- BIC(m)
   rmse <- rmse(m)
   r2nag <- nagelkerke(m)
-  r2cox <- coxsnell(m)
+  #r2cox <- coxsnell(m)
   r2mcf <- mcfadden(m)
   ##mcfadden.adj(m)
   ## names of fit statistics

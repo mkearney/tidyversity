@@ -33,11 +33,11 @@ model_data.tidy_model <- function(x) x@data
 
 #' @export
 setMethod("show", "tidy_model",
-  function(x) {
+  function(object) {
     cat("$data", fill = TRUE)
-    print(x@data, n = 2)
+    print(object@data, n = 2)
     cat("\n")
-    x <- list(fit = x@fit, coef = x@coef)
+    x <- list(fit = object@fit, coef = object@coef)
     print(x)
   }
 )
