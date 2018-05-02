@@ -33,7 +33,7 @@ ggplot(h1, aes(x, y)) +
   geom_polygon(data = cap1, fill = "#444444",  size = .5, colour = "#000000") +
   geom_polygon(data = strng, fill = "goldenrod", size = 0) +
   geom_polygon(data = btn, fill = "#000000", size = 0) +
-  annotate("text", 0, -.175, label = "tidyacademic", size = 6,
+  annotate("text", 0, -.175, label = "tidyversity", size = 6,
     colour = "#ffffff", family = "Consolas") +
   hexagon::theme_hexagon() +
   theme(plot.margin = margin(-6, -6, -9, -8, unit = "pt")) +
