@@ -1,4 +1,4 @@
-Package: tidyacademic
+Package: tidyversity
 Version: 0.0.1
 Title: Tidy Tools for Academics
 Description: Tidy tools designed for use in academic research. Use functions 
@@ -17,4 +17,5 @@ License: MIT + file LICENSE
 RoxygenNote: 6.0.1.9000
 Imports: 
     psych,
-    tidyselect
+    tidyselect,
+    magrittr

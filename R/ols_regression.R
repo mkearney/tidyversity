@@ -13,43 +13,45 @@
 #'
 #' @export
 ols_regression <- function(data, model, ...) {
-  f <- as.character(rlang::enquo(model))
+  ##f <- as.character(rlang::enquo(model))
   m <- lm(model, data = data)
-  fit_statistics <- ols_fit(m)
-  model_estimates <- broom::tidy(m)
-  model_estimates <- add_stars(model_estimates)
-  cat(paste0("## Model call:\n", f[2], "\n"), fill = TRUE)
-  cat("## Model estimates:", fill = TRUE)
-  list(fit = fit_statistics,
-    coef = model_estimates)
+  sweep(m)
 }
 
 ols_fit <- function(m) {
   s <- summary(m)
-  a <- unname(s$fstatistic)
   fp <- pf(s$fstatistic[1L],
     s$fstatistic[2L],
     s$fstatistic[3L],
     lower.tail = FALSE)
-  ll <- logLik(m)
+  rmse <- rmse(m)
+  ll <- -2 * logLik(m)
   aic <- AIC(m)
   bic <- BIC(m)
-  df <- data.frame(
-    fit_statistic = c("F", "R^2", "Adj R^2", "RMSE", "Log-likelihood", "AIC", "BIC"),
-    n = nobs(m),
-    df = c(a[2], NA_integer_, NA_integer_, NA_integer_, attr(ll, "df"),
-      NA_integer_, NA_integer_),
-    estimate = c(a[1], s$r.squared, s$adj.r.squared, s$sigma, ll, aic, bic),
-    p.value = c(fp, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_, NA_real_),
-    stringsAsFactors = FALSE,
-    check.rows = FALSE,
-    row.names = NULL,
-    check.names = FALSE
-  )
-  add_stars(df)
+  ## stat name and estimate
+  fit_statistic <- c("F", "R^2", "Adj R^2", "RMSE", "-2*LL", "AIC", "BIC")
+  estimate <- c(s$fstatistic[1], s$r.squared, s$adj.r.squared, rmse, ll, aic, bic)
+  ## degrees of freedom and n
+  df <- rep(NA_integer_, length(fit_statistic))
+  df[match(c("F", "-2*LL"), fit_statistic)] <- c(
+    as.integer(s$fstatistic[2]), as.integer(attr(ll, "df")))
+  n <- nobs(m)
+  ## p values
+  p.value <- rep(NA_real_, length(fit_statistic))
+  p.value[match(c("F"), fit_statistic)] <- round(fp, 5)
+  ## stars
+  stars <- make_stars(p.value)
+  ## return data frame
+  tibble::data_frame(fit_statistic, n, df, estimate, p.value, stars)
 }
 
-
+rmse <- function(m) {
+  x <- unname(m$residuals)
+  n <- nobs(m)
+  p <- length(variable.names(m))
+  x <- (1 / (n - p)) * sum(x^2)
+  sqrt(x)
+}
 
 build_model <- function(data, response, preds) {
   f <- paste0(response, " ~ ", paste(preds, collapse = " + "))

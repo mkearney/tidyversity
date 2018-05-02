@@ -1,7 +1,26 @@
+lmfit <- lm(mpg ~ wt, datasets::mtcars)
+library(broom)
+tidy(lmfit)
+
+head(augment(lmfit))
+
+
 
 library(tidyverse)
 
+## predict mpg using weight and cylinders
+m <- lm(mpg ~ wt + cyl, data = datasets::mtcars)
+s <- summary(m)
+s$fstatistic
+ols_regression(datasets::mtcars, mpg ~ wt + cyl)
+tibble:::print.trunc_mat
 
+tu <- ols_regression(data = datasets::mtcars, mpg ~ wt + cyl)
+class(tu)
+
+?broom::glance
+?summary.lm
+usethis::use_pipe()
 
 ## working on polcom_survey data set
 socdom <- readRDS("~/Dropbox/socdom.csv")
@@ -38,13 +57,25 @@ p <- ggplot(e, aes(x = p, y = eigenvalue)) +
   scale_x_continuous(breaks = seq(0, nrow(e))) +
   scale_y_continuous(breaks = seq(0, max(e$eigenvalue)))
 
+glm_fit(m)
+
 
 usethis::use_build_ignore("make.R")
 
+summary(m)
+s$df.null
 
 factor_analysis(polcom, news_1:news_6)
-
+s$df
+?summary.glm
 news <- cronbachs_alpha(polcom, news_1:news_6)
 
 
-ols_regression(polcom, pp_ideology ~ news_1 + hhinc + sex)
+logistic_regression(polcom, pp_ideology>4 ~ news_1 + hhinc + sex)
+m
+m <- glm(pp_ideology>4 ~ news_1 + hhinc + sex, data = polcom, family = binomial)
+s <- summary(m)
+logLik(m)
+s$deviance
+nagelkerke(m)
+nagelkerke(m)
