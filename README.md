@@ -31,6 +31,154 @@ if (!requireNamespace("devtools", quietly = TRUE)) {
 devtools::install_github("mkearney/tidyversity")
 ```
 
+## Regression
+
+### Ordinary Least Squares (OLS)
+
+Conduct an Ordinary Least Squares (OLS) regression analysis.
+
+``` r
+polcom %>%
+  tidy_regression(pp_ideology ~ news_1 + ambiv_sexism_1 + pie_1) %>%
+  tidy_summary()
+#> $data
+#> # A tibble: 243 x 12
+#>   .rownames pp_ideology news_1 ambiv_sexism_1 pie_1 .fitted .se.fit .resid
+#>   <chr>           <int>  <int>          <int> <int>   <dbl>   <dbl>  <dbl>
+#> 1 1                   1      8              3     3    3.75   0.169 -2.75 
+#> 2 2                   5      1              5     2    5.17   0.334 -0.175
+#> # ... with 241 more rows, and 4 more variables: .hat <dbl>, .sigma <dbl>,
+#> #   .cooksd <dbl>, .std.resid <dbl>
+#> 
+#> $fit
+#> # A tibble: 7 x 6
+#>   fit_statistic     n    df estimate p.value stars
+#>   <chr>         <int> <int>    <dbl>   <dbl> <chr>
+#> 1 F               243     3   17.2        0. ***  
+#> 2 R^2             243    NA    0.178     NA  ""   
+#> 3 Adj R^2         243    NA    0.168     NA  ""   
+#> 4 RMSE            243    NA    1.70      NA  ""   
+#> 5 -2*LL           243     5  945.        NA  ""   
+#> 6 AIC             243    NA  955.        NA  ""   
+#> 7 BIC             243    NA  972.        NA  ""   
+#> 
+#> $coef
+#> # A tibble: 4 x 6
+#>   term           estimate std.error statistic  p.value stars
+#>   <chr>             <dbl>     <dbl>     <dbl>    <dbl> <chr>
+#> 1 (Intercept)      2.40      0.475      5.04  9.18e- 7 ***  
+#> 2 news_1          -0.0219    0.0524    -0.417 6.77e- 1 ""   
+#> 3 ambiv_sexism_1   0.594     0.0859     6.92  4.23e-11 ***  
+#> 4 pie_1           -0.0843    0.0960    -0.878 3.81e- 1 ""
+```
+
+### Logistic (binary data)
+
+Conduct a logistic regression analysis for binary (dichotomous) data.
+
+``` r
+polcom %>%
+  tidy_regression(follow_trump ~ news_1 + ambiv_sexism_1 + pie_1, 
+    type = "logistic") %>%
+  tidy_summary()
+#> $data
+#> # A tibble: 243 x 12
+#>   .rownames follow_trump news_1 ambiv_sexism_1 pie_1 .fitted .se.fit
+#>   <chr>     <lgl>         <int>          <int> <int>   <dbl>   <dbl>
+#> 1 1         TRUE              8              3     3   1.61    0.260
+#> 2 2         TRUE              1              5     2   0.237   0.453
+#> # ... with 241 more rows, and 5 more variables: .resid <dbl>, .hat <dbl>,
+#> #   .sigma <dbl>, .cooksd <dbl>, .std.resid <dbl>
+#> 
+#> $fit
+#> # A tibble: 6 x 6
+#>   fit_statistic      n    df estimate p.value stars
+#>   <chr>          <int> <int>    <dbl>   <dbl> <chr>
+#> 1 χ2               243   239 245.      0.383  ""   
+#> 2 Δχ2              243     3   9.99    0.0186 *    
+#> 3 Nagelkerke R^2   243    NA   0.0403 NA      ""   
+#> 4 McFadden R^2     243    NA   0.0392 NA      ""   
+#> 5 AIC              243    NA 253.     NA      ""   
+#> 6 BIC              243    NA 267.     NA      ""   
+#> 
+#> $coef
+#> # A tibble: 4 x 6
+#>   term           estimate std.error statistic p.value stars
+#>   <chr>             <dbl>     <dbl>     <dbl>   <dbl> <chr>
+#> 1 (Intercept)       1.72     0.672       2.56  0.0106 *    
+#> 2 news_1            0.160    0.0739      2.17  0.0300 *    
+#> 3 ambiv_sexism_1   -0.238    0.122      -1.96  0.0498 *    
+#> 4 pie_1            -0.224    0.143      -1.57  0.117  ""
+```
+
+## Poisson (count data)
+
+Conduct a poisson regression analysis for count data.
+
+``` r
+polcom %>%
+  tidy_regression(news_1 ~ pp_ideology + ambiv_sexism_1 + pie_1, 
+    type = "poisson") %>%
+  tidy_summary()
+#> $data
+#> # A tibble: 243 x 12
+#>   .rownames news_1 pp_ideology ambiv_sexism_1 pie_1 .fitted .se.fit .resid
+#>   <chr>      <int>       <int>          <int> <int>   <dbl>   <dbl>  <dbl>
+#> 1 1              8           1              3     3    1.76  0.0525  0.861
+#> 2 2              1           5              5     2    1.61  0.0650 -2.19 
+#> # ... with 241 more rows, and 4 more variables: .hat <dbl>, .sigma <dbl>,
+#> #   .cooksd <dbl>, .std.resid <dbl>
+#> 
+#> $fit
+#> # A tibble: 6 x 6
+#>   fit_statistic      n    df  estimate  p.value stars
+#>   <chr>          <int> <int>     <dbl>    <dbl> <chr>
+#> 1 χ2               243   239  209.      0.919   ""   
+#> 2 Δχ2              243     3   15.3     0.00161 **   
+#> 3 Nagelkerke R^2   243    NA    0.0608 NA       ""   
+#> 4 McFadden R^2     243    NA    0.0680 NA       ""   
+#> 5 AIC              243    NA 1082.     NA       ""   
+#> 6 BIC              243    NA 1096.     NA       ""   
+#> 
+#> $coef
+#> # A tibble: 4 x 6
+#>   term           estimate std.error statistic  p.value stars
+#>   <chr>             <dbl>     <dbl>     <dbl>    <dbl> <chr>
+#> 1 (Intercept)     1.59       0.105     15.1   1.14e-51 ***  
+#> 2 pp_ideology    -0.00584    0.0155    -0.377 7.06e- 1 ""   
+#> 3 ambiv_sexism_1 -0.0224     0.0225    -0.996 3.19e- 1 ""   
+#> 4 pie_1           0.0795     0.0228     3.49  4.82e- 4 ***
+```
+
+### ANOVA
+
+Conduct an analysis of variance.
+
+``` r
+polcom %>%
+  dplyr::mutate(sex = factor(sex, labels = c("Male", "Female")), 
+    vote_2016_choice = factor(vote_2016_choice, labels = c("Clinton", "Trump", "Stein", "Johnson", "Other"))) %>%
+  tidy_anova(pp_ideology ~ sex * vote_2016_choice)
+#> $fit
+#> # A tibble: 7 x 6
+#>   fit_statistic     n    df estimate p.value stars
+#>   <chr>         <int> <int>    <dbl>   <dbl> <chr>
+#> 1 F               206     9   21.2        0. ***  
+#> 2 R^2             206    NA    0.494     NA  ""   
+#> 3 Adj R^2         206    NA    0.470     NA  ""   
+#> 4 RMSE            206    NA    1.39      NA  ""   
+#> 5 -2*LL           206    11  709.        NA  ""   
+#> 6 AIC             206    NA  731.        NA  ""   
+#> 7 BIC             206    NA  768.        NA  ""   
+#> 
+#> $coef
+#>                   term  df    sumsq    meansq statistic     p.value stars
+#> 1                  sex   1  10.4255 10.425468  5.423969 2.08813e-02     *
+#> 2     vote_2016_choice   4 354.4163 88.604079 46.097281 2.91422e-27   ***
+#> 3 sex:vote_2016_choice   4   2.3517  0.587925  0.305875 8.73816e-01      
+#> 4            Residuals 196 376.7337  1.922111        NA          NA
+```
+
 ## Data sets
 
 Comes with one data set.
@@ -41,21 +189,16 @@ Consists of survey responses to demographic, background, and likert-type
 attitudinal items about political communication.
 
 ``` r
-tibble::as_tibble(polcom)
+print(tibble::as_tibble(polcom), n = 5)
 #> # A tibble: 244 x 63
-#>    follow_trump news_1 news_2 news_3 news_4 news_5 news_6 ambiv_sexism_1
-#>  * <lgl>         <int>  <int>  <int>  <int>  <int>  <int>          <int>
-#>  1 TRUE              8      1      1      1      1      6              3
-#>  2 TRUE              1      1      1      1      1      1              5
-#>  3 TRUE              8      1      1      1      8      1              5
-#>  4 TRUE              8      1      1      1      1      6              2
-#>  5 TRUE              6      1      2      1      1      3              4
-#>  6 TRUE              8      1      1      1      6      8              1
-#>  7 TRUE              8      1      1      1      1      1              4
-#>  8 TRUE              5      1      1      3      2      1              1
-#>  9 TRUE              8      1      1      1      1      1              1
-#> 10 TRUE              5      1      6      7      5      6              3
-#> # ... with 234 more rows, and 55 more variables: ambiv_sexism_2 <int>,
+#>   follow_trump news_1 news_2 news_3 news_4 news_5 news_6 ambiv_sexism_1
+#> * <lgl>         <int>  <int>  <int>  <int>  <int>  <int>          <int>
+#> 1 TRUE              8      1      1      1      1      6              3
+#> 2 TRUE              1      1      1      1      1      1              5
+#> 3 TRUE              8      1      1      1      8      1              5
+#> 4 TRUE              8      1      1      1      1      6              2
+#> 5 TRUE              6      1      2      1      1      3              4
+#> # ... with 239 more rows, and 55 more variables: ambiv_sexism_2 <int>,
 #> #   ambiv_sexism_3 <int>, ambiv_sexism_4 <int>, ambiv_sexism_5 <int>,
 #> #   ambiv_sexism_6 <int>, img1_hrc_1 <int>, img1_hrc_2 <dbl>,
 #> #   img1_hrc_3 <int>, img1_hrc_4 <dbl>, img1_hrc_5 <int>,
@@ -99,112 +242,4 @@ cronbachs_alpha(polcom, ambiv_sexism_1:ambiv_sexism_6)
 #> 5               -ambiv_sexism_4 0.897127  0.897411
 #> 6               -ambiv_sexism_5 0.883554  0.883420
 #> 7               -ambiv_sexism_6 0.881595  0.881855
-```
-
-## Modeling
-
-### OLS regression
-
-Conduct an Ordinary Least Squares (OLS) regression analysis.
-
-``` r
-ols_regression(polcom, pp_ideology ~ age + sex + edu + hhinc)
-#> $data
-#> # A tibble: 241 x 13
-#>   .rownames pp_ideology   age   sex   edu hhinc .fitted .se.fit .resid
-#>   <chr>           <int> <int> <int> <int> <int>   <dbl>   <dbl>  <dbl>
-#> 1 1                   1    69     1     5     2    3.30   0.284  -2.30
-#> 2 2                   5    76     1     3     1    3.70   0.253   1.30
-#> # ... with 239 more rows, and 4 more variables: .hat <dbl>, .sigma <dbl>,
-#> #   .cooksd <dbl>, .std.resid <dbl>
-#> 
-#> $fit
-#> # A tibble: 7 x 6
-#>   fit_statistic     n    df  estimate p.value stars
-#>   <chr>         <int> <int>     <dbl>   <dbl> <chr>
-#> 1 F               241     4    1.82     0.126 ""   
-#> 2 R^2             241    NA    0.0299  NA     ""   
-#> 3 Adj R^2         241    NA    0.0135  NA     ""   
-#> 4 RMSE            241    NA    1.85    NA     ""   
-#> 5 -2*LL           241     6  975.      NA     ""   
-#> 6 AIC             241    NA  987.      NA     ""   
-#> 7 BIC             241    NA 1008.      NA     ""   
-#> 
-#> $coef
-#> # A tibble: 5 x 5
-#>   term        estimate std.error statistic       p.value
-#>   <chr>          <dbl>     <dbl>     <dbl>         <dbl>
-#> 1 (Intercept)  5.51      0.878       6.28  0.00000000159
-#> 2 age         -0.00877   0.00948    -0.924 0.356        
-#> 3 sex         -0.446     0.240      -1.86  0.0643       
-#> 4 edu         -0.241     0.127      -1.89  0.0600       
-#> 5 hhinc        0.0183    0.0429      0.427 0.670
-```
-
-### Logistic regression
-
-Conduct a logistic regression
-analysis.
-
-``` r
-logistic_regression(polcom, follow_trump ~ pp_ideology + age + sex + edu + hhinc)
-#> $data
-#> # A tibble: 241 x 14
-#>   .rownames follow_trump pp_ideology   age   sex   edu hhinc .fitted
-#>   <chr>     <lgl>              <int> <int> <int> <int> <int>   <dbl>
-#> 1 1         TRUE                   1    69     1     5     2   2.04 
-#> 2 2         TRUE                   5    76     1     3     1   0.953
-#> # ... with 239 more rows, and 6 more variables: .se.fit <dbl>,
-#> #   .resid <dbl>, .hat <dbl>, .sigma <dbl>, .cooksd <dbl>,
-#> #   .std.resid <dbl>
-#> 
-#> $fit
-#> # A tibble: 8 x 6
-#>   fit_statistic       n    df    estimate p.value stars
-#>   <chr>           <int> <int>       <dbl>   <dbl> <chr>
-#> 1 χ2.full           241   235  243.        0.343  ""   
-#> 2 χ2.null           241   240  256.        0.223  ""   
-#> 3 Δχ2               241     5   13.3       0.0211 *    
-#> 4 Nagelkerke R^2    241    NA    0.0535   NA      ""   
-#> 5 Cox & Snell R^2   241    NA   -0.000441 NA      ""   
-#> 6 McFadden R^2      241    NA    0.0517   NA      ""   
-#> 7 AIC               241    NA  255.       NA      ""   
-#> 8 BIC               241    NA  276.       NA      ""   
-#> 
-#> $coef
-#> # A tibble: 6 x 5
-#>   term        estimate std.error statistic  p.value
-#>   <chr>          <dbl>     <dbl>     <dbl>    <dbl>
-#> 1 (Intercept)   4.26      1.34       3.19  0.00144 
-#> 2 pp_ideology  -0.288     0.0868    -3.32  0.000904
-#> 3 age          -0.0170    0.0133    -1.28  0.200   
-#> 4 sex          -0.316     0.324     -0.975 0.330   
-#> 5 edu          -0.0803    0.175     -0.460 0.646   
-#> 6 hhinc        -0.0232    0.0565    -0.410 0.682
-```
-
-### ANOVA
-
-Conduct an analysis of variance.
-
-``` r
-ANOVA(polcom, pp_ideology ~ as.factor(sex) + age + pie_1)
-#> $fit
-#> # A tibble: 7 x 6
-#>   fit_statistic     n    df  estimate p.value stars
-#>   <chr>         <int> <int>     <dbl>   <dbl> <chr>
-#> 1 F               242     3    2.33    0.0752 +    
-#> 2 R^2             242    NA    0.0285 NA      ""   
-#> 3 Adj R^2         242    NA    0.0163 NA      ""   
-#> 4 RMSE            242    NA    1.85   NA      ""   
-#> 5 -2*LL           242     5  980.     NA      ""   
-#> 6 AIC             242    NA  990.     NA      ""   
-#> 7 BIC             242    NA 1008.     NA      ""   
-#> 
-#> $coef
-#>             term  df     sumsq   meansq statistic   p.value stars
-#> 1 as.factor(sex)   1   9.70595  9.70595  2.836923 0.0934314     +
-#> 2            age   1   1.77035  1.77035  0.517451 0.4726369      
-#> 3          pie_1   1  12.42092 12.42092  3.630473 0.0579359     +
-#> 4      Residuals 238 814.26807  3.42129        NA        NA
 ```

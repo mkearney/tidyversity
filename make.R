@@ -70,6 +70,14 @@ s$df
 ?summary.glm
 news <- cronbachs_alpha(polcom, news_1:news_6)
 
+polcom %>%
+  tidy_regression(pp_ideology ~ news_1 + ambiv_sexism_1 + pie_1 + hhinc + age, type = "ols") %>%
+  tidy_summary()
+
+f <- formula(pp_ideology ~ news_1:news_6)
+rlang::f_rhs(f)
+
+read_model(, polcom)
 
 logistic_regression(polcom, pp_ideology>4 ~ news_1 + hhinc + sex)
 m

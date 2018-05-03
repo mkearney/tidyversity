@@ -1,3 +1,34 @@
+tidyselector <- function(data, ...) {
+  vars <- tidyselect::vars_select(names(data), ...)
+  if (length(vars) > 0) {
+    data <- data[vars]
+  }
+  data
+}
+
+all_numeric <- function(x) {
+  x[1:ncol(x)] <- lapply(x, coerce_numeric)
+  x
+}
+
+#' @export
+coerce_numeric <- function(x) UseMethod("coerce_numeric")
+
+#' @export
+coerce_numeric.default <- function(x) {
+  as.numeric(x)
+}
+
+#' @export
+coerce_numeric.character <- function(x) {
+  x <- suppressWarnings(as.numeric(x))
+  if (all(is.na(x))) {
+    stop("You've included a character (textual) variable. This function expected only numeric, integer, or factor variables.",
+      call. = FALSE)
+  }
+  x
+}
+
 
 add_stars <- function(x) {
   x$stars <- make_stars(x)

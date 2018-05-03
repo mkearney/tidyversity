@@ -12,7 +12,7 @@
 #' ANOVA(polcom, pp_ideology ~ as.factor(sex) + age + pie_1)
 #'
 #' @export
-ANOVA <- function(data, model, ...) {
+tidy_anova <- function(data, model, ...) {
   m <- aov(model, data = data, ...)
   f <- lm(model, data = data, ...)
   f <- ols_fit(f)

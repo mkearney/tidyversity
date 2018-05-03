@@ -43,6 +43,53 @@ if (!requireNamespace("devtools", quietly = TRUE)) {
 devtools::install_github("mkearney/tidyversity")
 ```
 
+
+## Regression
+
+### Ordinary Least Squares (OLS)
+
+Conduct an Ordinary Least Squares (OLS) regression analysis.
+
+```{r ols}
+polcom %>%
+  tidy_regression(pp_ideology ~ news_1 + ambiv_sexism_1 + pie_1) %>%
+  tidy_summary()
+```
+
+### Logistic (binary data)
+
+Conduct a logistic regression analysis for binary (dichotomous) data.
+
+```{r logistic}
+polcom %>%
+  tidy_regression(follow_trump ~ news_1 + ambiv_sexism_1 + pie_1, 
+    type = "logistic") %>%
+  tidy_summary()
+```
+
+## Poisson (count data)
+
+Conduct a poisson regression analysis for count data.
+
+```{r poisson}
+polcom %>%
+  tidy_regression(news_1 ~ pp_ideology + ambiv_sexism_1 + pie_1, 
+    type = "poisson") %>%
+  tidy_summary()
+```
+
+### ANOVA
+
+Conduct an analysis of variance.
+
+```{r anova}
+polcom %>%
+  dplyr::mutate(sex = factor(sex, labels = c("Male", "Female")), 
+    vote_2016_choice = factor(vote_2016_choice, labels = c("Clinton", "Trump", "Stein", "Johnson", "Other"))) %>%
+  tidy_anova(pp_ideology ~ sex * vote_2016_choice)
+```
+
+
 ## Data sets
 
 Comes with one data set. 
@@ -52,7 +99,7 @@ Comes with one data set.
 Consists of survey responses to demographic, background, and likert-type attitudinal items about political communication.
 
 ```{r polcom}
-tibble::as_tibble(polcom)
+print(tibble::as_tibble(polcom), n = 5)
 ```
 
 ## Descriptive statistics
@@ -74,29 +121,3 @@ Estimate Cronbach's alpha for a set of variables.
 cronbachs_alpha(polcom, ambiv_sexism_1:ambiv_sexism_6)
 ```
 
-
-## Modeling
-
-### OLS regression
-
-Conduct an Ordinary Least Squares (OLS) regression analysis.
-
-```{r ols_regression}
-ols_regression(polcom, pp_ideology ~ age + sex + edu + hhinc)
-```
-
-### Logistic regression
-
-Conduct a logistic regression analysis.
-
-```{r logistic_regression}
-logistic_regression(polcom, follow_trump ~ pp_ideology + age + sex + edu + hhinc)
-```
-
-### ANOVA
-
-Conduct an analysis of variance.
-
-```{r ANOVA}
-ANOVA(polcom, pp_ideology ~ as.factor(sex) + age + pie_1)
-```
