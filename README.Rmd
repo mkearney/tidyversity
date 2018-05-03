@@ -56,9 +56,9 @@ polcom %>%
   tidy_summary()
 ```
 
-### Logistic (binary data)
+### Logistic (dichotomous)
 
-Conduct a logistic regression analysis for binary (dichotomous) data.
+Conduct a logistic regression analysis for binary (dichotomous) outcomes.
 
 ```{r logistic}
 polcom %>%
@@ -67,7 +67,7 @@ polcom %>%
   tidy_summary()
 ```
 
-## Poisson (count data)
+## Poisson (count)
 
 Conduct a poisson regression analysis for count data.
 
@@ -93,7 +93,6 @@ polcom %>%
   tidy_summary()
 ```
 
-
 ## Data sets
 
 Comes with one data set. 
@@ -108,7 +107,7 @@ print(tibble::as_tibble(polcom), n = 5)
 
 ## Descriptive statistics
 
-Return summary statistics in the form of a data frame.
+Return summary statistics in the form of a data frame ***(not yet added)***.
 
 ```{r summarize, eval=FALSE}
 ## summary stats for social media use (numeric) variables

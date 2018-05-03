@@ -41,24 +41,15 @@ Conduct an Ordinary Least Squares (OLS) regression analysis.
 polcom %>%
   tidy_regression(pp_ideology ~ news_1 + ambiv_sexism_1 + pie_1) %>%
   tidy_summary()
-#> $data
-#> # A tibble: 243 x 12
-#>   .rownames pp_ideology news_1 ambiv_sexism_1 pie_1 .fitted .se.fit .resid
-#>   <chr>           <int>  <int>          <int> <int>   <dbl>   <dbl>  <dbl>
-#> 1 1                   1      8              3     3    3.75   0.169 -2.75 
-#> 2 2                   5      1              5     2    5.17   0.334 -0.175
-#> # ... with 241 more rows, and 4 more variables: .hat <dbl>, .sigma <dbl>,
-#> #   .cooksd <dbl>, .std.resid <dbl>
-#> 
 #> $fit
 #> # A tibble: 7 x 6
 #>   fit_statistic     n    df estimate p.value stars
 #>   <chr>         <int> <int>    <dbl>   <dbl> <chr>
 #> 1 F               243     3   17.2        0. ***  
-#> 2 R^2             243    NA    0.178     NA  ""   
+#> 2 R^2             243     5    0.178     NA  ""   
 #> 3 Adj R^2         243    NA    0.168     NA  ""   
 #> 4 RMSE            243    NA    1.70      NA  ""   
-#> 5 -2*LL           243     5  945.        NA  ""   
+#> 5 χ2              243    NA  945.        NA  ""   
 #> 6 AIC             243    NA  955.        NA  ""   
 #> 7 BIC             243    NA  972.        NA  ""   
 #> 
@@ -72,24 +63,16 @@ polcom %>%
 #> 4 pie_1           -0.0843    0.0960    -0.878 3.81e- 1 ""
 ```
 
-### Logistic (binary data)
+### Logistic (dichotomous)
 
-Conduct a logistic regression analysis for binary (dichotomous) data.
+Conduct a logistic regression analysis for binary (dichotomous)
+outcomes.
 
 ``` r
 polcom %>%
   tidy_regression(follow_trump ~ news_1 + ambiv_sexism_1 + pie_1, 
     type = "logistic") %>%
   tidy_summary()
-#> $data
-#> # A tibble: 243 x 12
-#>   .rownames follow_trump news_1 ambiv_sexism_1 pie_1 .fitted .se.fit
-#>   <chr>     <lgl>         <int>          <int> <int>   <dbl>   <dbl>
-#> 1 1         TRUE              8              3     3   1.61    0.260
-#> 2 2         TRUE              1              5     2   0.237   0.453
-#> # ... with 241 more rows, and 5 more variables: .resid <dbl>, .hat <dbl>,
-#> #   .sigma <dbl>, .cooksd <dbl>, .std.resid <dbl>
-#> 
 #> $fit
 #> # A tibble: 6 x 6
 #>   fit_statistic      n    df estimate p.value stars
@@ -111,7 +94,7 @@ polcom %>%
 #> 4 pie_1            -0.224    0.143      -1.57  0.117  ""
 ```
 
-## Poisson (count data)
+## Poisson (count)
 
 Conduct a poisson regression analysis for count data.
 
@@ -120,15 +103,6 @@ polcom %>%
   tidy_regression(news_1 ~ pp_ideology + ambiv_sexism_1 + pie_1, 
     type = "poisson") %>%
   tidy_summary()
-#> $data
-#> # A tibble: 243 x 12
-#>   .rownames news_1 pp_ideology ambiv_sexism_1 pie_1 .fitted .se.fit .resid
-#>   <chr>      <int>       <int>          <int> <int>   <dbl>   <dbl>  <dbl>
-#> 1 1              8           1              3     3    1.76  0.0525  0.861
-#> 2 2              1           5              5     2    1.61  0.0650 -2.19 
-#> # ... with 241 more rows, and 4 more variables: .hat <dbl>, .sigma <dbl>,
-#> #   .cooksd <dbl>, .std.resid <dbl>
-#> 
 #> $fit
 #> # A tibble: 6 x 6
 #>   fit_statistic      n    df  estimate  p.value stars
@@ -163,24 +137,15 @@ polcom %>%
     TRUE ~ "Other")) %>%
   tidy_anova(pp_ideology ~ sex * vote_choice) %>%
   tidy_summary()
-#> $data
-#> # A tibble: 243 x 11
-#>   .rownames pp_ideology sex   vote_choice .fitted .se.fit .resid   .hat
-#>   <chr>           <int> <chr> <chr>         <dbl>   <dbl>  <dbl>  <dbl>
-#> 1 1                   1 Male  Clinton        2.53   0.214  -1.53 0.0213
-#> 2 2                   5 Male  Other          3.89   0.241   1.11 0.0270
-#> # ... with 241 more rows, and 3 more variables: .sigma <dbl>,
-#> #   .cooksd <dbl>, .std.resid <dbl>
-#> 
 #> $fit
 #> # A tibble: 7 x 6
 #>   fit_statistic     n    df estimate p.value stars
 #>   <chr>         <int> <int>    <dbl>   <dbl> <chr>
 #> 1 F               243     5   30.8        0. ***  
-#> 2 R^2             243    NA    0.394     NA  ""   
+#> 2 R^2             243     7    0.394     NA  ""   
 #> 3 Adj R^2         243    NA    0.381     NA  ""   
 #> 4 RMSE            243    NA    1.47      NA  ""   
-#> 5 -2*LL           243     7  870.        NA  ""   
+#> 5 χ2              243    NA  870.        NA  ""   
 #> 6 AIC             243    NA  884.        NA  ""   
 #> 7 BIC             243    NA  909.        NA  ""   
 #> 
@@ -234,7 +199,8 @@ print(tibble::as_tibble(polcom), n = 5)
 
 ## Descriptive statistics
 
-Return summary statistics in the form of a data frame.
+Return summary statistics in the form of a data frame ***(not yet
+added)***.
 
 ``` r
 ## summary stats for social media use (numeric) variables

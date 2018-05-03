@@ -20,25 +20,15 @@ sweep <- function(x) {
 tidy_model <- setClass("tidy_model",
   slots = c(fit = "data.frame", coef = "data.frame", data = "data.frame"))
 
-#' @export
-print.tidy_model <- function(x) {
-  ##cat("$data", fill = TRUE)
-  ##print(x@data, n = 2)
-  cat("\n")
-  x <- list(fit = x@fit, coef = x@coef)
-  print(x)
-}
-
 model_data <- function(x) UseMethod("model_data")
 
 model_data.tidy_model <- function(x) x@data
 
-#' @export
 setMethod("show", "tidy_model",
   function(object) {
-    cat("$data", fill = TRUE)
-    print(object@data, n = 2)
-    cat("\n")
+    #cat("$data", fill = TRUE)
+    #print(object@data, n = 2)
+    #cat("\n")
     print(list(fit = object@fit, coef = object@coef))
   }
 )
