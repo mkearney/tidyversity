@@ -78,6 +78,18 @@ polcom %>%
   tidy_summary()
 ```
 
+## Negative binomial (overdispersed)
+
+Conduct a negative binomial regression analysis for overdispersed count data.
+
+```{r, negbinom}
+polcom %>%
+  mutate(polarize = abs(therm_1 - therm_2)) %>%
+  tidy_regression(polarize ~ pp_ideology + news_4 + ambiv_sexism_1, 
+    type = "negbinom") %>%
+  tidy_summary()
+```
+
 ### ANOVA
 
 Conduct an analysis of variance.

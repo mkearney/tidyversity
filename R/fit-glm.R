@@ -31,7 +31,8 @@ glm_fit <- function(m) {
   ## stars
   stars <- make_stars(p.value)
   ## return data frame
-  tibble::data_frame(fit_statistic, n, df, estimate, p.value, stars)
+  tibble::data_frame(fit_stat = fit_statistic, n, df,
+    estimate, p.value, stars)
 }
 
 #' nagelkerke r squared

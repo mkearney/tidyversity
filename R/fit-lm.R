@@ -1,28 +1,32 @@
+
 ols_fit <- function(m) {
   s <- summary.lm(m)
-  fp <- pf(s$fstatistic[1L],
-    s$fstatistic[2L],
-    s$fstatistic[3L],
-    lower.tail = FALSE)
+  ## f and its p value
+  f <- s$fstatistic[1]
+  fp <- do.call("pf", as.list(c(unname(s$fstatistic), lower.tail = FALSE)))
+  ## root mean square error
   rmse <- rmse(m)
-  ll <- -2 * logLik(m)
+  ## deviance
+  #ll <- -2 * logLik(m)
+  #lln <- as.integer(attr(ll, "df")
+  # AIC/BIC
   aic <- AIC(m)
   bic <- BIC(m)
   ## stat name and estimate
-  fit_statistic <- c("F", "R^2", "Adj R^2", "RMSE", "χ2", "AIC", "BIC")
-  estimate <- c(s$fstatistic[1], s$r.squared, s$adj.r.squared, rmse, ll, aic, bic)
-  ## degrees of freedom and n
+  fit_statistic <- c("F", "R^2", "Adj R^2", "RMSE", "AIC", "BIC")
+  estimate <- c(f, s$r.squared, s$adj.r.squared, rmse, aic, bic)
+  ## degrees of freedom
   df <- rep(NA_integer_, length(fit_statistic))
-  df[match(fit_statistic[1:2], fit_statistic)] <- c(
-    as.integer(s$fstatistic[2]), as.integer(attr(ll, "df")))
+  df[match(fit_statistic[c(1)], fit_statistic)] <- c(as.integer(s$fstatistic[2]))
   n <- nobs(m)
   ## p values
   p.value <- rep(NA_real_, length(fit_statistic))
-  p.value[match(c("F"), fit_statistic)] <- round(fp, 5)
+  p.value[match(c("F"), fit_statistic)] <- fp
   ## stars
   stars <- make_stars(p.value)
   ## return data frame
-  tibble::data_frame(fit_statistic, n, df, estimate, p.value, stars)
+  tibble::data_frame(fit_stat = fit_statistic, n, df,
+    estimate, p.value, stars)
 }
 
 rmse <- function(m) {

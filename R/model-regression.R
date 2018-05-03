@@ -35,6 +35,9 @@
 #'
 #' @export
 tidy_regression <- function(data, model, type = "ols", ...) {
+  tidycall <- make_tidycall(model)
+  subdata <- as.character(rlang::quo(data))
+  tidycall <- paste0("Model type   : ", type, " regression\n", tidycall)
   args <- list(model, data = data, ...)
   if (!"robust" %in% args) {
     args$robust <- FALSE
@@ -50,7 +53,9 @@ tidy_regression <- function(data, model, type = "ols", ...) {
   } else {
     stop("cannot recognized type", call. = FALSE)
   }
-  do.call(call, args)
+  m <- do.call(call, args)
+  attr(m, "tidycall") <- tidycall
+  m
 }
 
 #' Types of regression models
@@ -108,5 +113,5 @@ poisson_regression <- function(data, model, robust = FALSE, ...) {
 #' @rdname regression_types
 #' @export
 negbinom_regression <- function(data, model, robust = FALSE, ...) {
-  MASS::glm.nb(model, data = data, family = poisson)
+  MASS::glm.nb(model, data = data, ...)
 }

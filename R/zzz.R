@@ -33,7 +33,7 @@ coerce_numeric.character <- function(x) {
 add_stars <- function(x) {
   x$stars <- make_stars(x)
   ## round p.value
-  ##x$p.value <- round(x$p.value, 5)
+  x$p.value <- round(x$p.value, 6)
   x
 }
 

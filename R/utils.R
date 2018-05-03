@@ -93,5 +93,5 @@ is_poisson <- function(x) {
 }
 
 is_negbinom <- function(x) {
-  grepl("^negbinom$|negative\\s?binomial", x, ignore.case = TRUE)
+  grepl("^negbin$|^negbinom$|negative\\s?binomial", x, ignore.case = TRUE)
 }

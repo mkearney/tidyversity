@@ -1,11 +1,22 @@
 
+make_tidycall <- function(model) {
+  f <- as.character(rlang::quo(!!model))
+  paste0("Model formula: ", f[2], "\n")
+}
+
+get_tidycall <- function(m) {
+  attr(m, "tidycall")
+}
+
 #' @export
 tidy_summary <- function(m) {
+  cat(get_tidycall(m), fill = TRUE)
   sweep(m)
 }
 
 tidy_coef <- function(x) {
   x <- tibble::as_tibble(broom::tidy(x), validate = FALSE)
+  names(x)[2:4] <- c("estimate", "s.e.", "est.se")
   add_stars(x)
 }
 
