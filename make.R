@@ -1,19 +1,6 @@
-lmfit <- lm(mpg ~ wt, datasets::mtcars)
-library(broom)
-tidy(lmfit)
-
-head(augment(lmfit))
 
 
 
-library(tidyverse)
-
-## predict mpg using weight and cylinders
-m <- lm(mpg ~ wt + cyl, data = datasets::mtcars)
-s <- summary(m)
-s$fstatistic
-ols_regression(datasets::mtcars, mpg ~ wt + cyl)
-tibble:::print.trunc_mat
 
 tu <- ols_regression(data = datasets::mtcars, mpg ~ wt + cyl)
 class(tu)
@@ -24,6 +11,9 @@ usethis::use_pipe()
 
 ## working on polcom_survey data set
 socdom <- readRDS("~/Dropbox/socdom.csv")
+socdom <- tibble::as.tibble(socdom)
+socdom
+
 d <- select(socdom, follow_trump:img2_hrc_15, img1_djt_1:img2_djt_15,
   pinterest_1:pie_4, vote_2016:hhinc, lat = LocationLatitude,
   lng = LocationLongitude, state, county)

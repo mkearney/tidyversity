@@ -4,8 +4,11 @@
 #' poisson, and negative-binomial models
 #'
 #' @param data Data frame containing variables in model
-#' @param model Model formula to be estimated
-#' @param ... Other arguments passed to modeling function
+#' @param model Model formula to be estimated.
+#' @param type Type of regression model to use. Available types include
+#'   \code{"ols"}, \code{"logistic"}, \code{"poisson"}, \code{"negbinom"}. See
+#'   \link{regression_types} for more information.
+#' @param ... Other arguments passed to modeling function.
 #' @return A list object containing a "fit", "ceof", and "data" data frames
 #' @examples
 #'
@@ -50,12 +53,18 @@ tidy_regression <- function(data, model, type = "ols", ...) {
   do.call(call, args)
 }
 
+#' Types of regression models
+#'
+#' @name regression_types
+#' @details Available types of regression models.
+NULL
+
 #' Ordinary least squares (OLS) regression
 #'
 #' Conducts regression analysis to model outcome variable using OLS
 #'
-#' @inheritParams regression
-#' @rdname regression
+#' @inheritParams tidy_regression
+#' @rdname regression_types
 #' @export
 ols_regression <- function(data, model, robust = FALSE, ...) {
   if (robust) {
@@ -71,11 +80,22 @@ ols_regression <- function(data, model, robust = FALSE, ...) {
 #' Conducts logistic regression analysis to model binary outcome variable using
 #'   a generalized (binomial with logit link) linear model
 #'
-#' @inheritParams regression
-#' @rdname regression
+#' @inheritParams tidy_regression
+#' @rdname regression_types
 #' @export
 logistic_regression <- function(data, model, robust = FALSE, ...) {
   glm(model, data = data, family = binomial)
+}
+
+#' Poisson regression for modeling of count data
+#'
+#' Conducts poisson regression (generalized linear models for count data)
+#'
+#' @inheritParams tidy_regression
+#' @rdname regression_types
+#' @export
+poisson_regression <- function(data, model, robust = FALSE, ...) {
+  glm(model, data = data, family = poisson)
 }
 
 
@@ -84,22 +104,9 @@ logistic_regression <- function(data, model, robust = FALSE, ...) {
 #' Conducts negative binomial regression (generalized linear models for
 #' overdispersed count data)
 #'
-#' @inheritParams regression
-#' @rdname regression
+#' @inheritParams tidy_regression
+#' @rdname regression_types
 #' @export
-poisson_regression <- function(data, model, robust = FALSE, ...) {
-  glm(model, data = data, family = poisson)
+negbinom_regression <- function(data, model, robust = FALSE, ...) {
+  MASS::glm.nb(model, data = data, family = poisson)
 }
-
-
-#' Poisson regression for modeling of count data
-#'
-#' Conducts poisson regression (generalized linear models for count data)
-#'
-#' @inheritParams regression
-#' @rdname regression
-#' @export
-poisson_regression <- function(data, model, robust = FALSE, ...) {
-  glm(model, data = data, family = poisson)
-}
-

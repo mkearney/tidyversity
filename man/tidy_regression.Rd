@@ -9,9 +9,13 @@ tidy_regression(data, model, type = "ols", ...)
 \arguments{
 \item{data}{Data frame containing variables in model}
 
-\item{model}{Model formula to be estimated}
+\item{model}{Model formula to be estimated.}
 
-\item{...}{Other arguments passed to modeling function}
+\item{type}{Type of regression model to use. Available types include
+\code{"ols"}, \code{"logistic"}, \code{"poisson"}, \code{"negbinom"}. See
+\link{regression_types} for more information.}
+
+\item{...}{Other arguments passed to modeling function.}
 }
 \value{
 A list object containing a "fit", "ceof", and "data" data frames

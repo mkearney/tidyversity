@@ -22,8 +22,8 @@ tidy_model <- setClass("tidy_model",
 
 #' @export
 print.tidy_model <- function(x) {
-  cat("$data", fill = TRUE)
-  print(x@data, n = 2)
+  ##cat("$data", fill = TRUE)
+  ##print(x@data, n = 2)
   cat("\n")
   x <- list(fit = x@fit, coef = x@coef)
   print(x)
