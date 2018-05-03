@@ -25,6 +25,9 @@ h2 <- hexagon::hexdf(.975)
 h1$x <- round(h1$x, 2)
 h2$x <- round(h2$x, 2)
 
+## create figures
+dir.create("man/figures")
+
 ## create and save hex sticker
 ggplot(h1, aes(x, y)) +
   geom_polygon(fill = "#000000", size = 1, colour = "#000000") +
@@ -40,5 +43,6 @@ ggplot(h1, aes(x, y)) +
   ggsave("man/figures/logo.png", width = 1.74, height = 2, units = "in",
     bg = "transparent")
 
+## ignore in build
 usethis::use_build_ignore("logo.R")
 
