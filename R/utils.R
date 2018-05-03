@@ -10,48 +10,6 @@
 #' @usage lhs \%>\% rhs
 NULL
 
-#' Select columns in data frame
-#'
-#' @name select
-#' @export
-#' @importFrom dplyr select
-NULL
-
-#' Filter rows in data frame
-#'
-#' @name filter
-#' @export
-#' @importFrom dplyr filter
-NULL
-
-#' Group by variable in data frame
-#'
-#' @name group_by
-#' @export
-#' @importFrom dplyr group_by
-NULL
-
-#' Ungroup by variable in data frame
-#'
-#' @name ungroup
-#' @export
-#' @importFrom dplyr ungroup
-NULL
-
-#' Summarise data frame
-#'
-#' @name summarise
-#' @export
-#' @importFrom dplyr summarise
-NULL
-
-#' Create new variables in data frame
-#'
-#' @name mutate
-#' @export
-#' @importFrom dplyr mutate
-NULL
-
 
 #' Convert object to tibble
 #'

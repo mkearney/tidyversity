@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   out.width = "100%",
   eval = TRUE
 )
+library(tidyverse)
 library(tidyversity)
 ```
 # tidyversity <img src="man/figures/logo.png" width="160px" align="right" /> 

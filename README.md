@@ -77,15 +77,16 @@ polcom %>%
 #> Model type   : logistic regression
 #> Model formula: follow_trump ~ news_1 + ambiv_sexism_1 + pie_1
 #> $fit
-#> # A tibble: 6 x 6
+#> # A tibble: 7 x 6
 #>   fit_stat           n    df estimate p.value stars
 #>   <chr>          <int> <int>    <dbl>   <dbl> <chr>
 #> 1 χ2               243   239 245.      0.383  ""   
 #> 2 Δχ2              243     3   9.99    0.0186 *    
 #> 3 Nagelkerke R^2   243    NA   0.0403 NA      ""   
 #> 4 McFadden R^2     243    NA   0.0392 NA      ""   
-#> 5 AIC              243    NA 253.     NA      ""   
-#> 6 BIC              243    NA 267.     NA      ""   
+#> 5 RMSE             243    NA   2.68   NA      ""   
+#> 6 AIC              243    NA 253.     NA      ""   
+#> 7 BIC              243    NA 267.     NA      ""   
 #> 
 #> $coef
 #> # A tibble: 4 x 6
@@ -109,15 +110,16 @@ polcom %>%
 #> Model type   : poisson regression
 #> Model formula: news_1 ~ pp_ideology + ambiv_sexism_1 + pie_1
 #> $fit
-#> # A tibble: 6 x 6
+#> # A tibble: 7 x 6
 #>   fit_stat           n    df  estimate  p.value stars
 #>   <chr>          <int> <int>     <dbl>    <dbl> <chr>
 #> 1 χ2               243   239  209.      0.919   ""   
 #> 2 Δχ2              243     3   15.3     0.00161 **   
 #> 3 Nagelkerke R^2   243    NA    0.0608 NA       ""   
 #> 4 McFadden R^2     243    NA    0.0680 NA       ""   
-#> 5 AIC              243    NA 1082.     NA       ""   
-#> 6 BIC              243    NA 1096.     NA       ""   
+#> 5 RMSE             243    NA    0.364  NA       ""   
+#> 6 AIC              243    NA 1082.     NA       ""   
+#> 7 BIC              243    NA 1096.     NA       ""   
 #> 
 #> $coef
 #> # A tibble: 4 x 6
@@ -143,15 +145,16 @@ polcom %>%
 #> Model type   : negbinom regression
 #> Model formula: polarize ~ pp_ideology + news_4 + ambiv_sexism_1
 #> $fit
-#> # A tibble: 6 x 6
+#> # A tibble: 7 x 6
 #>   fit_stat           n    df  estimate  p.value stars
 #>   <chr>          <int> <int>     <dbl>    <dbl> <chr>
 #> 1 χ2               242   238  294.      0.00819 **   
 #> 2 Δχ2              242     3   13.1     0.00450 **   
 #> 3 Nagelkerke R^2   242    NA    0.0525 NA       ""   
 #> 4 McFadden R^2     242    NA    0.0426 NA       ""   
-#> 5 AIC              242    NA 2310.     NA       ""   
-#> 6 BIC              242    NA 2327.     NA       ""   
+#> 5 RMSE             242    NA    0.775  NA       ""   
+#> 6 AIC              242    NA 2310.     NA       ""   
+#> 7 BIC              242    NA 2327.     NA       ""   
 #> 
 #> $coef
 #> # A tibble: 4 x 6

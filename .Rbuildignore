@@ -5,3 +5,4 @@
 ^README\.Rmd$
 ^logo\.R$
 ^make\.R$
+^R/utils-tidyverse\.R$

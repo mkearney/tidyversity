@@ -17,9 +17,9 @@ glm_fit <- function(m) {
   ##mcfadden.adj(m)
   ## names of fit statistics
   fit_statistic <- c("χ2","Δχ2", "Nagelkerke R^2",
-    "McFadden R^2", "AIC", "BIC")
+    "McFadden R^2", "RMSE", "AIC", "BIC")
   ## estimates
-  estimate <- c(s$deviance, chisq, r2nag, r2mcf, aic, bic)
+  estimate <- c(s$deviance, chisq, r2nag, r2mcf, rmse, aic, bic)
   ## degrees of freedom
   df <- rep(NA_integer_, length(fit_statistic))
   df[match(fit_statistic[1:2], fit_statistic)] <- c(devn, chisqn)
