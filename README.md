@@ -156,27 +156,42 @@ Conduct an analysis of variance.
 
 ``` r
 polcom %>%
-  dplyr::mutate(sex = factor(sex, labels = c("Male", "Female")), 
-    vote_2016_choice = factor(vote_2016_choice, labels = c("Clinton", "Trump", "Stein", "Johnson", "Other"))) %>%
-  tidy_anova(pp_ideology ~ sex * vote_2016_choice)
+  dplyr::mutate(sex = ifelse(sex == 1, "Male", "Female"),
+  vote_choice = dplyr::case_when(
+    vote_2016_choice == 1 ~ "Clinton",
+    vote_2016_choice == 2 ~ "Trump",
+    TRUE ~ "Other")) %>%
+  tidy_anova(pp_ideology ~ sex * vote_choice) %>%
+  tidy_summary()
+#> $data
+#> # A tibble: 243 x 11
+#>   .rownames pp_ideology sex   vote_choice .fitted .se.fit .resid   .hat
+#>   <chr>           <int> <chr> <chr>         <dbl>   <dbl>  <dbl>  <dbl>
+#> 1 1                   1 Male  Clinton        2.53   0.214  -1.53 0.0213
+#> 2 2                   5 Male  Other          3.89   0.241   1.11 0.0270
+#> # ... with 241 more rows, and 3 more variables: .sigma <dbl>,
+#> #   .cooksd <dbl>, .std.resid <dbl>
+#> 
 #> $fit
 #> # A tibble: 7 x 6
 #>   fit_statistic     n    df estimate p.value stars
 #>   <chr>         <int> <int>    <dbl>   <dbl> <chr>
-#> 1 F               206     9   21.2        0. ***  
-#> 2 R^2             206    NA    0.494     NA  ""   
-#> 3 Adj R^2         206    NA    0.470     NA  ""   
-#> 4 RMSE            206    NA    1.39      NA  ""   
-#> 5 -2*LL           206    11  709.        NA  ""   
-#> 6 AIC             206    NA  731.        NA  ""   
-#> 7 BIC             206    NA  768.        NA  ""   
+#> 1 F               243     5   30.8        0. ***  
+#> 2 R^2             243    NA    0.394     NA  ""   
+#> 3 Adj R^2         243    NA    0.381     NA  ""   
+#> 4 RMSE            243    NA    1.47      NA  ""   
+#> 5 -2*LL           243     7  870.        NA  ""   
+#> 6 AIC             243    NA  884.        NA  ""   
+#> 7 BIC             243    NA  909.        NA  ""   
 #> 
 #> $coef
-#>                   term  df    sumsq    meansq statistic     p.value stars
-#> 1                  sex   1  10.4255 10.425468  5.423969 2.08813e-02     *
-#> 2     vote_2016_choice   4 354.4163 88.604079 46.097281 2.91422e-27   ***
-#> 3 sex:vote_2016_choice   4   2.3517  0.587925  0.305875 8.73816e-01      
-#> 4            Residuals 196 376.7337  1.922111        NA          NA
+#> # A tibble: 4 x 7
+#>   term               df  sumsq meansq statistic   p.value stars
+#>   <chr>           <dbl>  <dbl>  <dbl>     <dbl>     <dbl> <chr>
+#> 1 sex                1.   8.64   8.64     4.00   4.66e- 2 *    
+#> 2 vote_choice        2. 321.   160.      74.3    9.02e-26 ***  
+#> 3 sex:vote_choice    2.   3.60   1.80     0.834  4.36e- 1 ""   
+#> 4 Residuals        237. 511.     2.16    NA     NA        ""
 ```
 
 ## Data sets

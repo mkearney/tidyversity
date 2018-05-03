@@ -1,5 +1,5 @@
 ols_fit <- function(m) {
-  s <- summary(m)
+  s <- summary.lm(m)
   fp <- pf(s$fstatistic[1L],
     s$fstatistic[2L],
     s$fstatistic[3L],

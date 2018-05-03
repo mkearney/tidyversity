@@ -22,6 +22,13 @@ Conducts analysis of variance (ANOVA)
 \examples{
 
 ## anova
-ANOVA(polcom, pp_ideology ~ as.factor(sex) + age + pie_1)
+polcom \%>\%
+  dplyr::mutate(sex = ifelse(sex == 1, "Male", "Female"),
+  vote_choice = dplyr::case_when(
+    vote_2016_choice == 1 ~ "Clinton",
+    vote_2016_choice == 2 ~ "Trump",
+    TRUE ~ "Other")) \%>\%
+  tidy_anova(pp_ideology ~ sex * vote_choice) \%>\%
+  tidy_summary()
 
 }

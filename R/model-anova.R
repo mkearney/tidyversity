@@ -9,14 +9,16 @@
 #' @examples
 #'
 #' ## anova
-#' ANOVA(polcom, pp_ideology ~ as.factor(sex) + age + pie_1)
+#' polcom %>%
+#'   dplyr::mutate(sex = ifelse(sex == 1, "Male", "Female"),
+#'   vote_choice = dplyr::case_when(
+#'     vote_2016_choice == 1 ~ "Clinton",
+#'     vote_2016_choice == 2 ~ "Trump",
+#'     TRUE ~ "Other")) %>%
+#'   tidy_anova(pp_ideology ~ sex * vote_choice) %>%
+#'   tidy_summary()
 #'
 #' @export
 tidy_anova <- function(data, model, ...) {
-  m <- aov(model, data = data, ...)
-  f <- lm(model, data = data, ...)
-  f <- ols_fit(f)
-  coef <- broom::tidy(m)
-  coef <- add_stars(coef)
-  list(fit = f, coef = coef)
+  aov(model, data = data, ...)
 }

@@ -47,6 +47,8 @@ tidy_fit <- function(x) UseMethod("tidy_fit")
 
 tidy_fit.lm <- function(x) ols_fit(x)
 
+tidy_fit.aov <- function(x) ols_fit(x)
+
 tidy_fit.glm <- function(x) glm_fit(x)
 
 

@@ -84,9 +84,13 @@ Conduct an analysis of variance.
 
 ```{r anova}
 polcom %>%
-  dplyr::mutate(sex = factor(sex, labels = c("Male", "Female")), 
-    vote_2016_choice = factor(vote_2016_choice, labels = c("Clinton", "Trump", "Stein", "Johnson", "Other"))) %>%
-  tidy_anova(pp_ideology ~ sex * vote_2016_choice)
+  dplyr::mutate(sex = ifelse(sex == 1, "Male", "Female"),
+  vote_choice = dplyr::case_when(
+    vote_2016_choice == 1 ~ "Clinton",
+    vote_2016_choice == 2 ~ "Trump",
+    TRUE ~ "Other")) %>%
+  tidy_anova(pp_ideology ~ sex * vote_choice) %>%
+  tidy_summary()
 ```
 
 
