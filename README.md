@@ -41,8 +41,10 @@ Conduct an Ordinary Least Squares (OLS) regression analysis.
 polcom %>%
   tidy_regression(pp_ideology ~ news_1 + ambiv_sexism_1 + pie_1) %>%
   tidy_summary()
-#> Model type   : ols regression
-#> Model formula: pp_ideology ~ news_1 + ambiv_sexism_1 + pie_1
+#> # A tidy model
+#> Model formula : pp_ideology ~ news_1 + ambiv_sexism_1 + pie_1
+#> Model type    : Ordinary Least Squares (OLS) regression
+#> Model data    : 243 (observations) X 4 (variables)
 #> $fit
 #> # A tibble: 6 x 6
 #>   fit_stat     n    df estimate   p.value stars
@@ -74,8 +76,10 @@ polcom %>%
   tidy_regression(follow_trump ~ news_1 + ambiv_sexism_1 + pie_1, 
     type = "logistic") %>%
   tidy_summary()
-#> Model type   : logistic regression
-#> Model formula: follow_trump ~ news_1 + ambiv_sexism_1 + pie_1
+#> # A tidy model
+#> Model formula : follow_trump ~ news_1 + ambiv_sexism_1 + pie_1
+#> Model type    : logistic
+#> Model data    : 243 (observations) X 4 (variables)
 #> $fit
 #> # A tibble: 7 x 6
 #>   fit_stat           n    df estimate p.value stars
@@ -107,8 +111,10 @@ polcom %>%
   tidy_regression(news_1 ~ pp_ideology + ambiv_sexism_1 + pie_1, 
     type = "poisson") %>%
   tidy_summary()
-#> Model type   : poisson regression
-#> Model formula: news_1 ~ pp_ideology + ambiv_sexism_1 + pie_1
+#> # A tidy model
+#> Model formula : news_1 ~ pp_ideology + ambiv_sexism_1 + pie_1
+#> Model type    : Poisson regression
+#> Model data    : 243 (observations) X 4 (variables)
 #> $fit
 #> # A tibble: 7 x 6
 #>   fit_stat           n    df  estimate  p.value stars
@@ -142,8 +148,10 @@ polcom %>%
   tidy_regression(polarize ~ pp_ideology + news_4 + ambiv_sexism_1, 
     type = "negbinom") %>%
   tidy_summary()
-#> Model type   : negbinom regression
-#> Model formula: polarize ~ pp_ideology + news_4 + ambiv_sexism_1
+#> # A tidy model
+#> Model formula : polarize ~ pp_ideology + news_4 + ambiv_sexism_1
+#> Model type    : Negative binomial regression
+#> Model data    : 242 (observations) X 4 (variables)
 #> $fit
 #> # A tibble: 7 x 6
 #>   fit_stat           n    df  estimate  p.value stars
@@ -179,6 +187,7 @@ polcom %>%
     TRUE ~ "Other")) %>%
   tidy_anova(pp_ideology ~ sex * vote_choice) %>%
   tidy_summary()
+#> NULL
 #> $fit
 #> # A tibble: 6 x 6
 #>   fit_stat     n    df estimate   p.value stars
