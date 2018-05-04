@@ -16,6 +16,11 @@ Author: person("Michael Wayne", "Kearney", ,
 License: MIT + file LICENSE
 RoxygenNote: 6.0.1.9000
 Imports: 
+    broom,
+    magrittr,
+    MASS,
     psych,
-    tidyselect,
-    magrittr
+    rlang,
+    robust,
+    tibble,
+    tidyselect
