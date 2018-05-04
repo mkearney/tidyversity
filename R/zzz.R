@@ -65,13 +65,17 @@ make_stars.data.frame <- function(x) {
 }
 
 make_stars.numeric <- function(x) {
-  dplyr::case_when(
-    x < .10 & x >  .05 ~ "+",
-    x < .05 & x >  .01 ~ "*",
-    x < .01 & x > .001 ~ "**",
-    x < .001           ~ "***",
-    TRUE               ~ ""
-  )
+  ifelse(
+    is.na(x),            "",
+  ifelse(
+    x < .10 & x >=  .05, "+",
+  ifelse(
+    x < .05 & x >=  .01, "*",
+  ifelse(
+    x < .01 & x >= .001, "**",
+  ifelse(
+    x <= .001          , "***", ""
+  )))))
 }
 
 make_stars.character <- function(x) {
