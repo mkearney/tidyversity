@@ -80,6 +80,8 @@ print.tidy_model <- function(x, ...) {
 
 model_data <- function(x) UseMethod("model_data")
 
+model_data.tidy_model <- function(x) x$data
+
 tidy_fit <- function(x) UseMethod("tidy_fit")
 
 tidy_fit.lm <- function(x) ols_fit(x)
