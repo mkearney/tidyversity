@@ -269,7 +269,26 @@ polcom %>%
 #> 4 Residuals        237. 363.      1.53     NA     NA        ""
 ```
 
-## Data sets
+#### t-tests
+
+``` r
+polcom %>%
+  tidy_ttest(pp_ideology ~ follow_trump) %>%
+  tidy_summary()
+#> NULL
+#> $fit
+#> # A tibble: 2 x 6
+#>   group                  df  mean   diff  lo.95 hi.05
+#>   <chr>               <dbl> <dbl>  <dbl>  <dbl> <dbl>
+#> 1 mean in group FALSE  76.9  4.19  0.922  0.308  1.54
+#> 2 mean in group TRUE   76.9  3.26 -0.922 -0.308 -1.54
+#> 
+#> $coef
+#>        est       t  p.value stars
+#> 1 0.922027 2.99241 0.003719    **
+```
+
+# Data sets
 
 Comes with one data set.
 

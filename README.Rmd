@@ -125,7 +125,15 @@ polcom %>%
   tidy_summary()
 ```
 
-## Data sets
+#### t-tests
+
+```{r ttest}
+polcom %>%
+  tidy_ttest(pp_ideology ~ follow_trump) %>%
+  tidy_summary()
+```
+
+# Data sets
 
 Comes with one data set. 
 

@@ -111,9 +111,17 @@ tidy_coef.aov <- function(x) {
   add_stars(d)
 }
 
+tidy_coef.htest <- function(x) {
+  coef <- broom::tidy(x)[c(1, 4, 5)]
+  names(coef)[1:2] <- c("est", "t")
+  add_stars(coef)
+}
 
-tidy_data <- function(x) {
-  tibble::as_tibble(broom::augment(x), validate = FALSE)
+tidy_data <- function(x) UseMethod("tidy_data")
+
+tidy_data.default <- function(x) {
+  x <- tryCatch(broom::augment(x), error = function(e) data.frame())
+  as_tbl(x)
 }
 
 tidy_model <- function(m) {
@@ -127,7 +135,9 @@ tidy_model <- function(m) {
 new_tidy_model <- function(fit, coef, data) {
   stopifnot(is.data.frame(fit))
   stopifnot(is.data.frame(coef))
-  stopifnot(is.data.frame(data))
+  if (!is.data.frame(data)) {
+    data <- tbl_frame()
+  }
 
   structure(
     list(
@@ -156,4 +166,4 @@ tidy_fit.aov <- function(x) ols_fit(x)
 
 tidy_fit.glm <- function(x) glm_fit(x)
 
-
+tidy_fit.htest <- function(x) t_fit(x)
