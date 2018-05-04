@@ -47,6 +47,7 @@ new_tidy_model <- function(fit, coef, data) {
   )
 }
 
+#' @export
 print.tidy_model <- function(x, ...) {
   print(x[names(x) %in% c("fit", "coef")])
 }
