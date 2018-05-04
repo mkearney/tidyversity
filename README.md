@@ -275,13 +275,15 @@ polcom %>%
 polcom %>%
   tidy_ttest(pp_ideology ~ follow_trump) %>%
   tidy_summary()
-#> NULL
+#> # A tidy model
+#> Model formula : pp_ideology ~ follow_trump
+#> Model data    : 244 (observations)
 #> $fit
 #> # A tibble: 2 x 6
-#>   group                  df  mean   diff  lo.95 hi.05
-#>   <chr>               <dbl> <dbl>  <dbl>  <dbl> <dbl>
-#> 1 mean in group FALSE  76.9  4.19  0.922  0.308  1.54
-#> 2 mean in group TRUE   76.9  3.26 -0.922 -0.308 -1.54
+#>   group    df  mean   diff  lo.95 hi.05
+#>   <chr> <dbl> <dbl>  <dbl>  <dbl> <dbl>
+#> 1 FALSE  76.9  4.19  0.922  0.308  1.54
+#> 2 TRUE   76.9  3.26 -0.922 -0.308 -1.54
 #> 
 #> $coef
 #>        est       t  p.value stars

@@ -6,7 +6,7 @@
 #' @param data Data frame with grouping and variable of interest.
 #' @param model The model specified as the measured variable predicted by
 #'   group.
-#' @example
+#' @examples
 #'
 #' ## compre pp_ideology b/w those who follow and don't follow trump
 #' polcom %>%
@@ -16,6 +16,7 @@
 #' @return A tidy summary with fit and coef tibbles
 #' @export
 tidy_ttest <- function(data, model) {
-  f <- rlang::quo(model)
-  t.test(model, data)
+  m <- t.test(model, data)
+  attr(m, "tidycall") <- store_tidycall(nrow(data), model)
+  m
 }

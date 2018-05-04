@@ -7,8 +7,6 @@ std_model_type <- function(type) {
     type <- "pois"
   } else if (is_negbinom(type)) {
     type <- "negbin"
-  } else {
-    stop("cannot recognized type", call. = FALSE)
   }
   type
 }

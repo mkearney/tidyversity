@@ -18,3 +18,11 @@ A tidy summary with fit and coef tibbles
 \description{
 Conducts a t-test, comparing two groups along single variable
 }
+\examples{
+
+## compre pp_ideology b/w those who follow and don't follow trump
+polcom \%>\%
+  tidy_ttest(pp_ideology ~ follow_trump) \%>\%
+  tidy_summary()
+
+}

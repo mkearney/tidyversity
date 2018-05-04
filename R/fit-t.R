@@ -3,7 +3,8 @@ t_fit <- function(x, ci = .95) {
   cilo <- paste0("lo.", gsub("0\\.", "", ci))
   cihi <- paste0("hi.", gsub("0\\.", "", 1- ci))
   diff <- x$estimate - rev(x$estimate)
-  tbl_frame(group = names(x$estimate),
+  group <- gsub("mean in group ", "", names(x$estimate))
+  tbl_frame(group = group,
     df = x$parameter,
     mean = x$estimate,
     diff = diff,
