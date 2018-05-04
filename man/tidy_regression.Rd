@@ -24,6 +24,13 @@ A list object containing a "fit", "ceof", and "data" data frames
 Conducts regression analysis to model outcome variable using OLS, logistic,
 poisson, and negative-binomial models
 }
+\details{
+In addition to being a wrapper function for \link[base]{lm},
+\link[base]{glm}, and robust models via \link[MASS]{rlm} (for robust OLS)
+and \link[robust]{glmRob} this function (a) ensures \code{data} arguments
+appear in first position for better consistency and easier piping and (b)
+stores information about the call
+}
 \examples{
 
 ## predict mpg using weight and cylinders

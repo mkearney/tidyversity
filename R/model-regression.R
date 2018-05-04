@@ -10,6 +10,11 @@
 #'   \link{regression_types} for more information.
 #' @param ... Other arguments passed to modeling function.
 #' @return A list object containing a "fit", "ceof", and "data" data frames
+#' @details In addition to being a wrapper function for \link[base]{lm},
+#' \link[base]{glm}, and robust models via \link[MASS]{rlm} (for robust OLS)
+#' and \link[robust]{glmRob} this function (a) ensures \code{data} arguments
+#' appear in first position for better consistency and easier piping and (b)
+#' stores information about the call
 #' @examples
 #'
 #' ## predict mpg using weight and cylinders
@@ -35,10 +40,7 @@
 #'
 #' @export
 tidy_regression <- function(data, model, type = "ols", robust = FALSE, ...) {
-  args <- list(model, data = data, ...)
-  if (!"robust" %in% args) {
-    args$robust <- FALSE
-  }
+  ## convert type to call
   if (is_ols(type)) {
     call <- "ols_regression"
   } else if (is_logistic(type)) {
@@ -54,8 +56,16 @@ tidy_regression <- function(data, model, type = "ols", robust = FALSE, ...) {
   } else {
     stop("cannot recognized type", call. = FALSE)
   }
+  ## build args
+  args <- list(model, data = data, ...)
+  if (!"robust" %in% args) {
+    args$robust <- FALSE
+  }
+  ## apply call to args
   m <- do.call(call, args)
-  attr(m, "tidycall") <- make_tidycall(model, type, robust, data)
+  ## store info as tidycall attribute
+  attr(m, "tidycall") <- store_tidycall(m, model, type, robust)
+  ## return model object
   m
 }
 

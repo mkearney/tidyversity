@@ -1,9 +1,17 @@
-parse_data_name <- function(...) parse_data_name_(...)
-parse_data_name_ <- function(...) {
-  x <- as.character(substitute(...))
-  x[length(x)]
+std_model_type <- function(type) {
+  if (is_ols(type)) {
+    type <- "ols"
+  } else if (is_logistic(type)) {
+    call <- "log"
+  } else if (is_poisson(type)) {
+    type <- "pois"
+  } else if (is_negbinom(type)) {
+    type <- "negbin"
+  } else {
+    stop("cannot recognized type", call. = FALSE)
+  }
+  type
 }
-
 
 tidyselector <- function(data, ...) {
   vars <- tidyselect::vars_select(names(data), ...)

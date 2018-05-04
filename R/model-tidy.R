@@ -1,5 +1,15 @@
 
-make_tidycall <- function(model, type, robust = FALSE, ...) {
+store_tidycall <- function(m, model, type, robust) {
+  structure(
+    list(data = dim(model.frame(m)),
+      model = rlang::expr_text(formula(model)),
+      type = std_model_type(type),
+      robust = robust),
+    class = "tidycall")
+}
+
+print.tidycall <- function(x) {
+  type <- x$type
   if (is_ols(type)) {
     type <- "Ordinary Least Squares (OLS) regression"
   } else if (is_logistic(type)) {
@@ -11,14 +21,13 @@ make_tidycall <- function(model, type, robust = FALSE, ...) {
   } else {
     stop("cannot recognized type", call. = FALSE)
   }
-  if (robust) {
+  if (x$robust) {
     type <- paste0("[Robust] ", type)
   }
-  data <- parse_data_name(...)
-  f <- rlang::expr_text(formula(model))
-  paste0("# A tidy model\nModel formula : ", f,
-       "\nModel data    : ", data,
-       "\nModel type    : ", type)
+  data <- paste0(x$data[1], " (observations) X ", x$data[2], " (variables)")
+  cat(paste0("# A tidy model\nModel formula : ", x$model,
+       "\nModel type    : ", type,
+       "\nModel data    : ", data, "\n"), fill = TRUE)
 }
 
 get_tidycall <- function(m) {
@@ -27,7 +36,7 @@ get_tidycall <- function(m) {
 
 #' @export
 tidy_summary <- function(m) {
-  cat(get_tidycall(m), fill = TRUE)
+  print(get_tidycall(m))
   tidy_model(m)
 }
 
