@@ -28,7 +28,7 @@ get_tidycall <- function(m) {
 #' @export
 tidy_summary <- function(m) {
   cat(get_tidycall(m), fill = TRUE)
-  sweep(m)
+  tidy_model(m)
 }
 
 tidy_coef <- function(x) {
@@ -41,22 +41,35 @@ tidy_data <- function(x) {
   tibble::as_tibble(broom::augment(x), validate = FALSE)
 }
 
-sweep <- function(x) {
-  tidy_model(fit = tidy_fit(x), coef = tidy_coef(x), data = tidy_data(x))
+tidy_model <- function(m) {
+  new_tidy_model(
+    fit  = tidy_fit(m),
+    coef = tidy_coef(m),
+    data = tidy_data(m)
+  )
 }
 
-tidy_model <- setClass("tidy_model",
-  slots = c(fit = "data.frame", coef = "data.frame", data = "data.frame"))
+new_tidy_model <- function(fit, coef, data) {
+  stopifnot(is.data.frame(fit))
+  stopifnot(is.data.frame(coef))
+  stopifnot(is.data.frame(data))
+
+  structure(
+    list(
+      fit = fit,
+      coef = coef,
+      data = data
+    ),
+    class = "tidy_model"
+  )
+}
+
+#' @export
+print.tidy_model <- function(x, ...) {
+  print(x[names(x) %in% c("fit", "coef")])
+}
 
 model_data <- function(x) UseMethod("model_data")
-
-model_data.tidy_model <- function(x) x@data
-
-setMethod("show", "tidy_model",
-  function(object) {
-    print(list(fit = object@fit, coef = object@coef))
-  }
-)
 
 tidy_fit <- function(x) UseMethod("tidy_fit")
 
