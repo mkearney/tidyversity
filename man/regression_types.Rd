@@ -4,7 +4,9 @@
 \alias{regression_types}
 \alias{ols_regression}
 \alias{logistic_regression}
+\alias{quasi_logistic_regression}
 \alias{poisson_regression}
+\alias{quasi_poisson_regression}
 \alias{negbinom_regression}
 \title{Types of regression models}
 \usage{
@@ -12,7 +14,11 @@ ols_regression(data, model, robust = FALSE, ...)
 
 logistic_regression(data, model, robust = FALSE, ...)
 
+quasi_logistic_regression(data, model, robust = FALSE, ...)
+
 poisson_regression(data, model, robust = FALSE, ...)
+
+quasi_poisson_regression(data, model, robust = FALSE, ...)
 
 negbinom_regression(data, model, robust = FALSE, ...)
 }
@@ -29,7 +35,16 @@ Conducts regression analysis to model outcome variable using OLS
 Conducts logistic regression analysis to model binary outcome variable using
   a generalized (binomial with logit link) linear model
 
-Conducts poisson regression (generalized linear models for count data)
+Conducts logistic regression analysis to model approximations of binary
+outcome variables (doesn't have to be 2 levels) using a generalized
+(quasi-binomial with logit link) linear model
+
+Conducts poisson regression to model count outcome variables using a
+generalized (poisson with logit link) linear model.
+
+Conducts poisson regression analysis to model approximations of count
+outcome variables (doesn't have to be integers) using a generalized
+(quasi-poisson with logit link) linear model
 
 Conducts negative binomial regression (generalized linear models for
 overdispersed count data)

@@ -1,3 +1,10 @@
+parse_data_name <- function(...) parse_data_name_(...)
+parse_data_name_ <- function(...) {
+  x <- as.character(substitute(...))
+  x[length(x)]
+}
+
+
 tidyselector <- function(data, ...) {
   vars <- tidyselect::vars_select(names(data), ...)
   if (length(vars) > 0) {

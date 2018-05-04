@@ -4,7 +4,7 @@
 \alias{tidy_regression}
 \title{Tidy regression analysis}
 \usage{
-tidy_regression(data, model, type = "ols", ...)
+tidy_regression(data, model, type = "ols", robust = FALSE, ...)
 }
 \arguments{
 \item{data}{Data frame containing variables in model}

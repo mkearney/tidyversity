@@ -1,7 +1,24 @@
 
-make_tidycall <- function(model) {
-  f <- as.character(rlang::quo(!!model))
-  paste0("Model formula: ", f[2], "\n")
+make_tidycall <- function(model, type, robust = FALSE, ...) {
+  if (is_ols(type)) {
+    type <- "Ordinary Least Squares (OLS) regression"
+  } else if (is_logistic(type)) {
+    call <- "Logistic regression"
+  } else if (is_poisson(type)) {
+    type <- "Poisson regression"
+  } else if (is_negbinom(type)) {
+    type <- "Negative binomial regression"
+  } else {
+    stop("cannot recognized type", call. = FALSE)
+  }
+  if (robust) {
+    type <- paste0("[Robust] ", type)
+  }
+  data <- parse_data_name(...)
+  f <- rlang::expr_text(formula(model))
+  paste0("# A tidy model\nModel formula : ", f,
+       "\nModel data    : ", data,
+       "\nModel type    : ", type)
 }
 
 get_tidycall <- function(m) {
@@ -53,8 +70,6 @@ print.tidy_model <- function(x, ...) {
 }
 
 model_data <- function(x) UseMethod("model_data")
-
-model_data.tidy_model <- function(x) x$data
 
 tidy_fit <- function(x) UseMethod("tidy_fit")
 
