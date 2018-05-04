@@ -40,11 +40,77 @@ tidy_summary <- function(m) {
   tidy_model(m)
 }
 
-tidy_coef <- function(x) {
-  x <- tibble::as_tibble(broom::tidy(x), validate = FALSE)
-  names(x)[2:4] <- c("estimate", "s.e.", "est.se")
-  add_stars(x)
+standardize_inputs <- function(x) {
+  x <- model.frame(x)
+  if (ncol(x) < 2L) return(as_tbl(x))
+  y <- x[1]
+  x <- x[-1]
+  chars <- vapply(x, function(x) is.character(x) | is.factor(x), logical(1))
+  x[, !chars] <- scale(x[, !chars])
+  as_tbl(cbind(y, x))
 }
+
+tidy_coef <- function(x) UseMethod("tidy_coef")
+
+tidy_coef.lm <- function(x) {
+  ## estimate standardized solution
+  data <- standardize_inputs(x)
+  ## sometimes it won't converge, so tryCatch returns NULL
+  s <- tryCatch(update(x, . ~ . - 1, data = data), error = function(e) NULL)
+  ## broom the coef table, rename, and add stars column
+  x <- tibble::as_tibble(broom::tidy(x), validate = FALSE)
+  names(x)[2:4] <- c("est", "s.e.", "est.se")
+  x <- add_stars(x)
+  ## if the standardized solution worked, append the stardardized estimates
+  ## otherwise return NA vector
+  if (!is.null(s)) {
+    s <- tibble::as_tibble(broom::tidy(s), validate = FALSE)
+    if (nrow(x) > nrow(s)) {
+      x$std.est <- c(0, s[[2]])
+    } else {
+      x$std.est <- s[[2]]
+    }
+  } else {
+    x$std.est <- NA_real_
+  }
+  x
+}
+
+add_std_est <- function(d, m) {
+  ## estimate standardized solution
+  data <- standardize_inputs(x)
+  ## sometimes it won't converge, so tryCatch returns NULL
+  s <- tryCatch(update(m, . ~ . - 1, data = data), error = function(e) NULL)
+  ## if the standardized solution worked, append the stardardized estimates
+  ## otherwise return NA vector
+  if (!is.null(s)) {
+    s <- tibble::as_tibble(broom::tidy(s), validate = FALSE)
+    if (nrow(d) > nrow(s)) {
+      d$std.est <- c(0, s[[2]])
+    } else {
+      d$std.est <- s[[2]]
+    }
+  } else {
+    d$std.est <- NA_real_
+  }
+  d
+}
+
+tidy_coef.default <- function(x) {
+  ## broom the coef table, rename, and add stars column
+  d <- tibble::as_tibble(broom::tidy(x), validate = FALSE)
+  names(d)[2:4] <- c("est", "s.e.", "est.se")
+  d <- add_stars(d)
+  ## estimate/add standardized solution estimates and return
+  add_std_est(d)
+}
+
+tidy_coef.aov <- function(x) {
+  ## broom the coef table and add stars column
+  d <- tibble::as_tibble(broom::tidy(x), validate = FALSE)
+  add_stars(d)
+}
+
 
 tidy_data <- function(x) {
   tibble::as_tibble(broom::augment(x), validate = FALSE)

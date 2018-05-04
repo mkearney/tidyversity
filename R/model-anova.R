@@ -4,6 +4,8 @@
 #'
 #' @param data Data frame with variables of interest to model
 #' @param model Specification of the theorized model
+#' @param type Not yet impelmented
+#' @param robust Logical not yet implemented
 #' @param ... Other args passed to aov/lm
 #' @return List with fit and coef elements.
 #' @examples
@@ -19,6 +21,7 @@
 #'   tidy_summary()
 #'
 #' @export
-tidy_anova <- function(data, model, ...) {
+tidy_anova <- function(data, model, type = NULL, robust = FALSE, ...) {
   aov(model, data = data, ...)
 }
+

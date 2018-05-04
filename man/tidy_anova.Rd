@@ -4,12 +4,16 @@
 \alias{tidy_anova}
 \title{Analysis of variance}
 \usage{
-tidy_anova(data, model, ...)
+tidy_anova(data, model, type = NULL, robust = FALSE, ...)
 }
 \arguments{
 \item{data}{Data frame with variables of interest to model}
 
 \item{model}{Specification of the theorized model}
+
+\item{type}{Not yet impelmented}
+
+\item{robust}{Logical not yet implemented}
 
 \item{...}{Other args passed to aov/lm}
 }

@@ -57,12 +57,12 @@ polcom %>%
 #> 6 BIC        243    NA 274.     NA      ""   
 #> 
 #> $coef
-#> # A tibble: 3 x 6
-#>   term           estimate   s.e. est.se p.value stars
-#>   <chr>             <dbl>  <dbl>  <dbl>   <dbl> <chr>
-#> 1 (Intercept)      0.745  0.0969   7.69  0.     ***  
-#> 2 news_1           0.0220 0.0122   1.81  0.0714 +    
-#> 3 ambiv_sexism_1  -0.0385 0.0206  -1.87  0.0627 +
+#> # A tibble: 3 x 7
+#>   term               est   s.e. est.se p.value stars std.est
+#>   <chr>            <dbl>  <dbl>  <dbl>   <dbl> <chr>   <dbl>
+#> 1 (Intercept)     0.745  0.0969   7.69  0.     ***    0.    
+#> 2 news_1          0.0220 0.0122   1.81  0.0714 +      0.0479
+#> 3 ambiv_sexism_1 -0.0385 0.0206  -1.87  0.0627 +     -0.0495
 ```
 
 ### Logistic (dichotomous)
@@ -91,12 +91,12 @@ polcom %>%
 #> 7 BIC              243    NA 264.     NA      ""   
 #> 
 #> $coef
-#> # A tibble: 3 x 6
-#>   term           estimate   s.e. est.se p.value stars
-#>   <chr>             <dbl>  <dbl>  <dbl>   <dbl> <chr>
-#> 1 (Intercept)       1.13  0.553    2.05  0.0405 *    
-#> 2 news_1            0.127 0.0702   1.81  0.0707 +    
-#> 3 ambiv_sexism_1   -0.229 0.122   -1.87  0.0613 +
+#> # A tibble: 3 x 7
+#>   term              est   s.e. est.se p.value stars std.est
+#>   <chr>           <dbl>  <dbl>  <dbl>   <dbl> <chr>   <dbl>
+#> 1 (Intercept)     1.13  0.553    2.05  0.0405 *       0.   
+#> 2 news_1          0.127 0.0702   1.81  0.0707 +       0.195
+#> 3 ambiv_sexism_1 -0.229 0.122   -1.87  0.0613 +      -0.201
 ```
 
 ## Poisson (count)
@@ -125,12 +125,12 @@ polcom %>%
 #> 7 BIC              242    NA 7736.     NA        ""   
 #> 
 #> $coef
-#> # A tibble: 3 x 6
-#>   term           estimate    s.e. est.se p.value stars
-#>   <chr>             <dbl>   <dbl>  <dbl>   <dbl> <chr>
-#> 1 (Intercept)      3.80   0.0382   99.4       0. ***  
-#> 2 news_1           0.0447 0.00478   9.36      0. ***  
-#> 3 ambiv_sexism_1  -0.126  0.00797 -15.9       0. ***
+#> # A tibble: 3 x 7
+#>   term               est    s.e. est.se p.value stars std.est
+#>   <chr>            <dbl>   <dbl>  <dbl>   <dbl> <chr>   <dbl>
+#> 1 (Intercept)     3.80   0.0382   99.4       0. ***     0.   
+#> 2 news_1          0.0447 0.00478   9.36      0. ***     0.881
+#> 3 ambiv_sexism_1 -0.126  0.00797 -15.9       0. ***    -2.23
 ```
 
 ## Negative binomial (overdispersed)
@@ -147,6 +147,7 @@ polcom %>%
 #> Model formula : polarize ~ news_1 + ambiv_sexism_1
 #> Model type    : Negative binomial regression
 #> Model data    : 242 (observations) X 3 (variables)
+#> Warning: glm.fit: algorithm did not converge
 #> $fit
 #> # A tibble: 7 x 6
 #>   fit_stat           n    df  estimate  p.value stars
@@ -160,12 +161,12 @@ polcom %>%
 #> 7 BIC              242    NA 2326.     NA       ""   
 #> 
 #> $coef
-#> # A tibble: 3 x 6
-#>   term           estimate   s.e. est.se p.value stars
-#>   <chr>             <dbl>  <dbl>  <dbl>   <dbl> <chr>
-#> 1 (Intercept)      3.74   0.258   14.5   0.     ***  
-#> 2 news_1           0.0526 0.0322   1.63  0.103  ""   
-#> 3 ambiv_sexism_1  -0.123  0.0541  -2.27  0.0230 *
+#> # A tibble: 3 x 7
+#>   term               est   s.e. est.se p.value stars std.est
+#>   <chr>            <dbl>  <dbl>  <dbl>   <dbl> <chr>   <dbl>
+#> 1 (Intercept)     3.74   0.258   14.5   0.     ***        NA
+#> 2 news_1          0.0526 0.0322   1.63  0.103  ""         NA
+#> 3 ambiv_sexism_1 -0.123  0.0541  -2.27  0.0230 *          NA
 ```
 
 ## Robust models
@@ -193,12 +194,12 @@ polcom %>%
 #> 6 BIC        242    NA 2371.     NA        ""   
 #> 
 #> $coef
-#> # A tibble: 3 x 6
-#>   term           estimate  s.e. est.se  p.value stars
-#>   <chr>             <dbl> <dbl>  <dbl>    <dbl> <chr>
-#> 1 (Intercept)       45.4  7.51    6.04 0.       ***  
-#> 2 news_1             1.89 0.939   2.01 0.0458   *    
-#> 3 ambiv_sexism_1    -5.33 1.58   -3.38 0.000837 ***
+#> # A tibble: 3 x 7
+#>   term              est  s.e. est.se  p.value stars std.est
+#>   <chr>           <dbl> <dbl>  <dbl>    <dbl> <chr>   <dbl>
+#> 1 (Intercept)     45.4  7.51    6.04 0.       ***      0.  
+#> 2 news_1           1.89 0.939   2.01 0.0458   *        4.07
+#> 3 ambiv_sexism_1  -5.33 1.58   -3.38 0.000837 ***     -6.85
 ```
 
 ### Robust logistic, poisson, and quasi- version of each
@@ -225,12 +226,12 @@ polcom %>%
 #> 7 BIC              242    NA 7736.     NA        ""   
 #> 
 #> $coef
-#> # A tibble: 3 x 6
-#>   term           estimate    s.e. est.se p.value stars
-#>   <chr>             <dbl>   <dbl>  <dbl>   <dbl> <chr>
-#> 1 (Intercept)      3.80   0.0382   99.4       0. ***  
-#> 2 news_1           0.0447 0.00478   9.36      0. ***  
-#> 3 ambiv_sexism_1  -0.126  0.00797 -15.9       0. ***
+#> # A tibble: 3 x 7
+#>   term               est    s.e. est.se p.value stars std.est
+#>   <chr>            <dbl>   <dbl>  <dbl>   <dbl> <chr>   <dbl>
+#> 1 (Intercept)     3.80   0.0382   99.4       0. ***     0.   
+#> 2 news_1          0.0447 0.00478   9.36      0. ***     0.881
+#> 3 ambiv_sexism_1 -0.126  0.00797 -15.9       0. ***    -2.23
 ```
 
 ### ANOVA
@@ -244,28 +245,28 @@ polcom %>%
     vote_2016_choice == 1 ~ "Clinton",
     vote_2016_choice == 2 ~ "Trump",
     TRUE ~ "Other")) %>%
-  tidy_anova(pp_ideology ~ sex * vote_choice) %>%
+  tidy_anova(pp_party ~ sex * vote_choice) %>%
   tidy_summary()
 #> NULL
 #> $fit
 #> # A tibble: 6 x 6
 #>   fit_stat     n    df estimate   p.value stars
 #>   <chr>    <int> <int>    <dbl>     <dbl> <chr>
-#> 1 F          243     5   30.8    3.98e-24 ***  
-#> 2 R^2        243    NA    0.394 NA        ""   
-#> 3 Adj R^2    243    NA    0.381 NA        ""   
-#> 4 RMSE       243    NA    1.47  NA        ""   
-#> 5 AIC        243    NA  884.    NA        ""   
-#> 6 BIC        243    NA  909.    NA        ""   
+#> 1 F          243     5   53.3    6.19e-37 ***  
+#> 2 R^2        243    NA    0.529 NA        ""   
+#> 3 Adj R^2    243    NA    0.519 NA        ""   
+#> 4 RMSE       243    NA    1.24  NA        ""   
+#> 5 AIC        243    NA  801.    NA        ""   
+#> 6 BIC        243    NA  826.    NA        ""   
 #> 
 #> $coef
 #> # A tibble: 4 x 7
-#>   term            estimate   s.e. est.se statistic p.value stars
-#>   <chr>              <dbl>  <dbl>  <dbl>     <dbl>   <dbl> <chr>
-#> 1 sex                   1.   8.64   8.64     4.00   0.0466 *    
-#> 2 vote_choice           2. 321.   160.      74.3    0.     ***  
-#> 3 sex:vote_choice       2.   3.60   1.80     0.834  0.436  ""   
-#> 4 Residuals           237. 511.     2.16    NA     NA      ""
+#>   term               df   sumsq  meansq statistic   p.value stars
+#>   <chr>           <dbl>   <dbl>   <dbl>     <dbl>     <dbl> <chr>
+#> 1 sex                1.  19.2    19.2      12.6    0.000474 ***  
+#> 2 vote_choice        2. 389.    194.      127.     0.       ***  
+#> 3 sex:vote_choice    2.   0.519   0.259     0.169  0.844    ""   
+#> 4 Residuals        237. 363.      1.53     NA     NA        ""
 ```
 
 ## Data sets

@@ -121,7 +121,7 @@ polcom %>%
     vote_2016_choice == 1 ~ "Clinton",
     vote_2016_choice == 2 ~ "Trump",
     TRUE ~ "Other")) %>%
-  tidy_anova(pp_ideology ~ sex * vote_choice) %>%
+  tidy_anova(pp_party ~ sex * vote_choice) %>%
   tidy_summary()
 ```
 
