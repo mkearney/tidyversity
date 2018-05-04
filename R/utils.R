@@ -46,8 +46,16 @@ is_logistic <- function(x) {
   grepl("^log$|logistic|^binomial$", x, ignore.case = TRUE)
 }
 
+is_quasibinom <- function(x) {
+  grepl("^quasi.?binom", x, ignore.case = TRUE)
+}
+
 is_poisson <- function(x) {
   grepl("^pois$|poisson", x, ignore.case = TRUE)
+}
+
+is_quasipois <- function(x) {
+  grepl("^quasi.?pois", x, ignore.case = TRUE)
 }
 
 is_negbinom <- function(x) {

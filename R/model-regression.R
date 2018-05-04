@@ -34,10 +34,7 @@
 #' (s_poisson <- sweep(m_poisson))
 #'
 #' @export
-tidy_regression <- function(data, model, type = "ols", ...) {
-  tidycall <- make_tidycall(model)
-  subdata <- as.character(rlang::quo(data))
-  tidycall <- paste0("Model type   : ", type, " regression\n", tidycall)
+tidy_regression <- function(data, model, type = "ols", robust = FALSE, ...) {
   args <- list(model, data = data, ...)
   if (!"robust" %in% args) {
     args$robust <- FALSE
@@ -46,15 +43,19 @@ tidy_regression <- function(data, model, type = "ols", ...) {
     call <- "ols_regression"
   } else if (is_logistic(type)) {
     call <- "logistic_regression"
+  } else if (is_quasibinom(type)) {
+    call <- "quasi_logistic_regression"
   } else if (is_poisson(type)) {
     call <- "poisson_regression"
-  } else if (is_negbinom(type)) {
+  } else if (is_quasipois(type)) {
+    call <- "quasi_poisson_regression"
+  }else if (is_negbinom(type)) {
     call <- "negbinom_regression"
   } else {
     stop("cannot recognized type", call. = FALSE)
   }
   m <- do.call(call, args)
-  attr(m, "tidycall") <- tidycall
+  attr(m, "tidycall") <- make_tidycall(model, type, robust, data)
   m
 }
 
@@ -89,18 +90,61 @@ ols_regression <- function(data, model, robust = FALSE, ...) {
 #' @rdname regression_types
 #' @export
 logistic_regression <- function(data, model, robust = FALSE, ...) {
-  glm(model, data = data, family = binomial)
+  if (robust) {
+    robust::glmRob(model, data = data, family = binomial)
+  } else {
+    glm(model, data = data, family = binomial)
+  }
+}
+
+#' Quasi-logistic regression for dichotomous-like outcomes
+#'
+#' Conducts logistic regression analysis to model approximations of binary
+#' outcome variables (doesn't have to be 2 levels) using a generalized
+#' (quasi-binomial with logit link) linear model
+#'
+#' @inheritParams tidy_regression
+#' @rdname regression_types
+#' @export
+quasi_logistic_regression <- function(data, model, robust = FALSE, ...) {
+  if (robust) {
+    robust::glmRob(model, data = data, family = quasibinomial)
+  } else {
+    glm(model, data = data, family = quasibinomial)
+  }
 }
 
 #' Poisson regression for modeling of count data
 #'
-#' Conducts poisson regression (generalized linear models for count data)
+#' Conducts poisson regression to model count outcome variables using a
+#' generalized (poisson with logit link) linear model.
 #'
 #' @inheritParams tidy_regression
 #' @rdname regression_types
 #' @export
 poisson_regression <- function(data, model, robust = FALSE, ...) {
-  glm(model, data = data, family = poisson)
+  if (robust) {
+    robust::glmRob(model, data = data, family = poisson)
+  } else {
+    glm(model, data = data, family = poisson)
+  }
+}
+
+#' Quasi-poisson regression for count-like data
+#'
+#' Conducts poisson regression analysis to model approximations of count
+#' outcome variables (doesn't have to be integers) using a generalized
+#' (quasi-poisson with logit link) linear model
+#'
+#' @inheritParams tidy_regression
+#' @rdname regression_types
+#' @export
+quasi_poisson_regression <- function(data, model, robust = FALSE, ...) {
+  if (robust) {
+    robust::glmRob(model, data = data, family = quasipoisson)
+  } else {
+    glm(model, data = data, family = quasipoisson)
+  }
 }
 
 

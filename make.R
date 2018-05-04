@@ -1,4 +1,7 @@
 polcom %>%
-  mutate(polarize = abs(therm_1 - therm_2)) %>%
-  tidy_regression(polarize ~ pp_ideology + news_4 + ambiv_sexism_1, type = "negbinom") %>%
+  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  tidy_regression(polarize ~ pp_ideology + news_4, type = "negbinom", robust = TRUE) %>%
   tidy_summary()
+f <- formula(pp_ideology ~ age + sex + hhinc)
+make_tidycall(f, "pois", TRUE, polcom) %>% cat()
+
