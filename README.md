@@ -39,31 +39,30 @@ Conduct an Ordinary Least Squares (OLS) regression analysis.
 
 ``` r
 polcom %>%
-  tidy_regression(pp_ideology ~ news_1 + ambiv_sexism_1 + pie_1) %>%
+  tidy_regression(follow_trump ~ news_1 + ambiv_sexism_1) %>%
   tidy_summary()
 #> # A tidy model
-#> Model formula : pp_ideology ~ news_1 + ambiv_sexism_1 + pie_1
+#> Model formula : follow_trump ~ news_1 + ambiv_sexism_1
 #> Model type    : Ordinary Least Squares (OLS) regression
-#> Model data    : 243 (observations) X 4 (variables)
+#> Model data    : 243 (observations) X 3 (variables)
 #> $fit
 #> # A tibble: 6 x 6
-#>   fit_stat     n    df estimate   p.value stars
-#>   <chr>    <int> <int>    <dbl>     <dbl> <chr>
-#> 1 F          243     3   17.2    3.60e-10 ***  
-#> 2 R^2        243    NA    0.178 NA        ""   
-#> 3 Adj R^2    243    NA    0.168 NA        ""   
-#> 4 RMSE       243    NA    1.70  NA        ""   
-#> 5 AIC        243    NA  955.    NA        ""   
-#> 6 BIC        243    NA  972.    NA        ""   
+#>   fit_stat     n    df estimate p.value stars
+#>   <chr>    <int> <int>    <dbl>   <dbl> <chr>
+#> 1 F          243     2   3.83    0.0230 *    
+#> 2 R^2        243    NA   0.0309 NA      ""   
+#> 3 Adj R^2    243    NA   0.0229 NA      ""   
+#> 4 RMSE       243    NA   0.409  NA      ""   
+#> 5 AIC        243    NA 260.     NA      ""   
+#> 6 BIC        243    NA 274.     NA      ""   
 #> 
 #> $coef
-#> # A tibble: 4 x 6
-#>   term           estimate   s.e. est.se    p.value stars
-#>   <chr>             <dbl>  <dbl>  <dbl>      <dbl> <chr>
-#> 1 (Intercept)      2.40   0.475   5.04  0.00000100 ***  
-#> 2 news_1          -0.0219 0.0524 -0.417 0.677      ""   
-#> 3 ambiv_sexism_1   0.594  0.0859  6.92  0.         ***  
-#> 4 pie_1           -0.0843 0.0960 -0.878 0.381      ""
+#> # A tibble: 3 x 6
+#>   term           estimate   s.e. est.se p.value stars
+#>   <chr>             <dbl>  <dbl>  <dbl>   <dbl> <chr>
+#> 1 (Intercept)      0.745  0.0969   7.69  0.     ***  
+#> 2 news_1           0.0220 0.0122   1.81  0.0714 +    
+#> 3 ambiv_sexism_1  -0.0385 0.0206  -1.87  0.0627 +
 ```
 
 ### Logistic (dichotomous)
@@ -73,33 +72,31 @@ outcomes.
 
 ``` r
 polcom %>%
-  tidy_regression(follow_trump ~ news_1 + ambiv_sexism_1 + pie_1, 
-    type = "logistic") %>%
+  tidy_regression(follow_trump ~ news_1 + ambiv_sexism_1, type = "logistic") %>%
   tidy_summary()
 #> # A tidy model
-#> Model formula : follow_trump ~ news_1 + ambiv_sexism_1 + pie_1
+#> Model formula : follow_trump ~ news_1 + ambiv_sexism_1
 #> Model type    : logistic
-#> Model data    : 243 (observations) X 4 (variables)
+#> Model data    : 243 (observations) X 3 (variables)
 #> $fit
 #> # A tibble: 7 x 6
 #>   fit_stat           n    df estimate p.value stars
 #>   <chr>          <int> <int>    <dbl>   <dbl> <chr>
-#> 1 χ2               243   239 245.      0.383  ""   
-#> 2 Δχ2              243     3   9.99    0.0186 *    
-#> 3 Nagelkerke R^2   243    NA   0.0403 NA      ""   
-#> 4 McFadden R^2     243    NA   0.0392 NA      ""   
-#> 5 RMSE             243    NA   2.68   NA      ""   
+#> 1 χ2               243   240 247.      0.357  ""   
+#> 2 Δχ2              243     2   7.47    0.0239 *    
+#> 3 Nagelkerke R^2   243    NA   0.0303 NA      ""   
+#> 4 McFadden R^2     243    NA   0.0293 NA      ""   
+#> 5 RMSE             243    NA   2.54   NA      ""   
 #> 6 AIC              243    NA 253.     NA      ""   
-#> 7 BIC              243    NA 267.     NA      ""   
+#> 7 BIC              243    NA 264.     NA      ""   
 #> 
 #> $coef
-#> # A tibble: 4 x 6
+#> # A tibble: 3 x 6
 #>   term           estimate   s.e. est.se p.value stars
 #>   <chr>             <dbl>  <dbl>  <dbl>   <dbl> <chr>
-#> 1 (Intercept)       1.72  0.672    2.56  0.0106 *    
-#> 2 news_1            0.160 0.0739   2.17  0.0300 *    
-#> 3 ambiv_sexism_1   -0.238 0.122   -1.96  0.0498 *    
-#> 4 pie_1            -0.224 0.143   -1.57  0.117  ""
+#> 1 (Intercept)       1.13  0.553    2.05  0.0405 *    
+#> 2 news_1            0.127 0.0702   1.81  0.0707 +    
+#> 3 ambiv_sexism_1   -0.229 0.122   -1.87  0.0613 +
 ```
 
 ## Poisson (count)
@@ -108,33 +105,32 @@ Conduct a poisson regression analysis for count data.
 
 ``` r
 polcom %>%
-  tidy_regression(news_1 ~ pp_ideology + ambiv_sexism_1 + pie_1, 
-    type = "poisson") %>%
+  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "poisson") %>%
   tidy_summary()
 #> # A tidy model
-#> Model formula : news_1 ~ pp_ideology + ambiv_sexism_1 + pie_1
+#> Model formula : polarize ~ news_1 + ambiv_sexism_1
 #> Model type    : Poisson regression
-#> Model data    : 243 (observations) X 4 (variables)
+#> Model data    : 242 (observations) X 3 (variables)
 #> $fit
 #> # A tibble: 7 x 6
-#>   fit_stat           n    df  estimate  p.value stars
-#>   <chr>          <int> <int>     <dbl>    <dbl> <chr>
-#> 1 χ2               243   239  209.      0.919   ""   
-#> 2 Δχ2              243     3   15.3     0.00161 **   
-#> 3 Nagelkerke R^2   243    NA    0.0608 NA       ""   
-#> 4 McFadden R^2     243    NA    0.0680 NA       ""   
-#> 5 RMSE             243    NA    0.364  NA       ""   
-#> 6 AIC              243    NA 1082.     NA       ""   
-#> 7 BIC              243    NA 1096.     NA       ""   
+#>   fit_stat           n    df  estimate   p.value stars
+#>   <chr>          <int> <int>     <dbl>     <dbl> <chr>
+#> 1 χ2               242   239 6549.      0.       ***  
+#> 2 Δχ2              242     2  399.      2.20e-87 ***  
+#> 3 Nagelkerke R^2   242    NA    0.808  NA        ""   
+#> 4 McFadden R^2     242    NA    0.0574 NA        ""   
+#> 5 RMSE             242    NA    0.760  NA        ""   
+#> 6 AIC              242    NA 7725.     NA        ""   
+#> 7 BIC              242    NA 7736.     NA        ""   
 #> 
 #> $coef
-#> # A tibble: 4 x 6
-#>   term           estimate   s.e.  est.se  p.value stars
-#>   <chr>             <dbl>  <dbl>   <dbl>    <dbl> <chr>
-#> 1 (Intercept)     1.59    0.105   15.1   0.       ***  
-#> 2 pp_ideology    -0.00584 0.0155  -0.377 0.706    ""   
-#> 3 ambiv_sexism_1 -0.0224  0.0225  -0.996 0.319    ""   
-#> 4 pie_1           0.0795  0.0228   3.49  0.000482 ***
+#> # A tibble: 3 x 6
+#>   term           estimate    s.e. est.se p.value stars
+#>   <chr>             <dbl>   <dbl>  <dbl>   <dbl> <chr>
+#> 1 (Intercept)      3.80   0.0382   99.4       0. ***  
+#> 2 news_1           0.0447 0.00478   9.36      0. ***  
+#> 3 ambiv_sexism_1  -0.126  0.00797 -15.9       0. ***
 ```
 
 ## Negative binomial (overdispersed)
@@ -144,34 +140,97 @@ data.
 
 ``` r
 polcom %>%
-  mutate(polarize = abs(therm_1 - therm_2)) %>%
-  tidy_regression(polarize ~ pp_ideology + news_4 + ambiv_sexism_1, 
-    type = "negbinom") %>%
+  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "negbinom") %>%
   tidy_summary()
 #> # A tidy model
-#> Model formula : polarize ~ pp_ideology + news_4 + ambiv_sexism_1
+#> Model formula : polarize ~ news_1 + ambiv_sexism_1
 #> Model type    : Negative binomial regression
-#> Model data    : 242 (observations) X 4 (variables)
+#> Model data    : 242 (observations) X 3 (variables)
 #> $fit
 #> # A tibble: 7 x 6
 #>   fit_stat           n    df  estimate  p.value stars
 #>   <chr>          <int> <int>     <dbl>    <dbl> <chr>
-#> 1 χ2               242   238  294.      0.00819 **   
-#> 2 Δχ2              242     3   13.1     0.00450 **   
-#> 3 Nagelkerke R^2   242    NA    0.0525 NA       ""   
-#> 4 McFadden R^2     242    NA    0.0426 NA       ""   
-#> 5 RMSE             242    NA    0.775  NA       ""   
-#> 6 AIC              242    NA 2310.     NA       ""   
-#> 7 BIC              242    NA 2327.     NA       ""   
+#> 1 χ2               242   239  293.      0.00943 **   
+#> 2 Δχ2              242     2    8.44    0.0147  *    
+#> 3 Nagelkerke R^2   242    NA    0.0343 NA       ""   
+#> 4 McFadden R^2     242    NA    0.0280 NA       ""   
+#> 5 RMSE             242    NA    0.761  NA       ""   
+#> 6 AIC              242    NA 2312.     NA       ""   
+#> 7 BIC              242    NA 2326.     NA       ""   
 #> 
 #> $coef
-#> # A tibble: 4 x 6
+#> # A tibble: 3 x 6
 #>   term           estimate   s.e. est.se p.value stars
 #>   <chr>             <dbl>  <dbl>  <dbl>   <dbl> <chr>
-#> 1 (Intercept)      3.99   0.196   20.4   0.     ***  
-#> 2 pp_ideology     -0.0687 0.0402  -1.71  0.0874 +    
-#> 3 news_4           0.0518 0.0275   1.88  0.0599 +    
-#> 4 ambiv_sexism_1  -0.0775 0.0584  -1.33  0.185  ""
+#> 1 (Intercept)      3.74   0.258   14.5   0.     ***  
+#> 2 news_1           0.0526 0.0322   1.63  0.103  ""   
+#> 3 ambiv_sexism_1  -0.123  0.0541  -2.27  0.0230 *
+```
+
+## Robust models
+
+### Robust OLS
+
+``` r
+polcom %>%
+  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  tidy_regression(polarize ~ news_1 + ambiv_sexism_1, robust = TRUE) %>%
+  tidy_summary()
+#> # A tidy model
+#> Model formula : polarize ~ news_1 + ambiv_sexism_1
+#> Model type    : [Robust] Ordinary Least Squares (OLS) regression
+#> Model data    : 242 (observations) X 3 (variables)
+#> $fit
+#> # A tibble: 6 x 6
+#>   fit_stat     n    df  estimate   p.value stars
+#>   <chr>    <int> <int>     <dbl>     <dbl> <chr>
+#> 1 F          242     2    8.75    0.000215 ***  
+#> 2 R^2        242    NA    0.0682 NA        ""   
+#> 3 Adj R^2    242    NA    0.0604 NA        ""   
+#> 4 RMSE       242    NA   31.2    NA        ""   
+#> 5 AIC        242    NA 2357.     NA        ""   
+#> 6 BIC        242    NA 2371.     NA        ""   
+#> 
+#> $coef
+#> # A tibble: 3 x 6
+#>   term           estimate  s.e. est.se  p.value stars
+#>   <chr>             <dbl> <dbl>  <dbl>    <dbl> <chr>
+#> 1 (Intercept)       45.4  7.51    6.04 0.       ***  
+#> 2 news_1             1.89 0.939   2.01 0.0458   *    
+#> 3 ambiv_sexism_1    -5.33 1.58   -3.38 0.000837 ***
+```
+
+### Robust logistic, poisson, and quasi- version of each
+
+``` r
+polcom %>%
+  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "quasipoisson", robust = TRUE) %>%
+  tidy_summary()
+#> # A tidy model
+#> Model formula : polarize ~ news_1 + ambiv_sexism_1
+#> Model type    : [Robust] Poisson regression
+#> Model data    : 242 (observations) X 3 (variables)
+#> $fit
+#> # A tibble: 7 x 6
+#>   fit_stat           n    df  estimate   p.value stars
+#>   <chr>          <int> <int>     <dbl>     <dbl> <chr>
+#> 1 χ2               242   239 6549.      0.       ***  
+#> 2 Δχ2              242     2  399.      2.20e-87 ***  
+#> 3 Nagelkerke R^2   242    NA    0.808  NA        ""   
+#> 4 McFadden R^2     242    NA    0.0574 NA        ""   
+#> 5 RMSE             242    NA    0.760  NA        ""   
+#> 6 AIC              242    NA 7725.     NA        ""   
+#> 7 BIC              242    NA 7736.     NA        ""   
+#> 
+#> $coef
+#> # A tibble: 3 x 6
+#>   term           estimate    s.e. est.se p.value stars
+#>   <chr>             <dbl>   <dbl>  <dbl>   <dbl> <chr>
+#> 1 (Intercept)      3.80   0.0382   99.4       0. ***  
+#> 2 news_1           0.0447 0.00478   9.36      0. ***  
+#> 3 ambiv_sexism_1  -0.126  0.00797 -15.9       0. ***
 ```
 
 ### ANOVA

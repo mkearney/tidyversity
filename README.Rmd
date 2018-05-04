@@ -53,7 +53,7 @@ Conduct an Ordinary Least Squares (OLS) regression analysis.
 
 ```{r ols}
 polcom %>%
-  tidy_regression(pp_ideology ~ news_1 + ambiv_sexism_1 + pie_1) %>%
+  tidy_regression(follow_trump ~ news_1 + ambiv_sexism_1) %>%
   tidy_summary()
 ```
 
@@ -63,8 +63,7 @@ Conduct a logistic regression analysis for binary (dichotomous) outcomes.
 
 ```{r logistic}
 polcom %>%
-  tidy_regression(follow_trump ~ news_1 + ambiv_sexism_1 + pie_1, 
-    type = "logistic") %>%
+  tidy_regression(follow_trump ~ news_1 + ambiv_sexism_1, type = "logistic") %>%
   tidy_summary()
 ```
 
@@ -74,8 +73,8 @@ Conduct a poisson regression analysis for count data.
 
 ```{r poisson}
 polcom %>%
-  tidy_regression(news_1 ~ pp_ideology + ambiv_sexism_1 + pie_1, 
-    type = "poisson") %>%
+  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "poisson") %>%
   tidy_summary()
 ```
 
@@ -85,11 +84,31 @@ Conduct a negative binomial regression analysis for overdispersed count data.
 
 ```{r, negbinom}
 polcom %>%
-  mutate(polarize = abs(therm_1 - therm_2)) %>%
-  tidy_regression(polarize ~ pp_ideology + news_4 + ambiv_sexism_1, 
-    type = "negbinom") %>%
+  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "negbinom") %>%
   tidy_summary()
 ```
+
+## Robust models
+
+### Robust OLS
+
+```{r, robust_ols}
+polcom %>%
+  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  tidy_regression(polarize ~ news_1 + ambiv_sexism_1, robust = TRUE) %>%
+  tidy_summary()
+```
+
+### Robust logistic, poisson, and quasi- version of each
+
+```{r, robust_glm}
+polcom %>%
+  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "quasipoisson", robust = TRUE) %>%
+  tidy_summary()
+```
+
 
 ### ANOVA
 
