@@ -1,153 +1,15 @@
 
-store_tidycall <- function(m, model, type = NULL, robust = NULL) {
-  if (is.numeric(m)) {
-    data <- as.character(m)
-  } else {
-    data <- dim(model.frame(m))
-  }
-  lst <- list(data = data,
-    model = rlang::expr_text(formula(model)))
-  if (is.null(type)) {
-    type <- ""
-  }
-  if (is.null(robust)) {
-    robust <- FALSE
-  }
-  lst$type <- std_model_type(type)
-  lst$robust <- robust
-  structure(lst, class = "tidycall")
-}
-
-print.tidycall <- function(x) {
-  type <- x$type
-  if (is_ols(type)) {
-    type <- "Ordinary Least Squares (OLS) regression"
-  } else if (is_logistic(type)) {
-    call <- "Logistic regression"
-  } else if (is_poisson(type)) {
-    type <- "Poisson regression"
-  } else if (is_negbinom(type)) {
-    type <- "Negative binomial regression"
-  }
-  if (type != "" && x$robust) {
-    type <- paste0("[Robust] ", type)
-  }
-
-  if (length(x$data) == 2) {
-    data <- paste0(x$data[1], " (observations) X ", x$data[2], " (variables)")
-  } else {
-    data <- paste0(x$data, " (observations)")
-  }
-  if (type == "") {
-    p <- paste0("# A tidy model\nModel formula : ", x$model,
-      "\nModel data    : ", data, "\n")
-  } else {
-    p <- paste0("# A tidy model\nModel formula : ", x$model,
-      "\nModel type    : ", type,
-      "\nModel data    : ", data, "\n")
-  }
-  cat(p, fill = TRUE)
-}
-
-get_tidycall <- function(m) {
-  attr(m, "tidycall")
-}
-
 #' @export
 tidy_summary <- function(m) {
   print(get_tidycall(m))
   tidy_model(m)
 }
 
-standardize_inputs <- function(x) {
-  x <- model.frame(x)
-  if (ncol(x) < 2L) return(as_tbl(x))
-  y <- x[1]
-  x <- x[-1]
-  chars <- vapply(x, function(x) is.character(x) | is.factor(x), logical(1))
-  x[, !chars] <- scale(x[, !chars])
-  as_tbl(cbind(y, x))
-}
-
-tidy_coef <- function(x) UseMethod("tidy_coef")
-
-tidy_coef.lm <- function(x) {
-  ## estimate standardized solution
-  data <- standardize_inputs(x)
-  ## sometimes it won't converge, so tryCatch returns NULL
-  s <- tryCatch(update(x, . ~ . - 1, data = data), error = function(e) NULL)
-  ## broom the coef table, rename, and add stars column
-  x <- tibble::as_tibble(broom::tidy(x), validate = FALSE)
-  names(x)[2:4] <- c("est", "s.e.", "est.se")
-  x <- add_stars(x)
-  ## if the standardized solution worked, append the stardardized estimates
-  ## otherwise return NA vector
-  if (!is.null(s)) {
-    s <- tibble::as_tibble(broom::tidy(s), validate = FALSE)
-    if (nrow(x) > nrow(s)) {
-      x$std.est <- c(0, s[[2]])
-    } else {
-      x$std.est <- s[[2]]
-    }
-  } else {
-    x$std.est <- NA_real_
-  }
-  x
-}
-
-add_std_est <- function(d, m) {
-  ## estimate standardized solution
-  data <- standardize_inputs(x)
-  ## sometimes it won't converge, so tryCatch returns NULL
-  s <- tryCatch(update(m, . ~ . - 1, data = data), error = function(e) NULL)
-  ## if the standardized solution worked, append the stardardized estimates
-  ## otherwise return NA vector
-  if (!is.null(s)) {
-    s <- tibble::as_tibble(broom::tidy(s), validate = FALSE)
-    if (nrow(d) > nrow(s)) {
-      d$std.est <- c(0, s[[2]])
-    } else {
-      d$std.est <- s[[2]]
-    }
-  } else {
-    d$std.est <- NA_real_
-  }
-  d
-}
-
-tidy_coef.default <- function(x) {
-  ## broom the coef table, rename, and add stars column
-  d <- tibble::as_tibble(broom::tidy(x), validate = FALSE)
-  names(d)[2:4] <- c("est", "s.e.", "est.se")
-  d <- add_stars(d)
-  ## estimate/add standardized solution estimates and return
-  add_std_est(d)
-}
-
-tidy_coef.aov <- function(x) {
-  ## broom the coef table and add stars column
-  d <- as_tbl(broom::tidy(x))
-  add_stars(d)
-}
-
-tidy_coef.htest <- function(x) {
-  coef <- broom::tidy(x)[c(1, 4, 5)]
-  names(coef)[1:2] <- c("est", "t")
-  add_stars(coef)
-}
-
-tidy_data <- function(x) UseMethod("tidy_data")
-
-tidy_data.default <- function(x) {
-  x <- tryCatch(broom::augment(x), error = function(e) data.frame())
-  as_tbl(x)
-}
-
 tidy_model <- function(m) {
   new_tidy_model(
-    fit  = tidy_fit(m),
-    coef = tidy_coef(m),
-    data = tidy_data(m)
+    fit  = model_fit(m),
+    coef = model_coef(m),
+    data = model_data(m)
   )
 }
 
@@ -157,7 +19,6 @@ new_tidy_model <- function(fit, coef, data) {
   if (!is.data.frame(data)) {
     data <- tbl_frame()
   }
-
   structure(
     list(
       fit = fit,
@@ -173,16 +34,62 @@ print.tidy_model <- function(x, ...) {
   print(x[names(x) %in% c("fit", "coef")])
 }
 
+
+##----------------------------------------------------------------------------##
+##                                 MODEL COEF                                 ##
+##----------------------------------------------------------------------------##
+
+model_coef <- function(x) UseMethod("model_coef")
+
+model_coef.default <- function(x) coef_default(x)
+
+model_coef.lm <- function(x) coef_lm(x)
+
+model_coef.aov <- function(x) coef_lm(x)
+
+#model_coef.glm <- function(x) coef_glm(x)
+
+model_coef.htest <- function(x) coef_htest(x)
+
+model_coef.lavaan <- function(x) coef_lavaan(x)
+
+
+##----------------------------------------------------------------------------##
+##                                  MODEL FIT                                 ##
+##----------------------------------------------------------------------------##
+
+model_fit <- function(x) UseMethod("model_fit")
+
+model_fit.lm <- function(x) fit_lm(x)
+
+model_fit.aov <- function(x) fit_lm(x)
+
+model_fit.glm <- function(x) fit_glm(x)
+
+model_fit.htest <- function(x) fit_htest(x)
+
+model_fit.lavaan <- function(x) fit_lavaan(x)
+
+##----------------------------------------------------------------------------##
+##                                 MODEL DATA                                 ##
+##----------------------------------------------------------------------------##
+
 model_data <- function(x) UseMethod("model_data")
+
+model_data.default <- function(x) {
+  x <- tryCatch(broom::augment(x), error = function(e) data.frame())
+  as_tbl(x)
+}
+
+model_data.lavaan <- function(x) data_lavaan(x)
 
 model_data.tidy_model <- function(x) x$data
 
-tidy_fit <- function(x) UseMethod("tidy_fit")
+#model_data.lm <- function(x) data_lm(x)
 
-tidy_fit.lm <- function(x) ols_fit(x)
+#model_data.aov <- function(x) data_lm(x)
 
-tidy_fit.aov <- function(x) ols_fit(x)
+#model_data.glm <- function(x) data_glm(x)
 
-tidy_fit.glm <- function(x) glm_fit(x)
+#model_data.htest <- function(x) data_htest(x)
 
-tidy_fit.htest <- function(x) t_fit(x)

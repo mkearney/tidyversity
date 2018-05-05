@@ -18,7 +18,7 @@ tidy_regression(data, model, type = "ols", robust = FALSE, ...)
 \item{...}{Other arguments passed to modeling function.}
 }
 \value{
-A list object containing a "fit", "ceof", and "data" data frames
+A model object
 }
 \description{
 Conducts regression analysis to model outcome variable using OLS, logistic,

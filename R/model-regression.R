@@ -9,7 +9,7 @@
 #'   \code{"ols"}, \code{"logistic"}, \code{"poisson"}, \code{"negbinom"}. See
 #'   \link{regression_types} for more information.
 #' @param ... Other arguments passed to modeling function.
-#' @return A list object containing a "fit", "ceof", and "data" data frames
+#' @return A model object
 #' @details In addition to being a wrapper function for \link[base]{lm},
 #' \link[base]{glm}, and robust models via \link[MASS]{rlm} (for robust OLS)
 #' and \link[robust]{glmRob} this function (a) ensures \code{data} arguments

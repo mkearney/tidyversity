@@ -20,7 +20,9 @@ NULL
 #'   performance.
 #' @return A tibble, class \code{c("tbl_df", "tbl", "data.frame")}
 #' @export
-as_tbl <- function(x, ..., validate = FALSE) tibble::as_tibble(x, ..., validate = FALSE)
+as_tbl <- function(x, ..., validate = FALSE) {
+  tibble::as_tibble(x, ..., validate = FALSE)
+}
 
 #' Create a tibble data frame
 #'

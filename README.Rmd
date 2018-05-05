@@ -45,7 +45,7 @@ devtools::install_github("mkearney/tidyversity")
 ```
 
 
-## Regression
+## Regression models
 
 ### Ordinary Least Squares (OLS)
 
@@ -67,7 +67,7 @@ polcom %>%
   tidy_summary()
 ```
 
-## Poisson (count)
+### Poisson (count)
 
 Conduct a poisson regression analysis for count data.
 
@@ -78,7 +78,7 @@ polcom %>%
   tidy_summary()
 ```
 
-## Negative binomial (overdispersed)
+### Negative binomial (overdispersed)
 
 Conduct a negative binomial regression analysis for overdispersed count data.
 
@@ -89,18 +89,7 @@ polcom %>%
   tidy_summary()
 ```
 
-## Robust models
-
-### Robust OLS
-
-```{r, robust_ols}
-polcom %>%
-  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
-  tidy_regression(polarize ~ news_1 + ambiv_sexism_1, robust = TRUE) %>%
-  tidy_summary()
-```
-
-### Robust logistic, poisson, and quasi- version of each
+### Robust and quasi- models
 
 ```{r, robust_glm}
 polcom %>%
@@ -109,10 +98,11 @@ polcom %>%
   tidy_summary()
 ```
 
+## Mean comparison models
 
 ### ANOVA
 
-Conduct an analysis of variance.
+Conduct an analysis of variance (ANOVA).
 
 ```{r anova}
 polcom %>%
@@ -125,11 +115,28 @@ polcom %>%
   tidy_summary()
 ```
 
-#### t-tests
+### t-tests
 
 ```{r ttest}
 polcom %>%
   tidy_ttest(pp_ideology ~ follow_trump) %>%
+  tidy_summary()
+```
+
+## Latent variable models
+
+### Structural equation modeling (SEM)
+
+
+```{r sem}
+table(polcom$ambiv_sexism_1)
+polcom %>%
+  dplyr::mutate(therm_2 = 10 - therm_2 / 10,
+    therm_1 = therm_1 / 10) %>%
+  tidy_sem(news =~ news_1 + news_2 + news_3 + news_4 + news_5 + news_6,
+    ambiv_sexism =~ ambiv_sexism_1 + ambiv_sexism_2 + ambiv_sexism_3 + ambiv_sexism_4 + ambiv_sexism_5 + ambiv_sexism_6,
+    partisan =~ a*therm_1 + a*therm_2,
+    ambiv_sexism ~ age + hhinc + edu + news + partisan) %>%
   tidy_summary()
 ```
 

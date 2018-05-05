@@ -31,7 +31,7 @@ if (!requireNamespace("devtools", quietly = TRUE)) {
 devtools::install_github("mkearney/tidyversity")
 ```
 
-## Regression
+## Regression models
 
 ### Ordinary Least Squares (OLS)
 
@@ -99,7 +99,7 @@ polcom %>%
 #> 3 ambiv_sexism_1 -0.229 0.122   -1.87  0.0613 +      -0.201
 ```
 
-## Poisson (count)
+### Poisson (count)
 
 Conduct a poisson regression analysis for count data.
 
@@ -133,7 +133,7 @@ polcom %>%
 #> 3 ambiv_sexism_1 -0.126  0.00797 -15.9       0. ***    -2.23
 ```
 
-## Negative binomial (overdispersed)
+### Negative binomial (overdispersed)
 
 Conduct a negative binomial regression analysis for overdispersed count
 data.
@@ -169,40 +169,7 @@ polcom %>%
 #> 3 ambiv_sexism_1 -0.123  0.0541  -2.27  0.0230 *          NA
 ```
 
-## Robust models
-
-### Robust OLS
-
-``` r
-polcom %>%
-  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
-  tidy_regression(polarize ~ news_1 + ambiv_sexism_1, robust = TRUE) %>%
-  tidy_summary()
-#> # A tidy model
-#> Model formula : polarize ~ news_1 + ambiv_sexism_1
-#> Model type    : [Robust] Ordinary Least Squares (OLS) regression
-#> Model data    : 242 (observations) X 3 (variables)
-#> $fit
-#> # A tibble: 6 x 6
-#>   fit_stat     n    df  estimate   p.value stars
-#>   <chr>    <int> <int>     <dbl>     <dbl> <chr>
-#> 1 F          242     2    8.75    0.000215 ***  
-#> 2 R^2        242    NA    0.0682 NA        ""   
-#> 3 Adj R^2    242    NA    0.0604 NA        ""   
-#> 4 RMSE       242    NA   31.2    NA        ""   
-#> 5 AIC        242    NA 2357.     NA        ""   
-#> 6 BIC        242    NA 2371.     NA        ""   
-#> 
-#> $coef
-#> # A tibble: 3 x 7
-#>   term              est  s.e. est.se  p.value stars std.est
-#>   <chr>           <dbl> <dbl>  <dbl>    <dbl> <chr>   <dbl>
-#> 1 (Intercept)     45.4  7.51    6.04 0.       ***      0.  
-#> 2 news_1           1.89 0.939   2.01 0.0458   *        4.07
-#> 3 ambiv_sexism_1  -5.33 1.58   -3.38 0.000837 ***     -6.85
-```
-
-### Robust logistic, poisson, and quasi- version of each
+### Robust and quasi- models
 
 ``` r
 polcom %>%
@@ -234,9 +201,11 @@ polcom %>%
 #> 3 ambiv_sexism_1 -0.126  0.00797 -15.9       0. ***    -2.23
 ```
 
+## Mean comparison models
+
 ### ANOVA
 
-Conduct an analysis of variance.
+Conduct an analysis of variance (ANOVA).
 
 ``` r
 polcom %>%
@@ -260,16 +229,16 @@ polcom %>%
 #> 6 BIC        243    NA  826.    NA        ""   
 #> 
 #> $coef
-#> # A tibble: 4 x 7
-#>   term               df   sumsq  meansq statistic   p.value stars
-#>   <chr>           <dbl>   <dbl>   <dbl>     <dbl>     <dbl> <chr>
-#> 1 sex                1.  19.2    19.2      12.6    0.000474 ***  
-#> 2 vote_choice        2. 389.    194.      127.     0.       ***  
-#> 3 sex:vote_choice    2.   0.519   0.259     0.169  0.844    ""   
-#> 4 Residuals        237. 363.      1.53     NA     NA        ""
+#> # A tibble: 4 x 8
+#>   term              est    s.e.  est.se statistic   p.value stars std.est
+#>   <chr>           <dbl>   <dbl>   <dbl>     <dbl>     <dbl> <chr>   <dbl>
+#> 1 sex                1.  19.2    19.2      12.6    0.000474 ***        2.
+#> 2 vote_choice        2. 389.    194.      127.     0.       ***        2.
+#> 3 sex:vote_choice    2.   0.519   0.259     0.169  0.844    ""         2.
+#> 4 Residuals        237. 363.      1.53     NA     NA        ""       237.
 ```
 
-#### t-tests
+### t-tests
 
 ``` r
 polcom %>%
@@ -288,6 +257,54 @@ polcom %>%
 #> $coef
 #>        est       t  p.value stars
 #> 1 0.922027 2.99241 0.003719    **
+```
+
+## Latent variable models
+
+### Structural equation modeling (SEM)
+
+``` r
+table(polcom$ambiv_sexism_1)
+#> 
+#>  1  2  3  4  5 
+#> 73 62 47 43 18
+polcom %>%
+  dplyr::mutate(therm_2 = 10 - therm_2 / 10,
+    therm_1 = therm_1 / 10) %>%
+  tidy_sem(news =~ news_1 + news_2 + news_3 + news_4 + news_5 + news_6,
+    ambiv_sexism =~ ambiv_sexism_1 + ambiv_sexism_2 + ambiv_sexism_3 + ambiv_sexism_4 + ambiv_sexism_5 + ambiv_sexism_6,
+    partisan =~ a*therm_1 + a*therm_2,
+    ambiv_sexism ~ age + hhinc + edu + news + partisan) %>%
+  tidy_summary()
+#> NULL
+#> $fit
+#> # A tibble: 8 x 6
+#>   fit_stat             n    df   estimate      p.value stars
+#>   <chr>            <int> <int>      <dbl>        <dbl> <chr>
+#> 1 chisq              236   114   205.      0.000000382 ***  
+#> 2 cfi                236    NA     0.925  NA           ""   
+#> 3 tli                236    NA     0.912  NA           ""   
+#> 4 aic                236    NA 15901.     NA           ""   
+#> 5 bic                236    NA 16064.     NA           ""   
+#> 6 rmsea              236    NA     0.0581 NA           ""   
+#> 7 srmr               236    NA     0.0682 NA           ""   
+#> 8 ambiv_sexism:R^2   236    NA     0.403  NA           ""   
+#> 
+#> $coef
+#> # A tibble: 63 x 8
+#>    term                  est     se est.se p.value ci.lower ci.upper stars
+#>    <chr>               <dbl>  <dbl>  <dbl>   <dbl>    <dbl>    <dbl> <chr>
+#>  1 news =~ news_1      1.00  0.      NA    NA        1.00      1.00  ""   
+#>  2 news =~ news_2      1.63  0.723    2.25  0.0246   0.208     3.04  *    
+#>  3 news =~ news_3      5.16  2.11     2.45  0.0143   1.03      9.29  *    
+#>  4 news =~ news_4      5.71  2.34     2.44  0.0147   1.12     10.3   *    
+#>  5 news =~ news_5      3.58  1.43     2.49  0.0126   0.765     6.39  *    
+#>  6 news =~ news_6      1.21  0.648    1.88  0.0607  -0.0546    2.48  +    
+#>  7 ambiv_sexism =~ am… 1.00  0.      NA    NA        1.00      1.00  ""   
+#>  8 ambiv_sexism =~ am… 0.945 0.0573  16.5   0.       0.833     1.06  ***  
+#>  9 ambiv_sexism =~ am… 0.801 0.0570  14.1   0.       0.689     0.913 ***  
+#> 10 ambiv_sexism =~ am… 0.743 0.0613  12.1   0.       0.623     0.863 ***  
+#> # ... with 53 more rows
 ```
 
 # Data sets
