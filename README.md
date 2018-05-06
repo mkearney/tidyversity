@@ -264,19 +264,16 @@ polcom %>%
 ### Structural equation modeling (SEM)
 
 ``` r
-table(polcom$ambiv_sexism_1)
-#> 
-#>  1  2  3  4  5 
-#> 73 62 47 43 18
 polcom %>%
   dplyr::mutate(therm_2 = 10 - therm_2 / 10,
     therm_1 = therm_1 / 10) %>%
   tidy_sem(news =~ news_1 + news_2 + news_3 + news_4 + news_5 + news_6,
-    ambiv_sexism =~ ambiv_sexism_1 + ambiv_sexism_2 + ambiv_sexism_3 + ambiv_sexism_4 + ambiv_sexism_5 + ambiv_sexism_6,
+    ambiv_sexism =~ ambiv_sexism_1 + ambiv_sexism_2 + ambiv_sexism_3 + 
+    ambiv_sexism_4 + ambiv_sexism_5 + ambiv_sexism_6,
     partisan =~ a*therm_1 + a*therm_2,
     ambiv_sexism ~ age + hhinc + edu + news + partisan) %>%
   tidy_summary()
-#> NULL
+#> 
 #> $fit
 #> # A tibble: 8 x 6
 #>   fit_stat             n    df   estimate      p.value stars
