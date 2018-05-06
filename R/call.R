@@ -2,11 +2,22 @@
 store_tidycall <- function(m, model, type = NULL, robust = NULL) {
   if (is.numeric(m)) {
     data <- as.character(m)
+  } else if (is.data.frame(m)) {
+    data <- dim(m)
   } else {
     data <- dim(model.frame(m))
   }
-  lst <- list(data = data,
-    model = rlang::expr_text(formula(model)))
+  if (rlang::is_character(model)) {
+    model <- strsplit(model, "\\n")[[1]]
+    if (length(model) > 1L) {
+      model <- paste(c(model[1],
+        paste0("                ", model[-1])),
+        collapse = "\n")
+    }
+  } else {
+    model <- rlang::expr_text(formula(model))
+  }
+  lst <- list(data = data, model = model)
   if (is.null(type)) {
     type <- ""
   }
@@ -32,7 +43,6 @@ print.tidycall <- function(x) {
   if (type != "" && x$robust) {
     type <- paste0("[Robust] ", type)
   }
-
   if (length(x$data) == 2) {
     data <- paste0(x$data[1], " (observations) X ", x$data[2], " (variables)")
   } else {

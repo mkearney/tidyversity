@@ -1,25 +1,28 @@
-polcom %>%
-  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
-  tidy_regression(polarize ~ pp_ideology + news_4, type = "ols", robust = FALSE) %>%
-  tidy_summary() %>%
-  .[1:2] %>%
-  lapply(as.data.frame)
+## function to genrate latent indicator data frame
+latent_indicators <- function(l, i, n, m = 0, sd = 1) {
+  r_ <- function(lv = NULL) {
+    if (is.null(lv)) {
+      lv <- 0
+    }
+    lv + rnorm(n, m, sd)
+  }
+  r <- function(ni, nm) {
+    nm <- paste0(nm, seq_len(ni))
+    lv <- rnorm(n)
+    d <- as_tbl(replicate(ni, r_(lv)))
+    names(d) <- nm
+    d
+  }
+  as_tbl(do.call("cbind", Map(r, i, l)))
+}
 
-polcom %>%
-  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
-  tidy_regression(polarize ~ pp_ideology + news_4, type = "quasipoisson", robust = TRUE) %>%
-  tidy_summary()
+## create data set
+d <- latent_indicators(c("x", "y", "z"), c(3, 4, 5), 200)
 
-x <- m
-tidyversity:::as_tbl(cbind(model.frame(m)[1], scale(model.frame(m)[-1])))
-
-polcom %>%
-  tidy_ttest(pp_ideology ~ follow_trump) %>%
-  tidy_summary()
-
-polcom %>%
-  dplyr::mutate(vote_trump = (vote_2016_choice==1),
-    sex = ifelse(sex == 1, "Male", "Female")) %>%
-  tidy_regression(vote_trump ~ edu + ambiv_sexism_3 +
-      img1_hrc_1 + img1_djt_1 + hhinc + age + edu + sex, "logistic") %>%
+data %>%
+  tidy_sem(x =~ x1 + x2 + x3,
+    y =~ y1 + y2 + y3 + y4,
+    z =~ z1 + z2 + z3 + a*z4 + b*z5,
+    y ~ x,
+    z ~ x + y + z) %>%
   tidy_summary()

@@ -17,6 +17,6 @@
 #' @export
 tidy_ttest <- function(data, model) {
   m <- t.test(model, data)
-  attr(m, "tidycall") <- store_tidycall(nrow(data), model)
+  attr(m, "tidycall") <- store_tidycall(c(nrow(data), 2L), model)
   m
 }

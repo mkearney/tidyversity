@@ -73,7 +73,7 @@ Conduct a poisson regression analysis for count data.
 
 ```{r poisson}
 polcom %>%
-  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  mutate(polarize = abs(therm_1 - therm_2)) %>%
   tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "poisson") %>%
   tidy_summary()
 ```
@@ -84,7 +84,7 @@ Conduct a negative binomial regression analysis for overdispersed count data.
 
 ```{r, negbinom}
 polcom %>%
-  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  mutate(polarize = abs(therm_1 - therm_2)) %>%
   tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "negbinom") %>%
   tidy_summary()
 ```
@@ -93,7 +93,7 @@ polcom %>%
 
 ```{r, robust_glm}
 polcom %>%
-  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  mutate(polarize = abs(therm_1 - therm_2)) %>%
   tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "quasipoisson", robust = TRUE) %>%
   tidy_summary()
 ```
@@ -106,8 +106,8 @@ Conduct an analysis of variance (ANOVA).
 
 ```{r anova}
 polcom %>%
-  dplyr::mutate(sex = ifelse(sex == 1, "Male", "Female"),
-  vote_choice = dplyr::case_when(
+  mutate(sex = ifelse(sex == 1, "Male", "Female"),
+  vote_choice = case_when(
     vote_2016_choice == 1 ~ "Clinton",
     vote_2016_choice == 2 ~ "Trump",
     TRUE ~ "Other")) %>%
@@ -127,16 +127,17 @@ polcom %>%
 
 ### Structural equation modeling (SEM)
 
+Conduct latent variable analysis using structural equation modeling.
 
 ```{r sem}
-table(polcom$ambiv_sexism_1)
 polcom %>%
-  dplyr::mutate(therm_2 = 10 - therm_2 / 10,
-    therm_1 = therm_1 / 10) %>%
+  mutate(therm_2 = therm_2 / 10, 
+    therm_1 = 10 - therm_1 / 10) %>%
   tidy_sem(news =~ news_1 + news_2 + news_3 + news_4 + news_5 + news_6,
-    ambiv_sexism =~ ambiv_sexism_1 + ambiv_sexism_2 + ambiv_sexism_3 + ambiv_sexism_4 + ambiv_sexism_5 + ambiv_sexism_6,
+    ambiv_sexism =~ ambiv_sexism_1 + ambiv_sexism_2 + ambiv_sexism_3 + 
+      ambiv_sexism_4 + ambiv_sexism_5 + ambiv_sexism_6,
     partisan =~ a*therm_1 + a*therm_2,
-    ambiv_sexism ~ age + hhinc + edu + news + partisan) %>%
+    ambiv_sexism ~ age + sex + hhinc + edu + news + partisan) %>%
   tidy_summary()
 ```
 

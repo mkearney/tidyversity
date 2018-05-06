@@ -38,17 +38,19 @@ coef_aov <- function(x) {
 }
 
 coef_htest <- function(x) {
-  coef <- broom::tidy(x)[c(1, 4, 5)]
+  coef <- as_tbl(broom::tidy(x)[c(1, 4, 5)])
   names(coef)[1:2] <- c("est", "t")
   add_stars(coef)
 }
 
 coef_lavaan <- function(m) {
-  m <- as_tbl(lavaan::parameterEstimates(m))
+  m <- as_tbl(lavaan::parameterEstimates(m, standardized = TRUE))
+  m <- m[m$op != "~~", ]
   m$term <- apply(m[, 1:3], 1, paste, collapse = " ")
-  m <- m[, c(11, 5:10)]
-  names(m)[4:5] <- c("est.se", "p.value")
-  add_stars(m)
+  m <- m[, c("term", "est", "se", "z", "pvalue",  "std.all")]
+  names(m)[4:6] <- c("est.se", "p.value", "std.est")
+  m <- add_stars(m)
+  m[, c("term", "est", "se", "est.se", "p.value", "stars", "std.est")]
 }
 
 

@@ -105,7 +105,7 @@ Conduct a poisson regression analysis for count data.
 
 ``` r
 polcom %>%
-  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  mutate(polarize = abs(therm_1 - therm_2)) %>%
   tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "poisson") %>%
   tidy_summary()
 #> # A tidy model
@@ -140,7 +140,7 @@ data.
 
 ``` r
 polcom %>%
-  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  mutate(polarize = abs(therm_1 - therm_2)) %>%
   tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "negbinom") %>%
   tidy_summary()
 #> # A tidy model
@@ -173,7 +173,7 @@ polcom %>%
 
 ``` r
 polcom %>%
-  dplyr::mutate(polarize = abs(therm_1 - therm_2)) %>%
+  mutate(polarize = abs(therm_1 - therm_2)) %>%
   tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "quasipoisson", robust = TRUE) %>%
   tidy_summary()
 #> # A tidy model
@@ -209,8 +209,8 @@ Conduct an analysis of variance (ANOVA).
 
 ``` r
 polcom %>%
-  dplyr::mutate(sex = ifelse(sex == 1, "Male", "Female"),
-  vote_choice = dplyr::case_when(
+  mutate(sex = ifelse(sex == 1, "Male", "Female"),
+  vote_choice = case_when(
     vote_2016_choice == 1 ~ "Clinton",
     vote_2016_choice == 2 ~ "Trump",
     TRUE ~ "Other")) %>%
@@ -246,7 +246,7 @@ polcom %>%
   tidy_summary()
 #> # A tidy model
 #> Model formula : pp_ideology ~ follow_trump
-#> Model data    : 244 (observations)
+#> Model data    : 244 (observations) X 2 (variables)
 #> $fit
 #> # A tibble: 2 x 6
 #>   group    df  mean   diff  lo.95 hi.05
@@ -255,56 +255,72 @@ polcom %>%
 #> 2 TRUE   76.9  3.26 -0.922 -0.308 -1.54
 #> 
 #> $coef
-#>        est       t  p.value stars
-#> 1 0.922027 2.99241 0.003719    **
+#> # A tibble: 1 x 4
+#>     est     t p.value stars
+#>   <dbl> <dbl>   <dbl> <chr>
+#> 1 0.922  2.99 0.00372 **
 ```
 
 ## Latent variable models
 
 ### Structural equation modeling (SEM)
 
+Conduct latent variable analysis using structural equation modeling.
+
 ``` r
-table(polcom$ambiv_sexism_1)
-#> 
-#>  1  2  3  4  5 
-#> 73 62 47 43 18
 polcom %>%
-  dplyr::mutate(therm_2 = 10 - therm_2 / 10,
-    therm_1 = therm_1 / 10) %>%
+  mutate(therm_2 = therm_2 / 10, 
+    therm_1 = 10 - therm_1 / 10) %>%
   tidy_sem(news =~ news_1 + news_2 + news_3 + news_4 + news_5 + news_6,
-    ambiv_sexism =~ ambiv_sexism_1 + ambiv_sexism_2 + ambiv_sexism_3 + ambiv_sexism_4 + ambiv_sexism_5 + ambiv_sexism_6,
+    ambiv_sexism =~ ambiv_sexism_1 + ambiv_sexism_2 + ambiv_sexism_3 + 
+      ambiv_sexism_4 + ambiv_sexism_5 + ambiv_sexism_6,
     partisan =~ a*therm_1 + a*therm_2,
-    ambiv_sexism ~ age + hhinc + edu + news + partisan) %>%
+    ambiv_sexism ~ age + sex + hhinc + edu + news + partisan) %>%
   tidy_summary()
-#> NULL
+#> # A tidy model
+#> Model formula : news =~ news_1 + news_2 + news_3 + news_4 + news_5 + news_6
+#>                 ambiv_sexism =~ ambiv_sexism_1 + ambiv_sexism_2 + ambiv_sexism_3 + ambiv_sexism_4 + 
+#>                     ambiv_sexism_5 + ambiv_sexism_6
+#>                 partisan =~ a * therm_1 + a * therm_2
+#>                 ambiv_sexism ~ age + sex + hhinc + edu + news + partisan
+#> Model data    : 235 (observations) X 18 (variables)
 #> $fit
 #> # A tibble: 8 x 6
-#>   fit_stat             n    df   estimate      p.value stars
-#>   <chr>            <int> <int>      <dbl>        <dbl> <chr>
-#> 1 chisq              236   114   205.      0.000000382 ***  
-#> 2 cfi                236    NA     0.925  NA           ""   
-#> 3 tli                236    NA     0.912  NA           ""   
-#> 4 aic                236    NA 15901.     NA           ""   
-#> 5 bic                236    NA 16064.     NA           ""   
-#> 6 rmsea              236    NA     0.0581 NA           ""   
-#> 7 srmr               236    NA     0.0682 NA           ""   
-#> 8 ambiv_sexism:R^2   236    NA     0.403  NA           ""   
+#>   fit_stat             n    df   estimate  p.value stars
+#>   <chr>            <int> <int>      <dbl>    <dbl> <chr>
+#> 1 chisq              235   127   240.      6.21e-9 ***  
+#> 2 cfi                235    NA     0.907  NA       ""   
+#> 3 tli                235    NA     0.892  NA       ""   
+#> 4 aic                235    NA 16139.     NA       ""   
+#> 5 bic                235    NA 16256.     NA       ""   
+#> 6 rmsea              235    NA     0.0614 NA       ""   
+#> 7 srmr               235    NA     0.0731 NA       ""   
+#> 8 ambiv_sexism:R^2   235    NA     0.379  NA       ""   
 #> 
 #> $coef
-#> # A tibble: 63 x 8
-#>    term                  est     se est.se p.value ci.lower ci.upper stars
-#>    <chr>               <dbl>  <dbl>  <dbl>   <dbl>    <dbl>    <dbl> <chr>
-#>  1 news =~ news_1      1.00  0.      NA    NA        1.00      1.00  ""   
-#>  2 news =~ news_2      1.63  0.723    2.25  0.0246   0.208     3.04  *    
-#>  3 news =~ news_3      5.16  2.11     2.45  0.0143   1.03      9.29  *    
-#>  4 news =~ news_4      5.71  2.34     2.44  0.0147   1.12     10.3   *    
-#>  5 news =~ news_5      3.58  1.43     2.49  0.0126   0.765     6.39  *    
-#>  6 news =~ news_6      1.21  0.648    1.88  0.0607  -0.0546    2.48  +    
-#>  7 ambiv_sexism =~ am… 1.00  0.      NA    NA        1.00      1.00  ""   
-#>  8 ambiv_sexism =~ am… 0.945 0.0573  16.5   0.       0.833     1.06  ***  
-#>  9 ambiv_sexism =~ am… 0.801 0.0570  14.1   0.       0.689     0.913 ***  
-#> 10 ambiv_sexism =~ am… 0.743 0.0613  12.1   0.       0.623     0.863 ***  
-#> # ... with 53 more rows
+#> # A tibble: 20 x 7
+#>    term                          est      se  est.se p.value stars std.est
+#>    <chr>                       <dbl>   <dbl>   <dbl>   <dbl> <chr>   <dbl>
+#>  1 news =~ news_1            1.00    0.       NA     NA      ""     0.173 
+#>  2 news =~ news_2            1.59    0.722     2.20   0.0276 *      0.340 
+#>  3 news =~ news_3            5.07    2.10      2.42   0.0156 *      0.781 
+#>  4 news =~ news_4            5.59    2.31      2.42   0.0157 *      0.851 
+#>  5 news =~ news_5            3.49    1.48      2.35   0.0186 *      0.520 
+#>  6 news =~ news_6            1.25    0.683     1.84   0.0660 +      0.196 
+#>  7 ambiv_sexism =~ ambiv_s…  1.00    0.       NA     NA      ""     0.825 
+#>  8 ambiv_sexism =~ ambiv_s…  0.942   0.0671   14.0    0.     ***    0.801 
+#>  9 ambiv_sexism =~ ambiv_s…  0.795   0.0671   11.8    0.     ***    0.706 
+#> 10 ambiv_sexism =~ ambiv_s…  0.743   0.0638   11.6    0.     ***    0.697 
+#> 11 ambiv_sexism =~ ambiv_s…  0.902   0.0616   14.6    0.     ***    0.825 
+#> 12 ambiv_sexism =~ ambiv_s…  0.904   0.0637   14.2    0.     ***    0.807 
+#> 13 partisan =~ therm_1       1.00    0.       NA     NA      ""     0.577 
+#> 14 partisan =~ therm_2       1.00    0.       NA     NA      ""     0.592 
+#> 15 ambiv_sexism ~ age       -0.00421 0.00511  -0.824  0.410  ""    -0.0513
+#> 16 ambiv_sexism ~ sex       -0.271   0.130    -2.09   0.0367 *     -0.130 
+#> 17 ambiv_sexism ~ hhinc     -0.0205  0.0233   -0.878  0.380  ""    -0.0567
+#> 18 ambiv_sexism ~ edu       -0.0877  0.0685   -1.28   0.201  ""    -0.0828
+#> 19 ambiv_sexism ~ news       0.130   0.215     0.607  0.544  ""     0.0468
+#> 20 ambiv_sexism ~ partisan   0.347   0.0690    5.03   0.     ***    0.592
 ```
 
 # Data sets
