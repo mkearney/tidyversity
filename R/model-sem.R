@@ -14,7 +14,6 @@ tidy_sem <- function(.data, ..., robust = FALSE) {
   } else {
     estimator <- "ml"
   }
-<<<<<<< HEAD
   ## build model formula
   model <- formulas2lavmodel(...)
   ## estimate model
@@ -24,10 +23,6 @@ tidy_sem <- function(.data, ..., robust = FALSE) {
   attr(m, "tidycall") <- store_tidycall(dims, model, robust = robust)
   ## return model object
   m
-=======
-  mod <- formulas2lavmodel(...)
-  lavaan::sem(mod, data = .data, estimator = estimator)
->>>>>>> 07e023cc0fe0f69eede3439af14d6e7da0c9ca31
 }
 
 formulas2lavmodel <- function(...) {
