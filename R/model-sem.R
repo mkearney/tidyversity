@@ -15,7 +15,7 @@ tidy_sem <- function(.data, ..., robust = FALSE) {
     estimator <- "ml"
   }
   mod <- formulas2lavmodel(...)
-  lavaan::sem(mod, data = .data, estimator = "mlr")
+  lavaan::sem(mod, data = .data, estimator = estimator)
 }
 
 formulas2lavmodel <- function(...) {
