@@ -145,6 +145,16 @@ polcom %>%
   tidy_summary()
 ```
 
+### Multilevel modeling (MLM)
+
+Estimate multilevel (mixed effects) models.
+
+```{r mlm}
+lme4::sleepstudy %>%
+  tidy_mlm(Reaction ~ Days + (Days | Subject))
+##  tidy_summary() summary method not yet implemented
+```
+
 # Data sets
 
 Comes with one data set. 

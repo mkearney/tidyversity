@@ -346,6 +346,29 @@ polcom %>%
 #> 20 ambiv_sexism ~ partisan   0.347   0.0690    5.03   0.     ***    0.592
 ```
 
+### Multilevel modeling (MLM)
+
+Estimate multilevel (mixed effects) models.
+
+``` r
+lme4::sleepstudy %>%
+  tidy_mlm(Reaction ~ Days + (Days | Subject))
+#> Linear mixed model fit by REML ['lmerMod']
+#> Formula: Reaction ~ Days + (Days | Subject)
+#>    Data: .data
+#> REML criterion at convergence: 1743.63
+#> Random effects:
+#>  Groups   Name        Std.Dev. Corr
+#>  Subject  (Intercept) 24.74        
+#>           Days         5.92    0.07
+#>  Residual             25.59        
+#> Number of obs: 180, groups:  Subject, 18
+#> Fixed Effects:
+#> (Intercept)         Days  
+#>       251.4         10.5
+##  tidy_summary() summary method not yet implemented
+```
+
 # Data sets
 
 Comes with one data set.
