@@ -7,14 +7,33 @@ coef_default <- function(x) {
   add_std_est(d)
 }
 
+#' @importFrom MASS rlm
+#' @importFrom robust glmRob
 coef_lm <- function(x) {
   ## estimate standardized solution
   data <- standardize_inputs(x)
+  ## store df.residual if available
+  if ("df.residual" %in% names(x)) {
+    dfr <- length(x$residuals) - length(x$coefficients)
+  } else {
+    dfr <- NULL
+  }
   ## sometimes it won't converge, so tryCatch returns NULL
-  s <- tryCatch(update(x, . ~ . - 1, data = data), error = function(e) NULL)
+  if (attr(x$terms, "intercept") == 1) {
+    s <- tryCatch(suppressWarnings(update(x, . ~ . - 1, data = data)), error = function(e) NULL)
+    ## if null try again this time w/o removing the intercept
+    if (is.null(s)) {
+      s <- tryCatch(update(x, . ~ ., data = data), error = function(e) NULL)
+    }
+  } else {
+    s <- tryCatch(update(x, . ~ ., data = data), error = function(e) NULL)
+  }
   ## broom the coef table, rename, and add stars column
   x <- tibble::as_tibble(broom::tidy(x), validate = FALSE)
   names(x)[2:4] <- c("est", "s.e.", "est.se")
+  if (ncol(x) == 4 && !is.null(dfr)) {
+    x$p.value <- 2 * pt(abs(x[[4]]), dfr, lower.tail = FALSE)
+  }
   x <- add_stars(x)
   ## if the standardized solution worked, append the stardardized estimates
   ## otherwise return NA vector

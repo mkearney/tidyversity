@@ -16,11 +16,13 @@ tidy_sem <- function(.data, ..., robust = FALSE) {
   }
   ## build model formula
   model <- formulas2lavmodel(...)
+  ## capture model expression
+  e <- rlang::expr(lavaan::sem(model, data = .data, estimator = estimator))
   ## estimate model
-  m <- lavaan::sem(model, data = .data, estimator = estimator)
+  m <- eval(e)
   ## store info as tidycall attribute
   dims <- c(m@Data@nobs[[1]], length(m@Data@ov.names[[1]]))
-  attr(m, "tidycall") <- store_tidycall(dims, model, robust = robust)
+  attr(m, "tidycall") <- store_tidycall(dims, e)
   ## return model object
   m
 }

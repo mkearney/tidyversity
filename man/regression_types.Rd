@@ -4,9 +4,9 @@
 \alias{regression_types}
 \alias{ols_regression}
 \alias{logistic_regression}
-\alias{quasi_logistic_regression}
+\alias{quasilogistic_regression}
 \alias{poisson_regression}
-\alias{quasi_poisson_regression}
+\alias{quasipoisson_regression}
 \alias{negbinom_regression}
 \title{Types of regression models}
 \usage{
@@ -14,11 +14,11 @@ ols_regression(data, model, robust = FALSE, ...)
 
 logistic_regression(data, model, robust = FALSE, ...)
 
-quasi_logistic_regression(data, model, robust = FALSE, ...)
+quasilogistic_regression(data, model, robust = FALSE, ...)
 
 poisson_regression(data, model, robust = FALSE, ...)
 
-quasi_poisson_regression(data, model, robust = FALSE, ...)
+quasipoisson_regression(data, model, robust = FALSE, ...)
 
 negbinom_regression(data, model, robust = FALSE, ...)
 }
@@ -26,6 +26,9 @@ negbinom_regression(data, model, robust = FALSE, ...)
 \item{data}{Data frame containing variables in model}
 
 \item{model}{Model formula to be estimated.}
+
+\item{robust}{Logical indicating whether to estimate a robust model. This
+is available for all models but negative binomial.}
 
 \item{...}{Other arguments passed to modeling function.}
 }

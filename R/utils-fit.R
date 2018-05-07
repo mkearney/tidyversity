@@ -1,6 +1,7 @@
+
 rmse <- function(m) {
   x <- unname(m$residuals)
-  n <- nobs(m)
+  n <- length(x)
   p <- length(variable.names(m))
   x <- (1 / (n - p)) * sum(x^2)
   sqrt(x)
@@ -18,11 +19,11 @@ rmse <- function(m) {
 nagelkerke <- function(m) UseMethod("nagelkerke")
 
 #' @export
-nagelkerke.glm <- function(m) {
+nagelkerke.default <- function(m) {
   s <- summary(m)
   ll0 <- -s$null.deviance / 2
   ll1 <- -s$deviance / 2
-  n <- nobs(m)
+  n <- length(m$residuals)
   1 - exp((-(2/n) * (ll1 - ll0)))
 }
 
@@ -44,6 +45,6 @@ coxsnell <- function(m) {
   s <- summary(m)
   ll0 <- -s$null.deviance / 2
   ll1 <- -s$deviance / 2
-  n <- nobs(m)
+  n <- length(m$residuals)
   1 - ((ll0 / ll1)^(2 / n))
 }

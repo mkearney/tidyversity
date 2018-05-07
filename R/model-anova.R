@@ -22,6 +22,15 @@
 #'
 #' @export
 tidy_anova <- function(data, model, type = NULL, robust = FALSE, ...) {
-  aov(model, data = data, ...)
+  if (robust) {
+    stop("Sorry, robust has not yet been implemented of anova", call. = FALSE)
+  }
+  e <- rlang::expr(aov(!!model, data = data, ...))
+  ## estimate model
+  m <- eval(e)
+  ## store info as tidycall attribute
+  attr(m, "tidycall") <- store_tidycall(dim(model.frame(m)), e)
+  ## return model object
+  m
 }
 

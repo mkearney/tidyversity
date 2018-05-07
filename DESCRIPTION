@@ -17,10 +17,13 @@ License: MIT + file LICENSE
 RoxygenNote: 6.0.1.9000
 Imports: 
     broom,
+    lavaan,
     magrittr,
     MASS,
     psych,
     rlang,
     robust,
+    robustlmm,
     tibble,
-    tidyselect
+    tidyselect,
+    lavaan

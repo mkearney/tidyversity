@@ -1,15 +1,4 @@
-std_model_type <- function(type) {
-  if (is_ols(type)) {
-    type <- "ols"
-  } else if (is_logistic(type)) {
-    call <- "log"
-  } else if (is_poisson(type)) {
-    type <- "pois"
-  } else if (is_negbinom(type)) {
-    type <- "negbin"
-  }
-  type
-}
+
 
 tidyselector <- function(data, ...) {
   vars <- tidyselect::vars_select(names(data), ...)

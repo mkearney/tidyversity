@@ -8,6 +8,8 @@
 #' @param type Type of regression model to use. Available types include
 #'   \code{"ols"}, \code{"logistic"}, \code{"poisson"}, \code{"negbinom"}. See
 #'   \link{regression_types} for more information.
+#' @param robust Logical indicating whether to estimate a robust model. This
+#'   is available for all models but negative binomial.
 #' @param ... Other arguments passed to modeling function.
 #' @return A model object
 #' @details In addition to being a wrapper function for \link[base]{lm},
@@ -43,28 +45,23 @@ tidy_regression <- function(data, model, type = "ols", robust = FALSE, ...) {
   ## convert type to call
   if (is_ols(type)) {
     call <- "ols_regression"
-  } else if (is_logistic(type)) {
+  } else if (is_log(type)) {
     call <- "logistic_regression"
-  } else if (is_quasibinom(type)) {
-    call <- "quasi_logistic_regression"
-  } else if (is_poisson(type)) {
+  } else if (is_qlog(type)) {
+    call <- "quasilogistic_regression"
+  } else if (is_pois(type)) {
     call <- "poisson_regression"
-  } else if (is_quasipois(type)) {
-    call <- "quasi_poisson_regression"
-  }else if (is_negbinom(type)) {
+  } else if (is_qpois(type)) {
+    call <- "quasipoisson_regression"
+  }else if (is_negbin(type)) {
     call <- "negbinom_regression"
   } else {
     stop("cannot recognized type", call. = FALSE)
   }
   ## build args
-  args <- list(model, data = data, ...)
-  if (!"robust" %in% args) {
-    args$robust <- FALSE
-  }
+  args <- list(model, data = data, robust = robust, ...)
   ## apply call to args
   m <- do.call(call, args)
-  ## store info as tidycall attribute
-  attr(m, "tidycall") <- store_tidycall(m, model, type, robust)
   ## return model object
   m
 }
@@ -84,10 +81,16 @@ NULL
 #' @export
 ols_regression <- function(data, model, robust = FALSE, ...) {
   if (robust) {
-    MASS::rlm(model, data, ...)
+    e <- rlang::expr(MASS::rlm(!!model, data, ...))
   } else {
-    lm(model, data = data, ...)
+    e <- rlang::expr(lm(!!model, data = data, ...))
   }
+  ## estimate model
+  m <- eval(e)
+  ## store info as tidycall attribute
+  attr(m, "tidycall") <- store_tidycall(m, e)
+  ## return model object
+  m
 }
 
 
@@ -101,10 +104,16 @@ ols_regression <- function(data, model, robust = FALSE, ...) {
 #' @export
 logistic_regression <- function(data, model, robust = FALSE, ...) {
   if (robust) {
-    robust::glmRob(model, data = data, family = binomial)
+    e <- rlang::expr(robust::glmRob(!!model, data = data, family = binomial))
   } else {
-    glm(model, data = data, family = binomial)
+    e <- rlang::expr(glm(!!model, data = data, family = binomial))
   }
+  ## estimate model
+  m <- eval(e)
+  ## store info as tidycall attribute
+  attr(m, "tidycall") <- store_tidycall(m, e)
+  ## return model object
+  m
 }
 
 #' Quasi-logistic regression for dichotomous-like outcomes
@@ -116,12 +125,18 @@ logistic_regression <- function(data, model, robust = FALSE, ...) {
 #' @inheritParams tidy_regression
 #' @rdname regression_types
 #' @export
-quasi_logistic_regression <- function(data, model, robust = FALSE, ...) {
+quasilogistic_regression <- function(data, model, robust = FALSE, ...) {
   if (robust) {
-    robust::glmRob(model, data = data, family = quasibinomial)
+    e <- rlang::expr(robust::glmRob(!!model, data = data, family = quasibinomial))
   } else {
-    glm(model, data = data, family = quasibinomial)
+    e <- rlang::expr(glm(!!model, data = data, family = quasibinomial))
   }
+  ## estimate model
+  m <- eval(e)
+  ## store info as tidycall attribute
+  attr(m, "tidycall") <- store_tidycall(m, e)
+  ## return model object
+  m
 }
 
 #' Poisson regression for modeling of count data
@@ -134,10 +149,16 @@ quasi_logistic_regression <- function(data, model, robust = FALSE, ...) {
 #' @export
 poisson_regression <- function(data, model, robust = FALSE, ...) {
   if (robust) {
-    robust::glmRob(model, data = data, family = poisson)
+    e <- rlang::expr(robust::glmRob(!!model, data = data, family = poisson))
   } else {
-    glm(model, data = data, family = poisson)
+    e <- rlang::expr(glm(!!model, data = data, family = poisson))
   }
+  ## estimate model
+  m <- eval(e)
+  ## store info as tidycall attribute
+  attr(m, "tidycall") <- store_tidycall(m, e)
+  ## return model object
+  m
 }
 
 #' Quasi-poisson regression for count-like data
@@ -149,12 +170,18 @@ poisson_regression <- function(data, model, robust = FALSE, ...) {
 #' @inheritParams tidy_regression
 #' @rdname regression_types
 #' @export
-quasi_poisson_regression <- function(data, model, robust = FALSE, ...) {
+quasipoisson_regression <- function(data, model, robust = FALSE, ...) {
   if (robust) {
-    robust::glmRob(model, data = data, family = quasipoisson)
+    e <- rlang::expr(robust::glmRob(!!model, data = data, family = quasipoisson))
   } else {
-    glm(model, data = data, family = quasipoisson)
+    e <- rlang::expr(glm(!!model, data = data, family = quasipoisson))
   }
+  ## estimate model
+  m <- eval(e)
+  ## store info as tidycall attribute
+  attr(m, "tidycall") <- store_tidycall(m, e)
+  ## return model object
+  m
 }
 
 
@@ -167,5 +194,20 @@ quasi_poisson_regression <- function(data, model, robust = FALSE, ...) {
 #' @rdname regression_types
 #' @export
 negbinom_regression <- function(data, model, robust = FALSE, ...) {
-  MASS::glm.nb(model, data = data, ...)
+  if (robust) {
+    stop(paste0("Robust is not currently available for negative binomial models.\n",
+      "       If you know of a package that offers such a model, please file an\n",
+      "       issue at https://github.com/mkearney/tidyversity/issues. Otherwise,\n",
+      "       you can try the function found at the following link---though the\n",
+      "       output is rather limited: https://github.com/williamaeberhard/glmrob.nb"),
+      call. = FALSE)
+  }
+  ## capture model expression
+  e <- rlang::expr(MASS::glm.nb(!!model, data = data, ...))
+  ## estimate model
+  m <- eval(e)
+  ## store info as tidycall attribute
+  attr(m, "tidycall") <- store_tidycall(m, e)
+  ## return model object
+  m
 }

@@ -15,6 +15,9 @@ tidy_regression(data, model, type = "ols", robust = FALSE, ...)
 \code{"ols"}, \code{"logistic"}, \code{"poisson"}, \code{"negbinom"}. See
 \link{regression_types} for more information.}
 
+\item{robust}{Logical indicating whether to estimate a robust model. This
+is available for all models but negative binomial.}
+
 \item{...}{Other arguments passed to modeling function.}
 }
 \value{

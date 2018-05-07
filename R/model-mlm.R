@@ -12,16 +12,20 @@ tidy_mlm <- function(.data, model, robust = FALSE, ...) {
   ## if robust, use rlmm pkg
   if (robust) {
     dots <- list(...)
-    if ("REML" %in% names(dots) && !isTRUE(REML)) {
+    if ("REML" %in% names(dots) && !isTRUE(dots$REML)) {
       stop("`REML = FALSE` with robust linear mixed models", call. = FALSE)
     }
-    m <- robustlmm::rlmer(model, data = .data, ...)
+    ## store expression
+    e <- rlang::expr(robustlmm::rlmer(model, data = .data, ...))
   } else {
-    ## estimate model
-    m <- lme4::lmer(model, data = .data, ...)
+    ## store expression
+    e <- rlang::expr(lme4::lmer(model, data = .data, ...))
   }
+  ## estimate model
+  m <- eval(e)
   ## store info as tidycall attribute
-  attr(m, "tidycall") <- store_tidycall(dim(m@frame), model, robust = robust)
+  attr(m, "tidycall") <- store_tidycall(dim(m@frame), e)
   ## return model object
   m
 }
+

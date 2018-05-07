@@ -16,7 +16,11 @@
 #' @return A tidy summary with fit and coef tibbles
 #' @export
 tidy_ttest <- function(data, model) {
-  m <- t.test(model, data)
-  attr(m, "tidycall") <- store_tidycall(c(nrow(data), 2L), model)
+  e <- rlang::expr(t.test(!!model, data))
+  ## estimate model
+  m <- eval(e)
+  ## store info as tidycall attribute
+  attr(m, "tidycall") <- store_tidycall(nrow(data), e)
+  ## return model object
   m
 }

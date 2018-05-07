@@ -50,7 +50,9 @@ model_coef.lm <- function(x) coef_lm(x)
 
 model_coef.aov <- function(x) coef_lm(x)
 
-#model_coef.glm <- function(x) coef_glm(x)
+model_coef.glm <- function(x) coef_lm(x)
+
+model_coef.glmRob <- function(x) coef_lm(x)
 
 model_coef.htest <- function(x) coef_htest(x)
 
@@ -65,9 +67,13 @@ model_fit <- function(x) UseMethod("model_fit")
 
 model_fit.lm <- function(x) fit_lm(x)
 
+model_fit.rlm <- function(x) fit_rlm(x)
+
 model_fit.aov <- function(x) fit_lm(x)
 
 model_fit.glm <- function(x) fit_glm(x)
+
+model_fit.glmRob <- function(x) fit_glmRob(x)
 
 model_fit.htest <- function(x) fit_htest(x)
 

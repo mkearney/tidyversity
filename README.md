@@ -31,6 +31,21 @@ if (!requireNamespace("devtools", quietly = TRUE)) {
 devtools::install_github("mkearney/tidyversity")
 ```
 
+Load the package (it, of course, plays nicely with tidyverse).
+
+``` r
+library(tidyverse)
+#> ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+#> ✔ ggplot2 2.2.1     ✔ purrr   0.2.4
+#> ✔ tibble  1.4.2     ✔ dplyr   0.7.4
+#> ✔ tidyr   0.8.0     ✔ stringr 1.3.0
+#> ✔ readr   1.1.1     ✔ forcats 0.3.0
+#> ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> ✖ dplyr::filter() masks stats::filter()
+#> ✖ dplyr::lag()    masks stats::lag()
+library(tidyversity)
+```
+
 ## Regression models
 
 ### Ordinary Least Squares (OLS)
@@ -42,9 +57,10 @@ polcom %>%
   tidy_regression(follow_trump ~ news_1 + ambiv_sexism_1) %>%
   tidy_summary()
 #> # A tidy model
-#> Model formula : follow_trump ~ news_1 + ambiv_sexism_1
-#> Model type    : Ordinary Least Squares (OLS) regression
-#> Model data    : 243 (observations) X 3 (variables)
+#> Model formula  : follow_trump ~ news_1 + ambiv_sexism_1
+#> Model type     : Ordinary Least Squares (OLS) regression
+#> Model pkg::fun : stats::lm()
+#> Model data     : 243 (observations) X 3 (variables)
 #> $fit
 #> # A tibble: 6 x 6
 #>   fit_stat     n    df estimate p.value stars
@@ -75,9 +91,10 @@ polcom %>%
   tidy_regression(follow_trump ~ news_1 + ambiv_sexism_1, type = "logistic") %>%
   tidy_summary()
 #> # A tidy model
-#> Model formula : follow_trump ~ news_1 + ambiv_sexism_1
-#> Model type    : logistic
-#> Model data    : 243 (observations) X 3 (variables)
+#> Model formula  : follow_trump ~ news_1 + ambiv_sexism_1
+#> Model type     : Logistic regression
+#> Model pkg::fun : stats::glm()
+#> Model data     : 243 (observations) X 3 (variables)
 #> $fit
 #> # A tibble: 7 x 6
 #>   fit_stat           n    df estimate p.value stars
@@ -109,9 +126,10 @@ polcom %>%
   tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "poisson") %>%
   tidy_summary()
 #> # A tidy model
-#> Model formula : polarize ~ news_1 + ambiv_sexism_1
-#> Model type    : Poisson regression
-#> Model data    : 242 (observations) X 3 (variables)
+#> Model formula  : polarize ~ news_1 + ambiv_sexism_1
+#> Model type     : Poisson regression
+#> Model pkg::fun : stats::glm()
+#> Model data     : 242 (observations) X 3 (variables)
 #> $fit
 #> # A tibble: 7 x 6
 #>   fit_stat           n    df  estimate   p.value stars
@@ -144,10 +162,10 @@ polcom %>%
   tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "negbinom") %>%
   tidy_summary()
 #> # A tidy model
-#> Model formula : polarize ~ news_1 + ambiv_sexism_1
-#> Model type    : Negative binomial regression
-#> Model data    : 242 (observations) X 3 (variables)
-#> Warning: glm.fit: algorithm did not converge
+#> Model formula  : polarize ~ news_1 + ambiv_sexism_1
+#> Model type     : Negative binomial regression
+#> Model pkg::fun : MASS::glm.nb()
+#> Model data     : 242 (observations) X 3 (variables)
 #> $fit
 #> # A tibble: 7 x 6
 #>   fit_stat           n    df  estimate  p.value stars
@@ -164,9 +182,9 @@ polcom %>%
 #> # A tibble: 3 x 7
 #>   term               est   s.e. est.se p.value stars std.est
 #>   <chr>            <dbl>  <dbl>  <dbl>   <dbl> <chr>   <dbl>
-#> 1 (Intercept)     3.74   0.258   14.5   0.     ***        NA
-#> 2 news_1          0.0526 0.0322   1.63  0.103  ""         NA
-#> 3 ambiv_sexism_1 -0.123  0.0541  -2.27  0.0230 *          NA
+#> 1 (Intercept)     3.74   0.258   14.5   0.     ***     3.75 
+#> 2 news_1          0.0526 0.0322   1.63  0.103  ""      0.113
+#> 3 ambiv_sexism_1 -0.123  0.0541  -2.27  0.0230 *      -0.158
 ```
 
 ### Robust and quasi- models
@@ -177,28 +195,29 @@ polcom %>%
   tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "quasipoisson", robust = TRUE) %>%
   tidy_summary()
 #> # A tidy model
-#> Model formula : polarize ~ news_1 + ambiv_sexism_1
-#> Model type    : [Robust] Poisson regression
-#> Model data    : 242 (observations) X 3 (variables)
+#> Model formula  : polarize ~ news_1 + ambiv_sexism_1
+#> Model type     : [Robust] Poisson regression
+#> Model pkg::fun : robust::glmRob()
+#> Model data     : 242 (observations) X 3 (variables)
 #> $fit
 #> # A tibble: 7 x 6
-#>   fit_stat           n    df  estimate   p.value stars
-#>   <chr>          <int> <int>     <dbl>     <dbl> <chr>
-#> 1 χ2               242   239 6549.      0.       ***  
-#> 2 Δχ2              242     2  399.      2.20e-87 ***  
-#> 3 Nagelkerke R^2   242    NA    0.808  NA        ""   
-#> 4 McFadden R^2     242    NA    0.0574 NA        ""   
-#> 5 RMSE             242    NA    0.760  NA        ""   
-#> 6 AIC              242    NA 7725.     NA        ""   
-#> 7 BIC              242    NA 7736.     NA        ""   
+#>   fit_stat           n    df  estimate p.value stars
+#>   <chr>          <int> <int>     <dbl>   <dbl> <chr>
+#> 1 χ2               242   239  6990.         0. ***  
+#> 2 Δχ2              242     2 58783.         0. ***  
+#> 3 Nagelkerke R^2   242    NA     1.00      NA  ""   
+#> 4 McFadden R^2     242    NA     0.894     NA  ""   
+#> 5 RMSE             242    NA    31.9       NA  ""   
+#> 6 AIC              242    NA  2245.        NA  ""   
+#> 7 BIC              242    NA  2259.        NA  ""   
 #> 
 #> $coef
 #> # A tibble: 3 x 7
 #>   term               est    s.e. est.se p.value stars std.est
 #>   <chr>            <dbl>   <dbl>  <dbl>   <dbl> <chr>   <dbl>
-#> 1 (Intercept)     3.80   0.0382   99.4       0. ***     0.   
-#> 2 news_1          0.0447 0.00478   9.36      0. ***     0.881
-#> 3 ambiv_sexism_1 -0.126  0.00797 -15.9       0. ***    -2.23
+#> 1 (Intercept)     3.70   0.0713   52.0       0. ***      0.  
+#> 2 news_1          0.0792 0.00951   8.32      0. ***      1.28
+#> 3 ambiv_sexism_1 -0.241  0.0216  -11.2       0. ***     -2.09
 ```
 
 ## Mean comparison models
@@ -216,7 +235,11 @@ polcom %>%
     TRUE ~ "Other")) %>%
   tidy_anova(pp_party ~ sex * vote_choice) %>%
   tidy_summary()
-#> NULL
+#> # A tidy model
+#> Model formula  : pp_party ~ sex * vote_choice
+#> Model type     : Analysis of variance (ANOVA)
+#> Model pkg::fun : stats::aov()
+#> Model data     : 243 (observations) X 3 (variables)
 #> $fit
 #> # A tibble: 6 x 6
 #>   fit_stat     n    df estimate   p.value stars
@@ -245,8 +268,10 @@ polcom %>%
   tidy_ttest(pp_ideology ~ follow_trump) %>%
   tidy_summary()
 #> # A tidy model
-#> Model formula : pp_ideology ~ follow_trump
-#> Model data    : 244 (observations) X 2 (variables)
+#> Model formula  : pp_ideology ~ follow_trump
+#> Model type     : T-test
+#> Model pkg::fun : stats::t.test()
+#> Model data     : 244 (observations)
 #> $fit
 #> # A tibble: 2 x 6
 #>   group    df  mean   diff  lo.95 hi.05
@@ -278,12 +303,10 @@ polcom %>%
     ambiv_sexism ~ age + sex + hhinc + edu + news + partisan) %>%
   tidy_summary()
 #> # A tidy model
-#> Model formula : news =~ news_1 + news_2 + news_3 + news_4 + news_5 + news_6
-#>                 ambiv_sexism =~ ambiv_sexism_1 + ambiv_sexism_2 + ambiv_sexism_3 + ambiv_sexism_4 + 
-#>                     ambiv_sexism_5 + ambiv_sexism_6
-#>                 partisan =~ a * therm_1 + a * therm_2
-#>                 ambiv_sexism ~ age + sex + hhinc + edu + news + partisan
-#> Model data    : 235 (observations) X 18 (variables)
+#> Model formula  : model
+#> Model type     : sem
+#> Model pkg::fun : lavaan::sem()
+#> Model data     : 235 (observations) X 18 (variables)
 #> $fit
 #> # A tibble: 8 x 6
 #>   fit_stat             n    df   estimate  p.value stars

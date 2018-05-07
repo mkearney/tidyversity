@@ -40,26 +40,65 @@ tbl_frame <- function(...) {
   as_tbl(tibble:::lst_quos(xs, expand = TRUE))
 }
 
+is_robust <- function(expr) {
+  f <- rlang::expr_text(expr[[1]])
+  ("estimator" %in% names(expr) && expr$estimator == "mlr") ||
+    grepl("^robust\\:\\:glmRob$|^glmRob$|^MASS\\:\\:rlm$|^rlm$|^robustlmm\\:\\:rlmer$|^rlmer$", f)
+}
+
+is_ttest <- function(x) {
+  grepl("^t|^htest|^ttest$", x, ignore.case = TRUE)
+}
+
 is_ols <- function(x) {
   grepl("^ols$|ordinary\\s?least\\s?squares", x, ignore.case = TRUE)
 }
 
-is_logistic <- function(x) {
-  grepl("^log$|logistic|^binomial$", x, ignore.case = TRUE)
+is_anova <- function(x) {
+  grepl("anova|analysis of variance", x, ignore.case = TRUE)
 }
 
-is_quasibinom <- function(x) {
+is_log <- function(x) {
+  grepl("^log$|^logistic|^binomial$", x, ignore.case = TRUE)
+}
+
+is_qlog <- function(x) {
   grepl("^quasi.?binom", x, ignore.case = TRUE)
 }
 
-is_poisson <- function(x) {
+is_pois <- function(x) {
   grepl("^pois$|poisson", x, ignore.case = TRUE)
 }
 
-is_quasipois <- function(x) {
+is_qpois <- function(x) {
   grepl("^quasi.?pois", x, ignore.case = TRUE)
 }
 
-is_negbinom <- function(x) {
+is_negbin <- function(x) {
   grepl("^negbin$|^negbinom$|negative\\s?binomial", x, ignore.case = TRUE)
+}
+
+std_model_type <- function(type) {
+  if (is_ttest(type)) {
+    type <- "ttest"
+  } else if (is_ols(type)) {
+    type <- "ols"
+  } else if (is_log(type)) {
+    type <- "log"
+  } else if (is_qlog(type)) {
+    type <- "qlog"
+  } else if (is_pois(type)) {
+    type <- "pois"
+  } else if (is_qpois(type)) {
+    type <- "qpois"
+  } else if (is_negbinom(type)) {
+    type <- "negbin"
+  } else if (is_anova(type)) {
+    type <- "anova"
+  } else if (is_sem(type)) {
+    type <- "sem"
+  } else if (is_mlm(type)) {
+    type <- "mlm"
+  }
+  type
 }
