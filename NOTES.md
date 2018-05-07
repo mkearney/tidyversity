@@ -1,11 +1,18 @@
 # NOTES
 
-## Rename
-+ coef
-   - estimate = beta
-   - statistic = est./std.error
-+ fit
-   - estimate = value
-   - fit_statistic = statistic
-   - chisquared vs deviance?
+## Models
++ Multilevel models (lme4)
+   - Random intercept
+   - Random slope
+   - Generalized mlm?
++ Strutural equation modeling (lavaan)
+   - Multi-group models
+   - CFA
+   - Model comparisons
+   - Indirect effects
+   - Ordered vars
++ Path analysis
+   - Wrapper around lavaan w/ observed vars
+   - PROCESS-like features
+
    
