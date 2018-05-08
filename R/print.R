@@ -26,7 +26,7 @@ format_ncol <- function(x, nm) {
   ## 3 places past decimal
   x <- sprintf("%.3f ", x)
   ## replace NA with blanks
-  x[grepl("^\\s{0,}NA\\s{0,}$", x)] <- "-    "
+  x[grepl("^\\s{0,}NA\\s{0,}$", x)] <- "-----" ##"-    "
   ## trim white space and calc characters
   chars <- nchar(trim_ws(x))
   ## max char to determine spacing
@@ -37,6 +37,7 @@ format_ncol <- function(x, nm) {
   sp <- sapply(mchars - chars, spaces)
   ## map paste0 to add spaces before value
   x <- unlist(Map(paste0, sp, x, USE.NAMES = FALSE))
+  x <- gsub("-----", " -   ", x)
   ## estimate mid-point of string
   #m <- floor(mchars / 2)
   ## add dash to middle of completely blank lines (and remove a space)

@@ -65,13 +65,13 @@ polcom %>%
 #> Model pkg::fun : stats::lm()
 #> Model data     : 243 (observations) X 3 (variables)
 #> $fit
-#> fit_stat     n     df    estimate       p.value  stars
-#> F          243      2      3.831      0.023      *
-#> R^2        243      -      0.031          -         
-#> Adj R^2    243      -      0.023          -         
-#> RMSE       243      -      0.409          -         
-#> AIC        243      -    260.148          -         
-#> BIC        243      -    274.121          -         
+#> fit_stat     n     df    estimate    p.value  stars
+#> F          243      2      3.831      0.023   *
+#> R^2        243      -      0.031       -         
+#> Adj R^2    243      -      0.023       -         
+#> RMSE       243      -      0.409       -         
+#> AIC        243      -    260.148       -         
+#> BIC        243      -    274.121       -         
 #> 
 #> $coef
 #> term               est     s.e.    est.se    p.value  stars   std.est
@@ -95,14 +95,14 @@ polcom %>%
 #> Model pkg::fun : stats::glm()
 #> Model data     : 243 (observations) X 3 (variables)
 #> $fit
-#> fit_stat           n     df    estimate       p.value  stars
-#> χ2               243    240    247.442      0.357         
-#> Δχ2              243      2      7.466      0.024      *
-#> Nagelkerke R^2   243      -      0.030          -         
-#> McFadden R^2     243      -      0.029          -         
-#> RMSE             243      -      2.540          -         
-#> AIC              243      -    253.442          -         
-#> BIC              243      -    263.921          -         
+#> fit_stat           n     df    estimate    p.value  stars
+#> χ2               243    240    247.442      0.357      
+#> Δχ2              243      2      7.466      0.024   *
+#> Nagelkerke R^2   243      -      0.030       -         
+#> McFadden R^2     243      -      0.029       -         
+#> RMSE             243      -      2.540       -         
+#> AIC              243      -    253.442       -         
+#> BIC              243      -    263.921       -         
 #> 
 #> $coef
 #> term               est     s.e.    est.se    p.value  stars   std.est
@@ -126,14 +126,14 @@ polcom %>%
 #> Model pkg::fun : stats::glm()
 #> Model data     : 242 (observations) X 3 (variables)
 #> $fit
-#> fit_stat           n     df    estimate       p.value  stars
-#> χ2               242    239   6549.419      <.001      ***
-#> Δχ2              242      2    399.077      <.001      ***
-#> Nagelkerke R^2   242      -      0.808          -         
-#> McFadden R^2     242      -      0.057          -         
-#> RMSE             242      -      0.760          -         
-#> AIC              242      -   7725.222          -         
-#> BIC              242      -   7735.689          -         
+#> fit_stat           n     df    estimate    p.value  stars
+#> χ2               242    239   6549.419      <.001   ***
+#> Δχ2              242      2    399.077      <.001   ***
+#> Nagelkerke R^2   242      -      0.808       -         
+#> McFadden R^2     242      -      0.057       -         
+#> RMSE             242      -      0.760       -         
+#> AIC              242      -   7725.222       -         
+#> BIC              242      -   7735.689       -         
 #> 
 #> $coef
 #> term               est     s.e.     est.se    p.value  stars   std.est
@@ -158,14 +158,14 @@ polcom %>%
 #> Model pkg::fun : MASS::glm.nb()
 #> Model data     : 242 (observations) X 3 (variables)
 #> $fit
-#> fit_stat           n     df    estimate       p.value  stars
-#> χ2               242    239    293.328      0.009      **
-#> Δχ2              242      2      8.440      0.015      *
-#> Nagelkerke R^2   242      -      0.034          -         
-#> McFadden R^2     242      -      0.028          -         
-#> RMSE             242      -      0.761          -         
-#> AIC              242      -   2312.391          -         
-#> BIC              242      -   2326.347          -         
+#> fit_stat           n     df    estimate    p.value  stars
+#> χ2               242    239    293.328      0.009   **
+#> Δχ2              242      2      8.440      0.015   *
+#> Nagelkerke R^2   242      -      0.034       -         
+#> McFadden R^2     242      -      0.028       -         
+#> RMSE             242      -      0.761       -         
+#> AIC              242      -   2312.391       -         
+#> BIC              242      -   2326.347       -         
 #> 
 #> $coef
 #> term               est     s.e.    est.se    p.value  stars   std.est
@@ -188,14 +188,14 @@ polcom %>%
 #> Model pkg::fun : robust::glmRob()
 #> Model data     : 242 (observations) X 3 (variables)
 #> $fit
-#> fit_stat           n     df     estimate       p.value  stars
-#> χ2               242    239    6989.543      <.001      ***
-#> Δχ2              242      2   58782.937      <.001      ***
-#> Nagelkerke R^2   242      -       1.000          -         
-#> McFadden R^2     242      -       0.894          -         
-#> RMSE             242      -      31.865          -         
-#> AIC              242      -    2245.147          -         
-#> BIC              242      -    2259.103          -         
+#> fit_stat           n     df     estimate    p.value  stars
+#> χ2               242    239    6989.543      <.001   ***
+#> Δχ2              242      2   58782.937      <.001   ***
+#> Nagelkerke R^2   242      -       1.000       -         
+#> McFadden R^2     242      -       0.894       -         
+#> RMSE             242      -      31.865       -         
+#> AIC              242      -    2245.147       -         
+#> BIC              242      -    2259.103       -         
 #> 
 #> $coef
 #> term               est     s.e.     est.se    p.value  stars   std.est
@@ -225,20 +225,20 @@ polcom %>%
 #> Model pkg::fun : stats::aov()
 #> Model data     : 243 (observations) X 3 (variables)
 #> $fit
-#> fit_stat     n     df    estimate       p.value  stars
-#> F          243      5     53.327      <.001      ***
-#> R^2        243      -      0.529          -         
-#> Adj R^2    243      -      0.519          -         
-#> RMSE       243      -      1.238          -         
-#> AIC        243      -    801.115          -         
-#> BIC        243      -    825.567          -         
+#> fit_stat     n     df    estimate    p.value  stars
+#> F          243      5     53.327      <.001   ***
+#> R^2        243      -      0.529       -         
+#> Adj R^2    243      -      0.519       -         
+#> RMSE       243      -      1.238       -         
+#> AIC        243      -    801.115       -         
+#> BIC        243      -    825.567       -         
 #> 
 #> $coef
-#> term                 est       s.e.     est.se       statistic       p.value  stars   std.est
-#> sex                1.000     19.238     19.238       12.561         <.001      ***      2.000
-#> vote_choice        2.000    388.606    194.303      126.867         <.001      ***      2.000
-#> sex:vote_choice    2.000      0.519      0.259        0.169         0.844               2.000
-#> Residuals        237.000    362.978      1.532            -             -             237.000
+#> term                 est       s.e.     est.se    statistic    p.value  stars   std.est
+#> sex                1.000     19.238     19.238       12.561      <.001   ***      2.000
+#> vote_choice        2.000    388.606    194.303      126.867      <.001   ***      2.000
+#> sex:vote_choice    2.000      0.519      0.259        0.169      0.844            2.000
+#> Residuals        237.000    362.978      1.532         -          -             237.000
 ```
 
 ### t-tests
@@ -293,38 +293,38 @@ sem1 %>%
 #> Model pkg::fun : lavaan::sem()
 #> Model data     : 235 (observations) X 18 (variables)
 #> $fit
-#> fit_stat             n     df     estimate       p.value  stars
-#> chisq              235    127     239.579      <.001      ***
-#> aic                235      -       0.907          -         
-#> bic                235      -       0.892          -         
-#> cfi                235      -   16138.684          -         
-#> tli                235      -   16256.310          -         
-#> rmsea              235      -       0.061          -         
-#> srmr               235      -       0.073          -         
-#> R^2:ambiv_sexism   235      -       0.379          -         
+#> fit_stat             n     df     estimate    p.value  stars
+#> chisq              235    127     239.579      <.001   ***
+#> aic                235      -       0.907       -         
+#> bic                235      -       0.892       -         
+#> cfi                235      -   16138.684       -         
+#> tli                235      -   16256.310       -         
+#> rmsea              235      -       0.061       -         
+#> srmr               235      -       0.073       -         
+#> R^2:ambiv_sexism   235      -       0.379       -         
 #> 
 #> $coef
-#> term                               est       se       est.se       p.value  stars   std.est
-#> news =~ news_1                   1.000    <.001         -             -               0.173
-#> news =~ news_2                   1.592    0.722     2.204         0.028      *        0.340
-#> news =~ news_3                   5.069    2.095     2.419         0.016      *        0.781
-#> news =~ news_4                   5.587    2.312     2.417         0.016      *        0.851
-#> news =~ news_5                   3.493    1.485     2.353         0.019      *        0.520
-#> news =~ news_6                   1.255    0.683     1.838         0.066      +        0.196
-#> ambiv_sexism =~ ambiv_sexism_1   1.000    <.001         -             -               0.825
-#> ambiv_sexism =~ ambiv_sexism_2   0.942    0.067    14.043         <.001      ***      0.801
-#> ambiv_sexism =~ ambiv_sexism_3   0.795    0.067    11.844         <.001      ***      0.706
-#> ambiv_sexism =~ ambiv_sexism_4   0.743    0.064    11.647         <.001      ***      0.697
-#> ambiv_sexism =~ ambiv_sexism_5   0.902    0.062    14.644         <.001      ***      0.825
-#> ambiv_sexism =~ ambiv_sexism_6   0.904    0.064    14.185         <.001      ***      0.807
-#> partisan =~ therm_1              1.000    <.001         -             -               0.577
-#> partisan =~ therm_2              1.000    <.001         -             -               0.592
-#> ambiv_sexism ~ age              -0.004    0.005    -0.824         0.410              -0.051
-#> ambiv_sexism ~ sex              -0.271    0.130    -2.089         0.037      *       -0.130
-#> ambiv_sexism ~ hhinc            -0.021    0.023    -0.878         0.380              -0.057
-#> ambiv_sexism ~ edu              -0.088    0.069    -1.279         0.201              -0.083
-#> ambiv_sexism ~ news              0.130    0.215     0.607         0.544               0.047
-#> ambiv_sexism ~ partisan          0.347    0.069     5.032         <.001      ***      0.592
+#> term                               est       se    est.se    p.value  stars   std.est
+#> news =~ news_1                   1.000    <.001      -          -               0.173
+#> news =~ news_2                   1.592    0.722     2.204      0.028   *        0.340
+#> news =~ news_3                   5.069    2.095     2.419      0.016   *        0.781
+#> news =~ news_4                   5.587    2.312     2.417      0.016   *        0.851
+#> news =~ news_5                   3.493    1.485     2.353      0.019   *        0.520
+#> news =~ news_6                   1.255    0.683     1.838      0.066   +        0.196
+#> ambiv_sexism =~ ambiv_sexism_1   1.000    <.001      -          -               0.825
+#> ambiv_sexism =~ ambiv_sexism_2   0.942    0.067    14.043      <.001   ***      0.801
+#> ambiv_sexism =~ ambiv_sexism_3   0.795    0.067    11.844      <.001   ***      0.706
+#> ambiv_sexism =~ ambiv_sexism_4   0.743    0.064    11.647      <.001   ***      0.697
+#> ambiv_sexism =~ ambiv_sexism_5   0.902    0.062    14.644      <.001   ***      0.825
+#> ambiv_sexism =~ ambiv_sexism_6   0.904    0.064    14.185      <.001   ***      0.807
+#> partisan =~ therm_1              1.000    <.001      -          -               0.577
+#> partisan =~ therm_2              1.000    <.001      -          -               0.592
+#> ambiv_sexism ~ age              -0.004    0.005    -0.824      0.410           -0.051
+#> ambiv_sexism ~ sex              -0.271    0.130    -2.089      0.037   *       -0.130
+#> ambiv_sexism ~ hhinc            -0.021    0.023    -0.878      0.380           -0.057
+#> ambiv_sexism ~ edu              -0.088    0.069    -1.279      0.201           -0.083
+#> ambiv_sexism ~ news              0.130    0.215     0.607      0.544            0.047
+#> ambiv_sexism ~ partisan          0.347    0.069     5.032      <.001   ***      0.592
 ```
 
 ### Multilevel modeling (MLM)
