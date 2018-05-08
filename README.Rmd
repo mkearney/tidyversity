@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   out.width = "100%",
   eval = TRUE
 )
+options(width = 100)
 ```
 # tidyversity <img src="man/figures/logo.png" width="160px" align="right" /> 
 
@@ -45,7 +46,10 @@ devtools::install_github("mkearney/tidyversity")
 Load the package (it, of course, plays nicely with tidyverse).
 
 ```{r library}
+## load tidyverse
 library(tidyverse)
+
+## load tidyversity
 library(tidyversity)
 ```
 

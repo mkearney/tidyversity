@@ -34,15 +34,18 @@ devtools::install_github("mkearney/tidyversity")
 Load the package (it, of course, plays nicely with tidyverse).
 
 ``` r
+## load tidyverse
 library(tidyverse)
-#> ── Attaching packages ────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+#> ── Attaching packages ─────────────────────────────────────────────────── tidyverse 1.2.1 ──
 #> ✔ ggplot2 2.2.1     ✔ purrr   0.2.4
 #> ✔ tibble  1.4.2     ✔ dplyr   0.7.4
 #> ✔ tidyr   0.8.0     ✔ stringr 1.3.0
 #> ✔ readr   1.1.1     ✔ forcats 0.3.0
-#> ── Conflicts ───────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> ── Conflicts ────────────────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
+
+## load tidyversity
 library(tidyversity)
 ```
 
@@ -62,23 +65,19 @@ polcom %>%
 #> Model pkg::fun : stats::lm()
 #> Model data     : 243 (observations) X 3 (variables)
 #> $fit
-#> # A tibble: 6 x 6
-#>   fit_stat     n    df estimate p.value stars
-#>   <chr>    <int> <int>    <dbl>   <dbl> <chr>
-#> 1 F          243     2   3.83    0.0230 *    
-#> 2 R^2        243    NA   0.0309 NA      ""   
-#> 3 Adj R^2    243    NA   0.0229 NA      ""   
-#> 4 RMSE       243    NA   0.409  NA      ""   
-#> 5 AIC        243    NA 260.     NA      ""   
-#> 6 BIC        243    NA 274.     NA      ""   
+#> fit_stat     n     df    estimate       p.value  stars
+#> F          243      2      3.831      0.023      *
+#> R^2        243      -      0.031          -         
+#> Adj R^2    243      -      0.023          -         
+#> RMSE       243      -      0.409          -         
+#> AIC        243      -    260.148          -         
+#> BIC        243      -    274.121          -         
 #> 
 #> $coef
-#> # A tibble: 3 x 7
-#>   term               est   s.e. est.se p.value stars std.est
-#>   <chr>            <dbl>  <dbl>  <dbl>   <dbl> <chr>   <dbl>
-#> 1 (Intercept)     0.745  0.0969   7.69  0.     ***    0.    
-#> 2 news_1          0.0220 0.0122   1.81  0.0714 +      0.0479
-#> 3 ambiv_sexism_1 -0.0385 0.0206  -1.87  0.0627 +     -0.0495
+#> term               est     s.e.    est.se    p.value  stars   std.est
+#> (Intercept)      0.745    0.097     7.692      <.001   ***      <.001
+#> news_1           0.022    0.012     1.811      0.071   +        0.048
+#> ambiv_sexism_1  -0.038    0.021    -1.870      0.063   +       -0.050
 ```
 
 ### Logistic (dichotomous)
@@ -96,24 +95,20 @@ polcom %>%
 #> Model pkg::fun : stats::glm()
 #> Model data     : 243 (observations) X 3 (variables)
 #> $fit
-#> # A tibble: 7 x 6
-#>   fit_stat           n    df estimate p.value stars
-#>   <chr>          <int> <int>    <dbl>   <dbl> <chr>
-#> 1 χ2               243   240 247.      0.357  ""   
-#> 2 Δχ2              243     2   7.47    0.0239 *    
-#> 3 Nagelkerke R^2   243    NA   0.0303 NA      ""   
-#> 4 McFadden R^2     243    NA   0.0293 NA      ""   
-#> 5 RMSE             243    NA   2.54   NA      ""   
-#> 6 AIC              243    NA 253.     NA      ""   
-#> 7 BIC              243    NA 264.     NA      ""   
+#> fit_stat           n     df    estimate       p.value  stars
+#> χ2               243    240    247.442      0.357         
+#> Δχ2              243      2      7.466      0.024      *
+#> Nagelkerke R^2   243      -      0.030          -         
+#> McFadden R^2     243      -      0.029          -         
+#> RMSE             243      -      2.540          -         
+#> AIC              243      -    253.442          -         
+#> BIC              243      -    263.921          -         
 #> 
 #> $coef
-#> # A tibble: 3 x 7
-#>   term              est   s.e. est.se p.value stars std.est
-#>   <chr>           <dbl>  <dbl>  <dbl>   <dbl> <chr>   <dbl>
-#> 1 (Intercept)     1.13  0.553    2.05  0.0405 *       0.   
-#> 2 news_1          0.127 0.0702   1.81  0.0707 +       0.195
-#> 3 ambiv_sexism_1 -0.229 0.122   -1.87  0.0613 +      -0.201
+#> term               est     s.e.    est.se    p.value  stars   std.est
+#> (Intercept)      1.133    0.553     2.049      0.040   *        <.001
+#> news_1           0.127    0.070     1.808      0.071   +        0.195
+#> ambiv_sexism_1  -0.229    0.122    -1.872      0.061   +       -0.201
 ```
 
 ### Poisson (count)
@@ -131,24 +126,20 @@ polcom %>%
 #> Model pkg::fun : stats::glm()
 #> Model data     : 242 (observations) X 3 (variables)
 #> $fit
-#> # A tibble: 7 x 6
-#>   fit_stat           n    df  estimate   p.value stars
-#>   <chr>          <int> <int>     <dbl>     <dbl> <chr>
-#> 1 χ2               242   239 6549.      0.       ***  
-#> 2 Δχ2              242     2  399.      2.20e-87 ***  
-#> 3 Nagelkerke R^2   242    NA    0.808  NA        ""   
-#> 4 McFadden R^2     242    NA    0.0574 NA        ""   
-#> 5 RMSE             242    NA    0.760  NA        ""   
-#> 6 AIC              242    NA 7725.     NA        ""   
-#> 7 BIC              242    NA 7736.     NA        ""   
+#> fit_stat           n     df    estimate       p.value  stars
+#> χ2               242    239   6549.419      <.001      ***
+#> Δχ2              242      2    399.077      <.001      ***
+#> Nagelkerke R^2   242      -      0.808          -         
+#> McFadden R^2     242      -      0.057          -         
+#> RMSE             242      -      0.760          -         
+#> AIC              242      -   7725.222          -         
+#> BIC              242      -   7735.689          -         
 #> 
 #> $coef
-#> # A tibble: 3 x 7
-#>   term               est    s.e. est.se p.value stars std.est
-#>   <chr>            <dbl>   <dbl>  <dbl>   <dbl> <chr>   <dbl>
-#> 1 (Intercept)     3.80   0.0382   99.4       0. ***     0.   
-#> 2 news_1          0.0447 0.00478   9.36      0. ***     0.881
-#> 3 ambiv_sexism_1 -0.126  0.00797 -15.9       0. ***    -2.23
+#> term               est     s.e.     est.se    p.value  stars   std.est
+#> (Intercept)      3.798    0.038     99.448      <.001   ***      <.001
+#> news_1           0.045    0.005      9.358      <.001   ***      0.881
+#> ambiv_sexism_1  -0.126    0.008    -15.852      <.001   ***     -2.230
 ```
 
 ### Negative binomial (overdispersed)
@@ -167,24 +158,20 @@ polcom %>%
 #> Model pkg::fun : MASS::glm.nb()
 #> Model data     : 242 (observations) X 3 (variables)
 #> $fit
-#> # A tibble: 7 x 6
-#>   fit_stat           n    df  estimate  p.value stars
-#>   <chr>          <int> <int>     <dbl>    <dbl> <chr>
-#> 1 χ2               242   239  293.      0.00943 **   
-#> 2 Δχ2              242     2    8.44    0.0147  *    
-#> 3 Nagelkerke R^2   242    NA    0.0343 NA       ""   
-#> 4 McFadden R^2     242    NA    0.0280 NA       ""   
-#> 5 RMSE             242    NA    0.761  NA       ""   
-#> 6 AIC              242    NA 2312.     NA       ""   
-#> 7 BIC              242    NA 2326.     NA       ""   
+#> fit_stat           n     df    estimate       p.value  stars
+#> χ2               242    239    293.328      0.009      **
+#> Δχ2              242      2      8.440      0.015      *
+#> Nagelkerke R^2   242      -      0.034          -         
+#> McFadden R^2     242      -      0.028          -         
+#> RMSE             242      -      0.761          -         
+#> AIC              242      -   2312.391          -         
+#> BIC              242      -   2326.347          -         
 #> 
 #> $coef
-#> # A tibble: 3 x 7
-#>   term               est   s.e. est.se p.value stars std.est
-#>   <chr>            <dbl>  <dbl>  <dbl>   <dbl> <chr>   <dbl>
-#> 1 (Intercept)     3.74   0.258   14.5   0.     ***     3.75 
-#> 2 news_1          0.0526 0.0322   1.63  0.103  ""      0.113
-#> 3 ambiv_sexism_1 -0.123  0.0541  -2.27  0.0230 *      -0.158
+#> term               est     s.e.    est.se    p.value  stars   std.est
+#> (Intercept)      3.741    0.258    14.510      <.001   ***      3.752
+#> news_1           0.053    0.032     1.632      0.103            0.113
+#> ambiv_sexism_1  -0.123    0.054    -2.273      0.023   *       -0.158
 ```
 
 ### Robust and quasi- models
@@ -201,24 +188,20 @@ polcom %>%
 #> Model pkg::fun : robust::glmRob()
 #> Model data     : 242 (observations) X 3 (variables)
 #> $fit
-#> # A tibble: 7 x 6
-#>   fit_stat           n    df  estimate p.value stars
-#>   <chr>          <int> <int>     <dbl>   <dbl> <chr>
-#> 1 χ2               242   239  6990.         0. ***  
-#> 2 Δχ2              242     2 58783.         0. ***  
-#> 3 Nagelkerke R^2   242    NA     1.00      NA  ""   
-#> 4 McFadden R^2     242    NA     0.894     NA  ""   
-#> 5 RMSE             242    NA    31.9       NA  ""   
-#> 6 AIC              242    NA  2245.        NA  ""   
-#> 7 BIC              242    NA  2259.        NA  ""   
+#> fit_stat           n     df     estimate       p.value  stars
+#> χ2               242    239    6989.543      <.001      ***
+#> Δχ2              242      2   58782.937      <.001      ***
+#> Nagelkerke R^2   242      -       1.000          -         
+#> McFadden R^2     242      -       0.894          -         
+#> RMSE             242      -      31.865          -         
+#> AIC              242      -    2245.147          -         
+#> BIC              242      -    2259.103          -         
 #> 
 #> $coef
-#> # A tibble: 3 x 7
-#>   term               est    s.e. est.se p.value stars std.est
-#>   <chr>            <dbl>   <dbl>  <dbl>   <dbl> <chr>   <dbl>
-#> 1 (Intercept)     3.70   0.0713   52.0       0. ***      0.  
-#> 2 news_1          0.0792 0.00951   8.32      0. ***      1.28
-#> 3 ambiv_sexism_1 -0.241  0.0216  -11.2       0. ***     -2.09
+#> term               est     s.e.     est.se    p.value  stars   std.est
+#> (Intercept)      3.705    0.071     51.968      <.001   ***      <.001
+#> news_1           0.079    0.010      8.325      <.001   ***      1.279
+#> ambiv_sexism_1  -0.241    0.022    -11.179      <.001   ***     -2.086
 ```
 
 ## Mean comparison models
@@ -242,24 +225,20 @@ polcom %>%
 #> Model pkg::fun : stats::aov()
 #> Model data     : 243 (observations) X 3 (variables)
 #> $fit
-#> # A tibble: 6 x 6
-#>   fit_stat     n    df estimate   p.value stars
-#>   <chr>    <int> <int>    <dbl>     <dbl> <chr>
-#> 1 F          243     5   53.3    6.19e-37 ***  
-#> 2 R^2        243    NA    0.529 NA        ""   
-#> 3 Adj R^2    243    NA    0.519 NA        ""   
-#> 4 RMSE       243    NA    1.24  NA        ""   
-#> 5 AIC        243    NA  801.    NA        ""   
-#> 6 BIC        243    NA  826.    NA        ""   
+#> fit_stat     n     df    estimate       p.value  stars
+#> F          243      5     53.327      <.001      ***
+#> R^2        243      -      0.529          -         
+#> Adj R^2    243      -      0.519          -         
+#> RMSE       243      -      1.238          -         
+#> AIC        243      -    801.115          -         
+#> BIC        243      -    825.567          -         
 #> 
 #> $coef
-#> # A tibble: 4 x 8
-#>   term              est    s.e.  est.se statistic   p.value stars std.est
-#>   <chr>           <dbl>   <dbl>   <dbl>     <dbl>     <dbl> <chr>   <dbl>
-#> 1 sex                1.  19.2    19.2      12.6    0.000474 ***        2.
-#> 2 vote_choice        2. 389.    194.      127.     0.       ***        2.
-#> 3 sex:vote_choice    2.   0.519   0.259     0.169  0.844    ""         2.
-#> 4 Residuals        237. 363.      1.53     NA     NA        ""       237.
+#> term                 est       s.e.     est.se       statistic       p.value  stars   std.est
+#> sex                1.000     19.238     19.238       12.561         <.001      ***      2.000
+#> vote_choice        2.000    388.606    194.303      126.867         <.001      ***      2.000
+#> sex:vote_choice    2.000      0.519      0.259        0.169         0.844               2.000
+#> Residuals        237.000    362.978      1.532            -             -             237.000
 ```
 
 ### t-tests
@@ -274,17 +253,13 @@ polcom %>%
 #> Model pkg::fun : stats::t.test()
 #> Model data     : 244 (observations)
 #> $fit
-#> # A tibble: 2 x 6
-#>   group    df  mean   diff  lo.95 hi.05
-#>   <chr> <dbl> <dbl>  <dbl>  <dbl> <dbl>
-#> 1 FALSE  76.9  4.19  0.922  0.308  1.54
-#> 2 TRUE   76.9  3.26 -0.922 -0.308 -1.54
+#> group       df     mean      diff     lo.95     hi.05
+#> FALSE  76.911    4.185     0.922     0.308     1.536
+#> TRUE   76.911    3.263    -0.922    -0.308    -1.536
 #> 
 #> $coef
-#> # A tibble: 1 x 4
-#>     est     t p.value stars
-#>   <dbl> <dbl>   <dbl> <chr>
-#> 1 0.922  2.99 0.00372 **
+#>     est        t    p.value  stars
+#>  0.922    2.992      0.004   **
 ```
 
 ## Latent variable models
@@ -318,42 +293,38 @@ sem1 %>%
 #> Model pkg::fun : lavaan::sem()
 #> Model data     : 235 (observations) X 18 (variables)
 #> $fit
-#> # A tibble: 8 x 6
-#>   fit_stat             n    df   estimate  p.value stars
-#>   <chr>            <int> <int>      <dbl>    <dbl> <chr>
-#> 1 chisq              235   127   240.      6.21e-9 ***  
-#> 2 cfi                235    NA     0.907  NA       ""   
-#> 3 tli                235    NA     0.892  NA       ""   
-#> 4 aic                235    NA 16139.     NA       ""   
-#> 5 bic                235    NA 16256.     NA       ""   
-#> 6 rmsea              235    NA     0.0614 NA       ""   
-#> 7 srmr               235    NA     0.0731 NA       ""   
-#> 8 R^2:ambiv_sexism   235    NA     0.379  NA       ""   
+#> fit_stat             n     df     estimate       p.value  stars
+#> chisq              235    127     239.579      <.001      ***
+#> aic                235      -       0.907          -         
+#> bic                235      -       0.892          -         
+#> cfi                235      -   16138.684          -         
+#> tli                235      -   16256.310          -         
+#> rmsea              235      -       0.061          -         
+#> srmr               235      -       0.073          -         
+#> R^2:ambiv_sexism   235      -       0.379          -         
 #> 
 #> $coef
-#> # A tibble: 20 x 7
-#>    term                          est      se  est.se p.value stars std.est
-#>    <chr>                       <dbl>   <dbl>   <dbl>   <dbl> <chr>   <dbl>
-#>  1 news =~ news_1            1.00    0.       NA     NA      ""     0.173 
-#>  2 news =~ news_2            1.59    0.722     2.20   0.0276 *      0.340 
-#>  3 news =~ news_3            5.07    2.10      2.42   0.0156 *      0.781 
-#>  4 news =~ news_4            5.59    2.31      2.42   0.0157 *      0.851 
-#>  5 news =~ news_5            3.49    1.48      2.35   0.0186 *      0.520 
-#>  6 news =~ news_6            1.25    0.683     1.84   0.0660 +      0.196 
-#>  7 ambiv_sexism =~ ambiv_s…  1.00    0.       NA     NA      ""     0.825 
-#>  8 ambiv_sexism =~ ambiv_s…  0.942   0.0671   14.0    0.     ***    0.801 
-#>  9 ambiv_sexism =~ ambiv_s…  0.795   0.0671   11.8    0.     ***    0.706 
-#> 10 ambiv_sexism =~ ambiv_s…  0.743   0.0638   11.6    0.     ***    0.697 
-#> 11 ambiv_sexism =~ ambiv_s…  0.902   0.0616   14.6    0.     ***    0.825 
-#> 12 ambiv_sexism =~ ambiv_s…  0.904   0.0637   14.2    0.     ***    0.807 
-#> 13 partisan =~ therm_1       1.00    0.       NA     NA      ""     0.577 
-#> 14 partisan =~ therm_2       1.00    0.       NA     NA      ""     0.592 
-#> 15 ambiv_sexism ~ age       -0.00421 0.00511  -0.824  0.410  ""    -0.0513
-#> 16 ambiv_sexism ~ sex       -0.271   0.130    -2.09   0.0367 *     -0.130 
-#> 17 ambiv_sexism ~ hhinc     -0.0205  0.0233   -0.878  0.380  ""    -0.0567
-#> 18 ambiv_sexism ~ edu       -0.0877  0.0685   -1.28   0.201  ""    -0.0828
-#> 19 ambiv_sexism ~ news       0.130   0.215     0.607  0.544  ""     0.0468
-#> 20 ambiv_sexism ~ partisan   0.347   0.0690    5.03   0.     ***    0.592
+#> term                               est       se       est.se       p.value  stars   std.est
+#> news =~ news_1                   1.000    <.001         -             -               0.173
+#> news =~ news_2                   1.592    0.722     2.204         0.028      *        0.340
+#> news =~ news_3                   5.069    2.095     2.419         0.016      *        0.781
+#> news =~ news_4                   5.587    2.312     2.417         0.016      *        0.851
+#> news =~ news_5                   3.493    1.485     2.353         0.019      *        0.520
+#> news =~ news_6                   1.255    0.683     1.838         0.066      +        0.196
+#> ambiv_sexism =~ ambiv_sexism_1   1.000    <.001         -             -               0.825
+#> ambiv_sexism =~ ambiv_sexism_2   0.942    0.067    14.043         <.001      ***      0.801
+#> ambiv_sexism =~ ambiv_sexism_3   0.795    0.067    11.844         <.001      ***      0.706
+#> ambiv_sexism =~ ambiv_sexism_4   0.743    0.064    11.647         <.001      ***      0.697
+#> ambiv_sexism =~ ambiv_sexism_5   0.902    0.062    14.644         <.001      ***      0.825
+#> ambiv_sexism =~ ambiv_sexism_6   0.904    0.064    14.185         <.001      ***      0.807
+#> partisan =~ therm_1              1.000    <.001         -             -               0.577
+#> partisan =~ therm_2              1.000    <.001         -             -               0.592
+#> ambiv_sexism ~ age              -0.004    0.005    -0.824         0.410              -0.051
+#> ambiv_sexism ~ sex              -0.271    0.130    -2.089         0.037      *       -0.130
+#> ambiv_sexism ~ hhinc            -0.021    0.023    -0.878         0.380              -0.057
+#> ambiv_sexism ~ edu              -0.088    0.069    -1.279         0.201              -0.083
+#> ambiv_sexism ~ news              0.130    0.215     0.607         0.544               0.047
+#> ambiv_sexism ~ partisan          0.347    0.069     5.032         <.001      ***      0.592
 ```
 
 ### Multilevel modeling (MLM)
@@ -403,30 +374,24 @@ attitudinal items about political communication.
 ``` r
 print(tibble::as_tibble(polcom), n = 5)
 #> # A tibble: 244 x 63
-#>   follow_trump news_1 news_2 news_3 news_4 news_5 news_6 ambiv_sexism_1
-#> * <lgl>         <int>  <int>  <int>  <int>  <int>  <int>          <int>
-#> 1 TRUE              8      1      1      1      1      6              3
-#> 2 TRUE              1      1      1      1      1      1              5
-#> 3 TRUE              8      1      1      1      8      1              5
-#> 4 TRUE              8      1      1      1      1      6              2
-#> 5 TRUE              6      1      2      1      1      3              4
-#> # ... with 239 more rows, and 55 more variables: ambiv_sexism_2 <int>,
-#> #   ambiv_sexism_3 <int>, ambiv_sexism_4 <int>, ambiv_sexism_5 <int>,
-#> #   ambiv_sexism_6 <int>, img1_hrc_1 <int>, img1_hrc_2 <dbl>,
-#> #   img1_hrc_3 <int>, img1_hrc_4 <dbl>, img1_hrc_5 <int>,
-#> #   img1_hrc_6 <int>, img1_hrc_7 <int>, img1_hrc_8 <int>,
-#> #   img1_hrc_9 <int>, img2_hrc_10 <int>, img2_hrc_11 <int>,
-#> #   img2_hrc_12 <dbl>, img2_hrc_13 <int>, img2_hrc_14 <int>,
-#> #   img2_hrc_15 <dbl>, img1_djt_1 <int>, img1_djt_2 <dbl>,
-#> #   img1_djt_3 <int>, img1_djt_4 <dbl>, img1_djt_5 <int>,
-#> #   img1_djt_6 <int>, img1_djt_7 <int>, img1_djt_8 <int>,
-#> #   img1_djt_9 <int>, img2_djt_10 <int>, img2_djt_11 <int>,
-#> #   img2_djt_12 <dbl>, img2_djt_13 <int>, img2_djt_14 <int>,
-#> #   img2_djt_15 <dbl>, pie_1 <int>, pie_2 <int>, pie_3 <int>, pie_4 <int>,
-#> #   vote_2016 <int>, vote_2016_choice <int>, pp_ideology <int>,
-#> #   pp_party <int>, pp_party_lean <int>, therm_1 <int>, therm_2 <int>,
-#> #   therm_3 <int>, therm_4 <int>, therm_5 <int>, age <int>, sex <int>,
-#> #   gender <int>, race <int>, edu <int>, hhinc <int>
+#>   follow_trump news_1 news_2 news_3 news_4 news_5 news_6 ambiv_sexism_1 ambiv_sexism_2
+#> * <lgl>         <int>  <int>  <int>  <int>  <int>  <int>          <int>          <int>
+#> 1 TRUE              8      1      1      1      1      6              3              3
+#> 2 TRUE              1      1      1      1      1      1              5              5
+#> 3 TRUE              8      1      1      1      8      1              5              4
+#> 4 TRUE              8      1      1      1      1      6              2              2
+#> 5 TRUE              6      1      2      1      1      3              4              4
+#> # ... with 239 more rows, and 54 more variables: ambiv_sexism_3 <int>, ambiv_sexism_4 <int>,
+#> #   ambiv_sexism_5 <int>, ambiv_sexism_6 <int>, img1_hrc_1 <int>, img1_hrc_2 <dbl>,
+#> #   img1_hrc_3 <int>, img1_hrc_4 <dbl>, img1_hrc_5 <int>, img1_hrc_6 <int>, img1_hrc_7 <int>,
+#> #   img1_hrc_8 <int>, img1_hrc_9 <int>, img2_hrc_10 <int>, img2_hrc_11 <int>, img2_hrc_12 <dbl>,
+#> #   img2_hrc_13 <int>, img2_hrc_14 <int>, img2_hrc_15 <dbl>, img1_djt_1 <int>, img1_djt_2 <dbl>,
+#> #   img1_djt_3 <int>, img1_djt_4 <dbl>, img1_djt_5 <int>, img1_djt_6 <int>, img1_djt_7 <int>,
+#> #   img1_djt_8 <int>, img1_djt_9 <int>, img2_djt_10 <int>, img2_djt_11 <int>, img2_djt_12 <dbl>,
+#> #   img2_djt_13 <int>, img2_djt_14 <int>, img2_djt_15 <dbl>, pie_1 <int>, pie_2 <int>, pie_3 <int>,
+#> #   pie_4 <int>, vote_2016 <int>, vote_2016_choice <int>, pp_ideology <int>, pp_party <int>,
+#> #   pp_party_lean <int>, therm_1 <int>, therm_2 <int>, therm_3 <int>, therm_4 <int>, therm_5 <int>,
+#> #   age <int>, sex <int>, gender <int>, race <int>, edu <int>, hhinc <int>
 ```
 
 ## Descriptive statistics

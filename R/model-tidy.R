@@ -29,13 +29,6 @@ new_tidy_model <- function(fit, coef, data) {
   )
 }
 
-#' @export
-print.tidy_model <- function(x, ...) {
-  cat("$fit", fill = TRUE)
-  print(x$fit)
-  cat("\n$coef", fill = TRUE)
-  print(x$coef, n = getOption("max.print"))
-}
 
 
 ##----------------------------------------------------------------------------##
