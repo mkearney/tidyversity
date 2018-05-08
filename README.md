@@ -314,7 +314,7 @@ sem1 %>%
 #>                      ambiv_sexism_5 + ambiv_sexism_6
 #>                  partisan =~ a * therm_1 + a * therm_2
 #>                  ambiv_sexism ~ age + sex + hhinc + edu + news + partisan
-#> Model type     : sem
+#> Model type     : Structural Equation Model (SEM)
 #> Model pkg::fun : lavaan::sem()
 #> Model data     : 235 (observations) X 18 (variables)
 #> $fit

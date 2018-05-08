@@ -78,6 +78,14 @@ is_negbin <- function(x) {
   grepl("^negbin$|^negbinom$|negative\\s?binomial", x, ignore.case = TRUE)
 }
 
+is_sem <- function(x) {
+  grepl("^sem$|structural equation|latent", x, ignore.case = TRUE)
+}
+
+is_mlm <- function(x) {
+  grepl("^mlm$|multi.?level", x, ignore.case = TRUE)
+}
+
 std_model_type <- function(type) {
   if (is_ttest(type)) {
     type <- "ttest"

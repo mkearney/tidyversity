@@ -131,6 +131,10 @@ print.tidycall <- function(x) {
     type <- "Quasi-poisson regression"
   } else if (is_negbin(type)) {
     type <- "Negative binomial regression"
+  } else if (is_sem(type)) {
+    type <- "Structural Equation Model (SEM)"
+  } else if (is_mlm(type)) {
+    type <- "Multilevel Model (MLM)"
   }
   ## format robust (if applicable)
   if (type != "" && x$robust) {
