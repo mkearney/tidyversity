@@ -37,7 +37,7 @@ tidy_sem <- function(.data, model = NULL, robust = FALSE, ...) {
     estimator <- "ml"
   }
   ## capture model expression
-  e <- rlang::expr(lavaan::sem(!!model, data = .data, estimator = estimator))
+  e <- rlang::expr(lavaan::sem(!!model, data = .data, estimator = !!estimator))
   ## estimate model
   m <- eval(e)
   ## store info as tidycall attribute
