@@ -35,12 +35,12 @@ Load the package (it, of course, plays nicely with tidyverse).
 
 ``` r
 library(tidyverse)
-#> ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+#> ── Attaching packages ────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 #> ✔ ggplot2 2.2.1     ✔ purrr   0.2.4
 #> ✔ tibble  1.4.2     ✔ dplyr   0.7.4
 #> ✔ tidyr   0.8.0     ✔ stringr 1.3.0
 #> ✔ readr   1.1.1     ✔ forcats 0.3.0
-#> ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> ── Conflicts ───────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 #> ✖ dplyr::filter() masks stats::filter()
 #> ✖ dplyr::lag()    masks stats::lag()
 library(tidyversity)
@@ -192,7 +192,8 @@ polcom %>%
 ``` r
 polcom %>%
   mutate(polarize = abs(therm_1 - therm_2)) %>%
-  tidy_regression(polarize ~ news_1 + ambiv_sexism_1, type = "quasipoisson", robust = TRUE) %>%
+  tidy_regression(polarize ~ news_1 + ambiv_sexism_1, 
+    type = "quasipoisson", robust = TRUE) %>%
   tidy_summary()
 #> # A tidy model
 #> Model formula  : polarize ~ news_1 + ambiv_sexism_1
@@ -293,17 +294,26 @@ polcom %>%
 Conduct latent variable analysis using structural equation modeling.
 
 ``` r
-polcom %>%
+## mutate data and then specify and estimate model
+sem1 <- polcom %>%
   mutate(therm_2 = therm_2 / 10, 
     therm_1 = 10 - therm_1 / 10) %>%
-  tidy_sem(news =~ news_1 + news_2 + news_3 + news_4 + news_5 + news_6,
+  tidy_sem_model(news =~ news_1 + news_2 + news_3 + news_4 + news_5 + news_6,
     ambiv_sexism =~ ambiv_sexism_1 + ambiv_sexism_2 + ambiv_sexism_3 + 
       ambiv_sexism_4 + ambiv_sexism_5 + ambiv_sexism_6,
     partisan =~ a*therm_1 + a*therm_2,
     ambiv_sexism ~ age + sex + hhinc + edu + news + partisan) %>%
+  tidy_sem()
+
+## print model summary
+sem1 %>%
   tidy_summary()
 #> # A tidy model
-#> Model formula  : model
+#> Model formula  : news =~ news_1 + news_2 + news_3 + news_4 + news_5 + news_6
+#>                  ambiv_sexism =~ ambiv_sexism_1 + ambiv_sexism_2 + ambiv_sexism_3 + ambiv_sexism_4 + 
+#>                      ambiv_sexism_5 + ambiv_sexism_6
+#>                  partisan =~ a * therm_1 + a * therm_2
+#>                  ambiv_sexism ~ age + sex + hhinc + edu + news + partisan
 #> Model type     : sem
 #> Model pkg::fun : lavaan::sem()
 #> Model data     : 235 (observations) X 18 (variables)
@@ -318,7 +328,7 @@ polcom %>%
 #> 5 bic                235    NA 16256.     NA       ""   
 #> 6 rmsea              235    NA     0.0614 NA       ""   
 #> 7 srmr               235    NA     0.0731 NA       ""   
-#> 8 ambiv_sexism:R^2   235    NA     0.379  NA       ""   
+#> 8 R^2:ambiv_sexism   235    NA     0.379  NA       ""   
 #> 
 #> $coef
 #> # A tibble: 20 x 7
@@ -352,21 +362,33 @@ Estimate multilevel (mixed effects) models.
 
 ``` r
 lme4::sleepstudy %>%
-  tidy_mlm(Reaction ~ Days + (Days | Subject))
+  tidy_mlm(Reaction ~ Days + (Days | Subject)) %>%
+  summary()
 #> Linear mixed model fit by REML ['lmerMod']
 #> Formula: Reaction ~ Days + (Days | Subject)
 #>    Data: .data
-#> REML criterion at convergence: 1743.63
+#> 
+#> REML criterion at convergence: 1743.6
+#> 
+#> Scaled residuals: 
+#>    Min     1Q Median     3Q    Max 
+#> -3.954 -0.463  0.023  0.463  5.179 
+#> 
 #> Random effects:
-#>  Groups   Name        Std.Dev. Corr
-#>  Subject  (Intercept) 24.74        
-#>           Days         5.92    0.07
-#>  Residual             25.59        
+#>  Groups   Name        Variance Std.Dev. Corr
+#>  Subject  (Intercept) 612.1    24.74        
+#>           Days         35.1     5.92    0.07
+#>  Residual             654.9    25.59        
 #> Number of obs: 180, groups:  Subject, 18
-#> Fixed Effects:
-#> (Intercept)         Days  
-#>       251.4         10.5
-##  tidy_summary() summary method not yet implemented
+#> 
+#> Fixed effects:
+#>             Estimate Std. Error t value
+#> (Intercept)   251.41       6.82   36.84
+#> Days           10.47       1.55    6.77
+#> 
+#> Correlation of Fixed Effects:
+#>      (Intr)
+#> Days -0.138
 ```
 
 # Data sets

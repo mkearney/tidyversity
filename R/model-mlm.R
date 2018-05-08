@@ -16,10 +16,10 @@ tidy_mlm <- function(.data, model, robust = FALSE, ...) {
       stop("`REML = FALSE` with robust linear mixed models", call. = FALSE)
     }
     ## store expression
-    e <- rlang::expr(robustlmm::rlmer(model, data = .data, ...))
+    e <- rlang::expr(robustlmm::rlmer(!!model, data = .data, ...))
   } else {
     ## store expression
-    e <- rlang::expr(lme4::lmer(model, data = .data, ...))
+    e <- rlang::expr(lme4::lmer(!!model, data = .data, ...))
   }
   ## estimate model
   m <- eval(e)

@@ -50,7 +50,7 @@ store_tidycall <- function(dims, expr) {
     model <- strsplit(model, "\\n")[[1]]
     if (length(model) > 1L) {
       model <- paste(c(model[1],
-        paste0("                ", model[-1])),
+        paste0("                 ", model[-1])),
         collapse = "\n")
     }
   } else {
@@ -142,18 +142,11 @@ print.tidycall <- function(x) {
   } else {
     data <- paste0(x$data, " (observations)")
   }
-  ## format data dimensions and combine with type and model
-  #if (type == "") {
-  #  p <- paste0("# A tidy model\nModel formula : ", x$model,
-  #    "\nModel data    : ", data, "\n")
-  #} else {
-    p <- paste0("# A tidy model",
-      "\nModel formula  : ", x$model,
-      "\nModel type     : ", type,
-      "\nModel pkg::fun : ", paste0(x$pkgfun, "()"),
-      "\nModel data     : ", data, "\n")
-  #}
-  ## print model info
+  p <- paste0("# A tidy model",
+    "\nModel formula  : ", x$model,
+    "\nModel type     : ", type,
+    "\nModel pkg::fun : ", paste0(x$pkgfun, "()"),
+    "\nModel data     : ", data, "\n")
   cat(p, fill = TRUE)
 }
 
@@ -173,7 +166,8 @@ pkgfun <- function(expr) {
   ## if namespace already attached, return it otherwise look it up
   if (!grepl("\\:\\:", expr)) {
     ## lookup and return name of namespace
-    pkg <- rlang::env_name(rlang::fn_env(rlang::as_function(expr)))
+    #pkg <- rlang::env_name(rlang::fn_env(rlang::as_function(expr)))
+    pkg <- rlang::ns_env_name(rlang::fn_env(rlang::as_function(expr)))
     ## remove "namespace:", only use pkg name
     pkg <- gsub(".*:", "", pkg)
     ## combine with namespace

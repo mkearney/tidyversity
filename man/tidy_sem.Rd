@@ -4,12 +4,12 @@
 \alias{tidy_sem}
 \title{Structural equation model}
 \usage{
-tidy_sem(.data, ..., robust = FALSE)
+tidy_sem(.data, model = NULL, robust = FALSE, ...)
 }
 \arguments{
-\item{...}{Model formula to be estimated.}
-
 \item{robust}{Logial indicating whether to use a robust estimator.}
+
+\item{...}{Model formula to be estimated.}
 
 \item{data}{Data frame containing variables in model}
 }
@@ -18,4 +18,18 @@ A model object
 }
 \description{
 Conduct latent variable model analysis (structural equation modeling)
+}
+\examples{
+## specify sem model and estimate
+m1 <- polcom \%>\%
+  tidy_sem_model(news =~ news_1 + news_2 + news_3 + news_4 + news_5 + news_6,
+    ambiv_sexism =~ ambiv_sexism_1 + ambiv_sexism_2 + ambiv_sexism_3 +
+    ambiv_sexism_4 + ambiv_sexism_5 + ambiv_sexism_6,
+    partisan =~ a*therm_1 + a*therm_2,
+    ambiv_sexism ~ age + sex + hhinc + edu + news + partisan)
+
+## view summary
+m1 \%>\%
+  tidy_summary()
+
 }
