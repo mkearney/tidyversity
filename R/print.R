@@ -37,12 +37,8 @@ format_ncol <- function(x, nm) {
   sp <- sapply(mchars - chars, spaces)
   ## map paste0 to add spaces before value
   x <- unlist(Map(paste0, sp, x, USE.NAMES = FALSE))
-  x <- gsub("-----", " -   ", x)
-  ## estimate mid-point of string
-  #m <- floor(mchars / 2)
-  ## add dash to middle of completely blank lines (and remove a space)
-  #x <- sub(sprintf("(?<=\\s{%d}).(?=\\s)", m, m), "-", x, perl = TRUE)
-  x
+  ## replace placeholder and return
+  gsub("-----", " -   ", x)
 }
 
 format_icol <- function(x, nm) {
@@ -113,18 +109,6 @@ no_tibble <- function(x, n = NULL,
     ## remove row names
     x[-1] <- sub(sprintf("^.{%d}", nchar(nobs) + 1), "", x[-1])
     x[1] <- sub(sprintf("^\\s{0,%d}", nchar(nobs) + 1), "", x[1])
-    #x <- sub("^\\s{0,}\\d+", "", x)
-    #y <- grepl("^\\s", x)
-    #while (any(y)) {
-    #  x[y] <- sub("\\s", "", x[y])
-    #  x[y] <- sub("(?<=\\S)\\s", "  ", x[y], perl = TRUE)
-    #  y <- grepl("^\\s", x)
-    #}
-
-    #n <- nchar(nobs)
-    #x <- gsub(sprintf("^\\s{0,%d}\\d+", n), paste(rep(" ", n), collapse = ""), x)
-    #x <- sub("^\\s+", "", x)
-    #x[1] <- sub("\\s", "  ", x[1])
   }
   ## replace quotes with blanks
   x <- gsub('"', " ", x)
@@ -148,14 +132,7 @@ no_tibble <- function(x, n = NULL,
   ## fix heading spacing for coef data
   if (coef) {
     x[1] <- sub("\\sest", "est", x[1])
-    #x[1] <- sub("\\best\\s{4}", "    est", x[1])
-    #x[1] <- sub("\\bse\\s{3}", "    se", x[1])
-    #x[1] <- sub("\\s{1}p\\.value", "p.value ", x[1])
-    #x[1] <- sub("\\s{1}stars", "stars ", x[1])
   }
-  ## return with hline
-  #hline <- paste(rep("-", max(nchar(x))), collapse = "")
-  #c(x[1], hline, x[-1])
-  ## return text to print
+  ## return
   x
 }

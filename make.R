@@ -1,4 +1,6 @@
 
+
+library(tidyversity)
 table(polcom$pp_party)
 
 x <- tidyversity:::fit_glmRob(m)
@@ -6,7 +8,8 @@ x
 sapply(x, is.double)
 
 polcom %>%
-  tidy_regression(ambiv_sexism_1>3 ~ pp_party + sex, type = "logistic", robust = TRUE) -> m
+  tidy_regression(ambiv_sexism_1>3 ~ pp_party + sex, 
+    type = "logistic", robust = TRUE) -> m
   tidy_summary()
 
 

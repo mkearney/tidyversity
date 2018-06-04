@@ -170,7 +170,6 @@ pkgfun <- function(expr) {
   ## if namespace already attached, return it otherwise look it up
   if (!grepl("\\:\\:", expr)) {
     ## lookup and return name of namespace
-    #pkg <- rlang::env_name(rlang::fn_env(rlang::as_function(expr)))
     pkg <- rlang::ns_env_name(rlang::fn_env(rlang::as_function(expr)))
     ## remove "namespace:", only use pkg name
     pkg <- gsub(".*:", "", pkg)
